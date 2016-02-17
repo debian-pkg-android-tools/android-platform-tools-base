@@ -1,0 +1,12 @@
+s/net.sf.kxml/kxml2/ * * s/.*/debian/ * *
+org.ow2.asm asm * s/.*/4.x/ * *
+org.ow2.asm asm-tree * s/.*/4.x/ * *
+org.ow2.asm asm-analysis * s/.*/4.x/ * *
+com.google.code.findbugs jsr305 * s/.*/0.x/ * *
+org.bouncycastle s/bcpkix-jdk15on/bcpkix/ * s/.*/1.51/ * *
+org.bouncycastle s/bcprov-jdk15on/bcprov/ * s/.*/1.51/ * *
+junit junit * s/.*/4.x/ * *
+org.gradle s/messaging/gradle-messaging/ * s/.*/debian/ * *
+org.gradle s/core/gradle-core/ * s/.*/debian/ * *
+org.gradle s/wrapper/gradle-wrapper/ * s/.*/debian/ * *
+org.gradle s/baseServices/gradle-base-services/ * s/.*/debian/ * *

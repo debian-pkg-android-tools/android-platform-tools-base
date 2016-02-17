@@ -1,0 +1,11 @@
+#!/usr/bin/make -f
+
+export JAVA_HOME=/usr/lib/jvm/default-java
+
+%:
+	dh $@ --parallel --with javahelper,maven_repo_helper --buildsystem=gradle
+
+override_dh_auto_build:
+	dh_auto_build -- -x test assemble
+	mv out/build/base/common/build/libs/common-24.5.0.jar com.android.tools.common.jar
+	mv out/build/base/annotations/build/libs/annotations-24.5.0.jar com.android.tools.annotations.jar

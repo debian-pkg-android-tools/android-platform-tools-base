@@ -1,0 +1,26 @@
+From: Markus Koschany <apo@debian.org>
+Date: Sat, 6 Feb 2016 22:13:21 +0100
+Subject: SdkTestCase
+
+---
+ .../testutils/src/main/java/com/android/testutils/SdkTestCase.java | 7 -------
+ 1 file changed, 7 deletions(-)
+
+diff --git a/base/testutils/src/main/java/com/android/testutils/SdkTestCase.java b/base/testutils/src/main/java/com/android/testutils/SdkTestCase.java
+index 75877a5..2a3eded 100644
+--- a/base/testutils/src/main/java/com/android/testutils/SdkTestCase.java
++++ b/base/testutils/src/main/java/com/android/testutils/SdkTestCase.java
+@@ -353,13 +353,6 @@ public abstract class SdkTestCase extends TestCase {
+             tempFile.delete();
+         }
+ 
+-        Files.copy(new InputSupplier<InputStream>() {
+-            @Override
+-            public InputStream getInput() throws IOException {
+-                return contents;
+-            }
+-        }, tempFile);
+-
+         return tempFile;
+     }
+ 

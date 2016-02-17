@@ -1,0 +1,5 @@
+android-platform-tools-base (1.5.0-1) unstable; urgency=medium
+
+  * Initial release. (Closes: #814797)
+
+ -- Markus Koschany <apo@debian.org>  Thu, 18 Feb 2016 00:47:02 +0100

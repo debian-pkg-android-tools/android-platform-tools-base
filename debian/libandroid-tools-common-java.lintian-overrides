@@ -1,0 +1,3 @@
+# Java 8 is the new default now, hence all jars will work.
+incompatible-java-bytecode-format
+

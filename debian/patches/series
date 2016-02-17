@@ -1,0 +1,7 @@
+build.gradle.patch
+settings.gradle.patch
+gradle-experimental.patch
+SdkTestCase.patch
+project-test-lib.patch
+trove3.patch
+disable-lint.patch

@@ -1,0 +1,1102 @@
+From: Markus Koschany <apo@debian.org>
+Date: Thu, 21 Jan 2016 20:52:18 +0100
+Subject: build.gradle
+
+Patch upstream's build system for Debian.
+
+Forwarded: not-needed
+---
+ base/annotations/build.gradle                      |  7 ++---
+ base/asset-studio/build.gradle                     |  5 ++--
+ base/build-system/builder-model/build.gradle       | 13 +++-------
+ base/build-system/builder-test-api/build.gradle    |  8 +-----
+ base/build-system/builder/build.gradle             | 19 +++-----------
+ base/build-system/google-services/build.gradle     |  7 +----
+ base/build-system/gradle-core/build.gradle         |  6 +----
+ base/build-system/gradle-experimental/build.gradle |  7 +----
+ base/build-system/gradle/build.gradle              |  9 +------
+ base/build-system/integration-test/build.gradle    |  5 ++--
+ .../3rdPartyTests/buildSrc/build.gradle            |  3 +--
+ base/build-system/manifest-merger/build.gradle     |  7 ++---
+ base/build-system/project-test-lib/build.gradle    |  2 --
+ base/build-system/project-test/build.gradle        |  2 --
+ base/build.gradle                                  |  1 -
+ base/chartlib/build.gradle                         |  3 +--
+ base/common/build.gradle                           |  7 ++---
+ base/ddmlib/build.gradle                           |  7 ++---
+ base/device_validator/dvlib/build.gradle           |  8 ++----
+ base/draw9patch/build.gradle                       | 17 ++----------
+ base/jack/jack-api/build.gradle                    |  3 ---
+ base/jack/jill-api/build.gradle                    |  3 ---
+ base/jobb/build.gradle                             | 16 ++----------
+ base/layoutlib-api/build.gradle                    |  7 ++---
+ base/legacy/ant-tasks/build.gradle                 |  4 +--
+ base/legacy/archquery/build.gradle                 |  5 ++--
+ base/lint/cli/build.gradle                         | 20 +++------------
+ base/lint/libs/lint-api/build.gradle               |  7 ++---
+ base/lint/libs/lint-checks/build.gradle            |  7 ++---
+ base/lint/libs/lint-tests/build.gradle             |  5 +---
+ base/misc/screenshot2/build.gradle                 | 15 ++---------
+ base/ninepatch/build.gradle                        |  4 +--
+ base/perflib/build.gradle                          |  3 +--
+ base/rpclib/build.gradle                           |  3 +--
+ base/rule-api/build.gradle                         |  4 +--
+ base/sdk-common/build.gradle                       |  7 ++---
+ base/sdk-common/generate-locale-data/build.gradle  |  5 ++--
+ base/sdklib/build.gradle                           |  7 ++---
+ base/sdklib/test.gradle                            |  2 +-
+ base/templates/build.gradle                        | 10 --------
+ base/testutils/build.gradle                        |  5 +---
+ build.gradle                                       | 30 ++--------------------
+ 42 files changed, 65 insertions(+), 250 deletions(-)
+
+diff --git a/base/annotations/build.gradle b/base/annotations/build.gradle
+index dbfcea6..d448bbf 100644
+--- a/base/annotations/build.gradle
++++ b/base/annotations/build.gradle
+@@ -1,13 +1,10 @@
+ apply plugin: 'java'
+-apply plugin: 'sdk-java-lib'
++
+ 
+ group = 'com.android.tools'
+ archivesBaseName = 'annotations'
+-version = rootProject.ext.baseVersion
++version = '24.5.0'
+ 
+ project.ext.pomName = 'Android Tools Annotations library'
+ project.ext.pomDesc = 'annotations used throughout the Android tools libraries.'
+ 
+-apply from: "$rootDir/buildSrc/base/publish.gradle"
+-apply from: "$rootDir/buildSrc/base/bintray.gradle"
+-apply from: "$rootDir/buildSrc/base/javadoc.gradle"
+diff --git a/base/asset-studio/build.gradle b/base/asset-studio/build.gradle
+index 1e186ad..35c11b6 100644
+--- a/base/asset-studio/build.gradle
++++ b/base/asset-studio/build.gradle
+@@ -1,10 +1,9 @@
+ apply plugin: 'java'
+-apply plugin: 'jacoco'
+-apply plugin: 'sdk-java-lib'
++
+ 
+ group = 'com.android.tools'
+ archivesBaseName = 'asset-studio'
+-version = rootProject.ext.baseVersion
++version = '24.5.0'
+ 
+ dependencies {
+     compile project(':base:layoutlib-api')
+diff --git a/base/build-system/builder-model/build.gradle b/base/build-system/builder-model/build.gradle
+index 0f2fc5f..123de89 100644
+--- a/base/build-system/builder-model/build.gradle
++++ b/base/build-system/builder-model/build.gradle
+@@ -1,6 +1,5 @@
+ apply plugin: 'java'
+-apply plugin: 'clone-artifacts'
+-apply plugin: 'sdk-java-lib'
++
+ 
+ dependencies {
+     compile project(':base:annotations')
+@@ -8,20 +7,16 @@ dependencies {
+ 
+ group = 'com.android.tools.build'
+ archivesBaseName = 'builder-model'
+-version = rootProject.ext.buildVersion
++version = '1.5.0'
+ 
+ project.ext.pomName = 'Android Builder Model library'
+ project.ext.pomDesc = 'Model for the Builder library.'
+ 
+-project.ext.apiVersion = rootProject.ext.apiVersion ?: 0
++project.ext.apiVersion = '3'
+ 
+-apply from: "$rootDir/buildSrc/base/publish.gradle"
+-apply from: "$rootDir/buildSrc/base/bintray.gradle"
+-apply from: "$rootDir/buildSrc/base/javadoc.gradle"
+ 
+ ["Model-Version": version, "Model-Api-Version": apiVersion].each { key, value ->
+     jar.manifest.attributes((key): value)
+-    sdkJar.manifest.attributes((key): value)
+ }
+ 
+ def generated = new File("${project.buildDir}/generated/java")
+@@ -53,4 +48,4 @@ public final class Version {
+ """
+ }
+ 
+-tasks.compileJava.dependsOn generateVersionConstantsJava
+\ No newline at end of file
++tasks.compileJava.dependsOn generateVersionConstantsJava
+diff --git a/base/build-system/builder-test-api/build.gradle b/base/build-system/builder-test-api/build.gradle
+index d24b00f..07524a0 100644
+--- a/base/build-system/builder-test-api/build.gradle
++++ b/base/build-system/builder-test-api/build.gradle
+@@ -1,6 +1,4 @@
+ apply plugin: 'java'
+-apply plugin: 'jacoco'
+-apply plugin: 'clone-artifacts'
+ 
+ dependencies {
+     compile project(':base:ddmlib')
+@@ -10,12 +8,8 @@ dependencies {
+ 
+ group = 'com.android.tools.build'
+ archivesBaseName = 'builder-test-api'
+-version = rootProject.ext.buildVersion
++version = '1.5.0'
+ 
+ project.ext.pomName = 'Android Builder Test API library'
+ project.ext.pomDesc = 'API for the Test extension point in the Builder library.'
+ 
+-apply from: "$rootDir/buildSrc/base/publish.gradle"
+-apply from: "$rootDir/buildSrc/base/bintray.gradle"
+-apply from: "$rootDir/buildSrc/base/javadoc.gradle"
+-
+diff --git a/base/build-system/builder/build.gradle b/base/build-system/builder/build.gradle
+index 050a4a1..c1379b6 100644
+--- a/base/build-system/builder/build.gradle
++++ b/base/build-system/builder/build.gradle
+@@ -1,6 +1,4 @@
+ apply plugin: 'java'
+-apply plugin: 'clone-artifacts'
+-apply plugin: 'jacoco'
+ 
+ evaluationDependsOn(':base:builder-model')
+ evaluationDependsOn(':base:builder-test-api')
+@@ -27,7 +25,7 @@ dependencies {
+     testCompile 'junit:junit:4.12'
+     testCompile 'org.mockito:mockito-all:1.9.5'
+     testCompile project(':base:testutils')
+-    testCompile project(':base:sdklib').sourceSets.test.output
++    testCompile project(':base:sdklib')
+ }
+ 
+ test {
+@@ -36,14 +34,11 @@ test {
+ 
+ group = 'com.android.tools.build'
+ archivesBaseName = 'builder'
+-version = rootProject.ext.buildVersion
++version = '1.5.0'
+ 
+ project.ext.pomName = 'Android Builder library'
+ project.ext.pomDesc = 'Library to build Android applications.'
+ 
+-apply from: "$rootDir/buildSrc/base/publish.gradle"
+-apply from: "$rootDir/buildSrc/base/bintray.gradle"
+-apply from: "$rootDir/buildSrc/base/javadoc.gradle"
+ 
+ jar.manifest.attributes("Builder-Version": version)
+ 
+@@ -58,8 +53,6 @@ sourceSets {
+ }
+ 
+ task generateVersionConstantsJava {
+-    inputs.property("apiVersion", apiVersion)
+-    inputs.property("version", version)
+     ext.versionFile = new File(generated, "com/android/builder/Version.java")
+     outputs.file(versionFile)
+ }
+@@ -70,8 +63,8 @@ package com.android.builder;
+ 
+ public final class Version {
+     private Version() {}
+-    public static final String ANDROID_GRADLE_PLUGIN_VERSION = "$version";
+-    public static final int BUILDER_MODEL_API_VERSION = $apiVersion;
++    public static final String ANDROID_GRADLE_PLUGIN_VERSION = "1.5";
++    public static final int BUILDER_MODEL_API_VERSION = 3;
+ }
+ """
+ }
+@@ -95,11 +88,7 @@ dependencies {
+ sourceSets.main.compileClasspath += [configurations.provided]
+ sourceSets.test.runtimeClasspath += [configurations.provided]
+ tasks.compileJava.dependsOn(configurations.provided)
+-tasks.sourcesJar.dependsOn(configurations.sourcesProvided)
+ 
+ tasks.jar {
+     from({zipTree(configurations.provided.singleFile)})
+ }
+-tasks.sourcesJar {
+-    from({zipTree(configurations.sourcesProvided.singleFile)})
+-}
+\ No newline at end of file
+diff --git a/base/build-system/google-services/build.gradle b/base/build-system/google-services/build.gradle
+index e5afe75..663364e 100644
+--- a/base/build-system/google-services/build.gradle
++++ b/base/build-system/google-services/build.gradle
+@@ -1,7 +1,4 @@
+ apply plugin: 'groovy'
+-apply plugin: 'clone-artifacts'
+-apply plugin: 'idea'
+-apply plugin: 'jacoco'
+ 
+ dependencies {
+     compile gradleApi()
+@@ -16,13 +13,11 @@ ext {
+ 
+ group = 'com.google.gms'
+ archivesBaseName = 'google-services'
+-version = rootProject.ext.buildVersion
++version = '1.5.0'
+ 
+ project.ext.pomName = 'Gradle Plug-in for Google Services'
+ project.ext.pomDesc = 'Gradle plug-in for Google Services'
+ 
+-apply from: "$rootDir/buildSrc/base/publish.gradle"
+-apply from: "$rootDir/buildSrc/base/bintray.gradle"
+ 
+ groovydoc {
+     exclude     "**/internal/**"
+diff --git a/base/build-system/gradle-core/build.gradle b/base/build-system/gradle-core/build.gradle
+index 2505e6d..7e3a673 100644
+--- a/base/build-system/gradle-core/build.gradle
++++ b/base/build-system/gradle-core/build.gradle
+@@ -1,6 +1,4 @@
+ apply plugin: 'groovy'
+-apply plugin: 'jacoco'
+-apply plugin: 'clone-artifacts'
+ 
+ configurations {
+     provided
+@@ -36,13 +34,11 @@ tasks.compileJava.dependsOn ":setupGradleInIde"
+ 
+ group = 'com.android.tools.build'
+ archivesBaseName = 'gradle-core'
+-version = rootProject.ext.buildVersion
++version = '1.5.0'
+ 
+ project.ext.pomName = 'Core Library for Android Gradle Plug-in'
+ project.ext.pomDesc = 'Core library to build Android Gradle plugin.'
+ 
+-apply from: "$rootDir/buildSrc/base/publish.gradle"
+-apply from: "$rootDir/buildSrc/base/bintray.gradle"
+ 
+ test {
+     environment("CUSTOM_REPO", rootProject.file("../out/repo"))
+diff --git a/base/build-system/gradle-experimental/build.gradle b/base/build-system/gradle-experimental/build.gradle
+index 9e9154a..ce579e0 100644
+--- a/base/build-system/gradle-experimental/build.gradle
++++ b/base/build-system/gradle-experimental/build.gradle
+@@ -1,7 +1,4 @@
+ apply plugin: 'groovy'
+-apply plugin: 'clone-artifacts'
+-apply plugin: 'idea'
+-apply plugin: 'jacoco'
+ 
+ // Extract gradle libraries to ensure gradle-core is compatible with older version.
+ String gradleVersion = "2.5"
+@@ -29,13 +26,11 @@ dependencies {
+ 
+ group = 'com.android.tools.build'
+ archivesBaseName = 'gradle-experimental'
+-version = rootProject.ext.experimentalVersion
++version = '0.4.0'
+ 
+ project.ext.pomName = 'Gradle Plug-in for Android Using Component Model'
+ project.ext.pomDesc = 'Gradle plug-in to build Android applications.'
+ 
+-apply from: "$rootDir/buildSrc/base/publish.gradle"
+-apply from: "$rootDir/buildSrc/base/bintray.gradle"
+ 
+ jar.manifest.attributes("Plugin-Version": version)
+ jar.manifest.attributes("Inception-Date":"${Calendar.getInstance().get(Calendar.YEAR)}:" +
+diff --git a/base/build-system/gradle/build.gradle b/base/build-system/gradle/build.gradle
+index 5bcf41f..b36e23e 100644
+--- a/base/build-system/gradle/build.gradle
++++ b/base/build-system/gradle/build.gradle
+@@ -1,8 +1,4 @@
+ apply plugin: 'groovy'
+-apply plugin: 'clone-artifacts'
+-apply plugin: 'idea'
+-apply plugin: 'jacoco'
+-apply plugin: 'license-report'
+ 
+ dependencies {
+     compile project(':base:gradle-core')
+@@ -14,14 +10,11 @@ dependencies {
+ 
+ group = 'com.android.tools.build'
+ archivesBaseName = 'gradle'
+-version = rootProject.ext.buildVersion
++version = '1.5.0'
+ 
+ project.ext.pomName = 'Gradle Plug-in for Android'
+ project.ext.pomDesc = 'Gradle plug-in to build Android applications.'
+ 
+-apply from: "$rootDir/buildSrc/base/publish.gradle"
+-apply from: "$rootDir/buildSrc/base/bintray.gradle"
+-
+ jar.manifest.attributes("Plugin-Version": version)
+ jar.manifest.attributes("Inception-Date":"${Calendar.getInstance().get(Calendar.YEAR)}:" +
+         "${Calendar.getInstance().get(Calendar.MONTH)}:${Calendar.getInstance().get(Calendar.DATE)}")
+diff --git a/base/build-system/integration-test/build.gradle b/base/build-system/integration-test/build.gradle
+index 36a3527..ae0d7e5 100644
+--- a/base/build-system/integration-test/build.gradle
++++ b/base/build-system/integration-test/build.gradle
+@@ -1,5 +1,4 @@
+ apply plugin: 'groovy'
+-apply plugin: 'jacoco'
+ 
+ repositories {
+     maven { url = uri(rootProject.cloneArtifacts.repository) }
+@@ -30,8 +29,8 @@ dependencies {
+ def testEnvironment = [
+     PROJECT_BUILD_DIR: project.buildDir,
+     CUSTOM_REPO: rootProject.file("../out/repo"),
+-    CUSTOM_GRADLE: System.env.CUSTOM_GRADLE ?: rootProject.ext.buildVersion,
+-    CUSTOM_EXPERIMENTAL_GRADLE: System.env.CUSTOM_EXPERIMENTAL_GRADLE ?:rootProject.ext.experimentalVersion,
++    CUSTOM_GRADLE: System.env.CUSTOM_GRADLE ?: '1.5.0',
++    CUSTOM_EXPERIMENTAL_GRADLE: System.env.CUSTOM_EXPERIMENTAL_GRADLE ?:'0.4.0',
+     ANDROID_HOME: System.env.ANDROID_HOME,
+     ANDROID_NDK_HOME: System.env.ANDROID_NDK_HOME,
+     CUSTOM_BUILDTOOLS: System.env.CUSTOM_BUILDTOOLS,
+diff --git a/base/build-system/integration-test/test-projects/3rdPartyTests/buildSrc/build.gradle b/base/build-system/integration-test/test-projects/3rdPartyTests/buildSrc/build.gradle
+index 82e0baa..2dfbb57 100644
+--- a/base/build-system/integration-test/test-projects/3rdPartyTests/buildSrc/build.gradle
++++ b/base/build-system/integration-test/test-projects/3rdPartyTests/buildSrc/build.gradle
+@@ -1,5 +1,4 @@
+ apply plugin: 'java'
+-apply plugin: 'idea'
+ 
+ def env = new Object() {
+     String gradleVersion
+@@ -11,4 +10,4 @@ apply from: "../../commonLocalRepo.gradle"
+ 
+ dependencies {
+     compile "com.android.tools.build:builder-test-api:$env.gradleVersion"
+-}
+\ No newline at end of file
++}
+diff --git a/base/build-system/manifest-merger/build.gradle b/base/build-system/manifest-merger/build.gradle
+index 3ca48a0..4d3d7db 100644
+--- a/base/build-system/manifest-merger/build.gradle
++++ b/base/build-system/manifest-merger/build.gradle
+@@ -1,12 +1,12 @@
+ apply plugin: 'java'
+ apply plugin: 'jacoco'
+-apply plugin: 'sdk-java-lib'
++
+ 
+ evaluationDependsOn(':base:sdklib')
+ 
+ group = 'com.android.tools.build'
+ archivesBaseName = 'manifest-merger'
+-version = rootProject.ext.baseVersion
++version = '24.5.0'
+ 
+ dependencies {
+     compile project(':base:common')
+@@ -32,7 +32,4 @@ test {
+ project.ext.pomName = 'Android Tools Manifest Merger library'
+ project.ext.pomDesc = 'A Library to merge Android manifests.'
+ 
+-apply from: "$rootDir/buildSrc/base/publish.gradle"
+-apply from: "$rootDir/buildSrc/base/bintray.gradle"
+-apply from: "$rootDir/buildSrc/base/javadoc.gradle"
+ 
+diff --git a/base/build-system/project-test-lib/build.gradle b/base/build-system/project-test-lib/build.gradle
+index 82ddb41..d7fc943 100644
+--- a/base/build-system/project-test-lib/build.gradle
++++ b/base/build-system/project-test-lib/build.gradle
+@@ -1,6 +1,4 @@
+ apply plugin: 'java'
+-apply plugin: 'clone-artifacts'
+-apply plugin: 'idea'
+ 
+ def toolingApiVersion = gradle.gradleVersion
+ dependencies {
+diff --git a/base/build-system/project-test/build.gradle b/base/build-system/project-test/build.gradle
+index b28ca5d..c4b0060 100644
+--- a/base/build-system/project-test/build.gradle
++++ b/base/build-system/project-test/build.gradle
+@@ -1,6 +1,4 @@
+ apply plugin: 'java'
+-apply plugin: 'clone-artifacts'
+-apply plugin: 'idea'
+ apply plugin: 'application'
+ 
+ dependencies {
+diff --git a/base/build.gradle b/base/build.gradle
+index b07f6c9..7a52da9 100644
+--- a/base/build.gradle
++++ b/base/build.gradle
+@@ -2,6 +2,5 @@ subprojects { Project project ->
+     // only configure leaf projects.
+     if (!project.getSubprojects().isEmpty()) return
+ 
+-    apply from: "$rootDir/buildSrc/base/baseJava.gradle"
+ }
+ 
+diff --git a/base/chartlib/build.gradle b/base/chartlib/build.gradle
+index 24c58d6..dff471b 100644
+--- a/base/chartlib/build.gradle
++++ b/base/chartlib/build.gradle
+@@ -3,7 +3,7 @@ apply plugin: 'jacoco'
+ 
+ group = 'com.android.tools.chartlib'
+ archivesBaseName = 'chartlib'
+-version = rootProject.ext.baseVersion
++version = '24.5.0'
+ 
+ dependencies {
+   compile project(':base:common')
+@@ -14,4 +14,3 @@ dependencies {
+ project.ext.pomName = 'Android Tools chartlib'
+ project.ext.pomDesc = 'Library with Swing chart widgets'
+ 
+-apply from: "$rootDir/buildSrc/base/javadoc.gradle"
+diff --git a/base/common/build.gradle b/base/common/build.gradle
+index 904c8f9..21ef059 100644
+--- a/base/common/build.gradle
++++ b/base/common/build.gradle
+@@ -1,6 +1,6 @@
+ apply plugin: 'java'
+ apply plugin: 'jacoco'
+-apply plugin: 'sdk-java-lib'
++
+ 
+ dependencies {
+     compile project(':base:annotations')
+@@ -11,11 +11,8 @@ dependencies {
+ 
+ group = 'com.android.tools'
+ archivesBaseName = 'common'
+-version = rootProject.ext.baseVersion
++version = '24.5.0'
+ 
+ project.ext.pomName = 'Android Tools common library'
+ project.ext.pomDesc = 'common library used by other Android tools libraries.'
+ 
+-apply from: "$rootDir/buildSrc/base/publish.gradle"
+-apply from: "$rootDir/buildSrc/base/bintray.gradle"
+-apply from: "$rootDir/buildSrc/base/javadoc.gradle"
+diff --git a/base/ddmlib/build.gradle b/base/ddmlib/build.gradle
+index fd300c1..5695891 100644
+--- a/base/ddmlib/build.gradle
++++ b/base/ddmlib/build.gradle
+@@ -1,10 +1,10 @@
+ apply plugin: 'java'
+ apply plugin: 'jacoco'
+-apply plugin: 'sdk-java-lib'
++
+ 
+ group = 'com.android.tools.ddms'
+ archivesBaseName = 'ddmlib'
+-version = rootProject.ext.baseVersion
++version = '24.5.0'
+ 
+ dependencies {
+     compile project(':base:common')
+@@ -23,6 +23,3 @@ sourceSets {
+ project.ext.pomName = 'Android Tools ddmlib'
+ project.ext.pomDesc = 'Library providing APIs to talk to Android devices'
+ 
+-apply from: "$rootDir/buildSrc/base/publish.gradle"
+-apply from: "$rootDir/buildSrc/base/bintray.gradle"
+-apply from: "$rootDir/buildSrc/base/javadoc.gradle"
+diff --git a/base/device_validator/dvlib/build.gradle b/base/device_validator/dvlib/build.gradle
+index 4111d48..4feee01 100644
+--- a/base/device_validator/dvlib/build.gradle
++++ b/base/device_validator/dvlib/build.gradle
+@@ -1,6 +1,6 @@
+ apply plugin: 'java'
+ apply plugin: 'jacoco'
+-apply plugin: 'sdk-java-lib'
++
+ 
+ dependencies {
+     compile project(':base:common')
+@@ -9,14 +9,10 @@ dependencies {
+ 
+ group = 'com.android.tools'
+ archivesBaseName = 'dvlib'
+-version = rootProject.ext.baseVersion
++version = '24.5.0'
+ 
+ // configure the manifest of the sdkJar task
+-sdkJar.manifest.attributes("Main-Class": "com.android.validator.DeviceValidator")
+ 
+ project.ext.pomName = 'Android Tools dvlib'
+ project.ext.pomDesc = 'A Library to manage the Android device database XML files.'
+ 
+-apply from: "$rootDir/buildSrc/base/publish.gradle"
+-apply from: "$rootDir/buildSrc/base/bintray.gradle"
+-apply from: "$rootDir/buildSrc/base/javadoc.gradle"
+diff --git a/base/draw9patch/build.gradle b/base/draw9patch/build.gradle
+index b54a7f0..0a2fd6b 100644
+--- a/base/draw9patch/build.gradle
++++ b/base/draw9patch/build.gradle
+@@ -1,10 +1,10 @@
+ apply plugin: 'java'
+ apply plugin: 'jacoco'
+-apply plugin: 'sdk-java-lib'
++
+ 
+ group = 'com.android.tools'
+ archivesBaseName = 'draw9patch'
+-version = rootProject.ext.baseVersion
++version = '24.5.0'
+ 
+ dependencies {
+     testCompile 'junit:junit:4.12'
+@@ -15,16 +15,3 @@ sourceSets {
+     test.resources.srcDir 'src/test/java'
+ }
+ 
+-sdk {
+-    linux {
+-        item('etc/draw9patch') { executable true}
+-    }
+-    mac {
+-        item('etc/draw9patch') { executable true}
+-    }
+-    windows {
+-        item 'etc/draw9patch.bat'
+-    }
+-}
+-
+-sdkJar.manifest.attributes("Main-Class": "com.android.draw9patch.Application")
+diff --git a/base/jack/jack-api/build.gradle b/base/jack/jack-api/build.gradle
+index d5bf9de..f7f2260 100644
+--- a/base/jack/jack-api/build.gradle
++++ b/base/jack/jack-api/build.gradle
+@@ -17,9 +17,6 @@ compileJava.classpath += configurations.provided
+ project.ext.pomName = 'Android Jack API'
+ project.ext.pomDesc = 'API to dynamically load Jack'
+ 
+-apply from: "$rootDir/buildSrc/base/publish.gradle"
+-apply from: "$rootDir/buildSrc/base/bintray.gradle"
+-apply from: "$rootDir/buildSrc/base/javadoc.gradle"
+ 
+ javadoc {
+     classpath += configurations.provided
+diff --git a/base/jack/jill-api/build.gradle b/base/jack/jill-api/build.gradle
+index 5c0edf4..5668fdc 100644
+--- a/base/jack/jill-api/build.gradle
++++ b/base/jack/jill-api/build.gradle
+@@ -17,9 +17,6 @@ compileJava.classpath += configurations.provided
+ project.ext.pomName = 'Android Jill API'
+ project.ext.pomDesc = 'API to dynamically load Jill'
+ 
+-apply from: "$rootDir/buildSrc/base/publish.gradle"
+-apply from: "$rootDir/buildSrc/base/bintray.gradle"
+-apply from: "$rootDir/buildSrc/base/javadoc.gradle"
+ 
+ javadoc {
+     classpath += configurations.provided
+diff --git a/base/jobb/build.gradle b/base/jobb/build.gradle
+index bf112f1..ba3eaba 100644
+--- a/base/jobb/build.gradle
++++ b/base/jobb/build.gradle
+@@ -1,5 +1,5 @@
+ apply plugin: 'java'
+-apply plugin: 'sdk-java-lib'
++
+ 
+ dependencies {
+     compile project(':external:fat32lib')
+@@ -7,19 +7,7 @@ dependencies {
+ 
+ group = 'com.android.tools.build'
+ archivesBaseName = 'jobb'
+-version = rootProject.ext.baseVersion
++version = '24.5.0'
+ 
+ // configure the manifest of the sdkJar task
+-sdkJar.manifest.attributes("Main-Class": "com.android.jobb.Main")
+ 
+-sdk {
+-    linux {
+-        item('etc/jobb') { executable true }
+-    }
+-    mac {
+-        item('etc/jobb') { executable true }
+-    }
+-    windows {
+-        item 'etc/jobb.bat'
+-    }
+-}
+diff --git a/base/layoutlib-api/build.gradle b/base/layoutlib-api/build.gradle
+index 2ac4682..8fdaabc 100644
+--- a/base/layoutlib-api/build.gradle
++++ b/base/layoutlib-api/build.gradle
+@@ -1,10 +1,10 @@
+ apply plugin: 'java'
+ apply plugin: 'jacoco'
+-apply plugin: 'sdk-java-lib'
++
+ 
+ group = 'com.android.tools.layoutlib'
+ archivesBaseName = 'layoutlib-api'
+-version = rootProject.ext.baseVersion
++version = '24.5.0'
+ 
+ dependencies {
+     compile project(':base:common')
+@@ -18,7 +18,4 @@ dependencies {
+ project.ext.pomName = 'Android Tools layoutlib-api'
+ project.ext.pomDesc = 'Library to use the rendering library for Android layouts: layoutlib'
+ 
+-apply from: "$rootDir/buildSrc/base/publish.gradle"
+-apply from: "$rootDir/buildSrc/base/bintray.gradle"
+-apply from: "$rootDir/buildSrc/base/javadoc.gradle"
+ 
+diff --git a/base/legacy/ant-tasks/build.gradle b/base/legacy/ant-tasks/build.gradle
+index 65288b6..38e6674 100644
+--- a/base/legacy/ant-tasks/build.gradle
++++ b/base/legacy/ant-tasks/build.gradle
+@@ -1,9 +1,9 @@
+ apply plugin: 'java'
+-apply plugin: 'sdk-java-lib'
++
+ 
+ group = 'com.android.tools.build'
+ archivesBaseName = 'ant-tasks'
+-version = rootProject.ext.baseVersion
++version = '24.5.0'
+ 
+ dependencies {
+     compile project(':base:manifest-merger')
+diff --git a/base/legacy/archquery/build.gradle b/base/legacy/archquery/build.gradle
+index f38f236..1f17700 100644
+--- a/base/legacy/archquery/build.gradle
++++ b/base/legacy/archquery/build.gradle
+@@ -1,9 +1,8 @@
+ apply plugin: 'java'
+-apply plugin: 'sdk-java-lib'
++
+ 
+ group = 'com.android.tools'
+ archivesBaseName = 'archquery'
+-version = rootProject.ext.baseVersion
++version = '24.5.0'
+ 
+ // configure the manifest of the sdkJar task.
+-sdkJar.manifest.attributes("Main-Class": "com.android.archquery.Main")
+diff --git a/base/lint/cli/build.gradle b/base/lint/cli/build.gradle
+index 7d7fe85..5ffa9e5 100644
+--- a/base/lint/cli/build.gradle
++++ b/base/lint/cli/build.gradle
+@@ -1,10 +1,10 @@
+ apply plugin: 'java'
+ apply plugin: 'jacoco'
+-apply plugin: 'sdk-java-lib'
++
+ 
+ group = 'com.android.tools.lint'
+ archivesBaseName = 'lint'
+-version = rootProject.ext.baseVersion
++version = '24.5.0'
+ 
+ dependencies {
+     compile project(':base:lint-checks')
+@@ -20,24 +20,10 @@ test {
+     maxParallelForks = Runtime.runtime.availableProcessors() / 2
+ }
+ 
+-sdk {
+-    linux {
+-        item('etc/lint') { executable true }
+-    }
+-    mac {
+-        item('etc/lint') { executable true }
+-    }
+-    windows {
+-        item 'etc/lint.bat'
+-    }
+-}
++
+ 
+ // configure the manifest of the sdkJar task.
+-sdkJar.manifest.attributes("Main-Class": "com.android.tools.lint.Main")
+ 
+ project.ext.pomName = 'Android Lint Tool'
+ project.ext.pomDesc = 'Lint tools. Both a Command line tool and a library to add lint features to other tools'
+ 
+-apply from: "$rootDir/buildSrc/base/publish.gradle"
+-apply from: "$rootDir/buildSrc/base/bintray.gradle"
+-apply from: "$rootDir/buildSrc/base/javadoc.gradle"
+diff --git a/base/lint/libs/lint-api/build.gradle b/base/lint/libs/lint-api/build.gradle
+index df9d553..2ab953e 100644
+--- a/base/lint/libs/lint-api/build.gradle
++++ b/base/lint/libs/lint-api/build.gradle
+@@ -1,10 +1,10 @@
+ apply plugin: 'java'
+ apply plugin: 'jacoco'
+-apply plugin: 'sdk-java-lib'
++
+ 
+ group = 'com.android.tools.lint'
+ archivesBaseName = 'lint-api'
+-version = rootProject.ext.baseVersion
++version = '24.5.0'
+ 
+ dependencies {
+     compile project(':base:sdk-common')
+@@ -23,7 +23,4 @@ sourceSets {
+ project.ext.pomName = 'Android Tools Lint API'
+ project.ext.pomDesc = 'API to build lint checks'
+ 
+-apply from: "$rootDir/buildSrc/base/publish.gradle"
+-apply from: "$rootDir/buildSrc/base/bintray.gradle"
+-apply from: "$rootDir/buildSrc/base/javadoc.gradle"
+ 
+diff --git a/base/lint/libs/lint-checks/build.gradle b/base/lint/libs/lint-checks/build.gradle
+index b71cb35..b5f24dc 100644
+--- a/base/lint/libs/lint-checks/build.gradle
++++ b/base/lint/libs/lint-checks/build.gradle
+@@ -1,10 +1,10 @@
+ apply plugin: 'java'
+ apply plugin: 'jacoco'
+-apply plugin: 'sdk-java-lib'
++
+ 
+ group = 'com.android.tools.lint'
+ archivesBaseName = 'lint-checks'
+-version = rootProject.ext.baseVersion
++version = '24.5.0'
+ 
+ dependencies {
+     compile project(':base:lint-api')
+@@ -19,7 +19,4 @@ sourceSets {
+ project.ext.pomName = 'Android Lint Checks'
+ project.ext.pomDesc = 'Checks for Android Lint'
+ 
+-apply from: "$rootDir/buildSrc/base/publish.gradle"
+-apply from: "$rootDir/buildSrc/base/bintray.gradle"
+-apply from: "$rootDir/buildSrc/base/javadoc.gradle"
+ 
+diff --git a/base/lint/libs/lint-tests/build.gradle b/base/lint/libs/lint-tests/build.gradle
+index 7781b8a..c55c01f 100644
+--- a/base/lint/libs/lint-tests/build.gradle
++++ b/base/lint/libs/lint-tests/build.gradle
+@@ -3,7 +3,7 @@ apply plugin: 'jacoco'
+ 
+ group = 'com.android.tools.lint'
+ archivesBaseName = 'lint-tests'
+-version = rootProject.ext.baseVersion
++version = '24.5.0'
+ 
+ dependencies {
+     compile project(':base:lint')
+@@ -24,7 +24,4 @@ sourceSets {
+ project.ext.pomName = 'Android Tools Lint Test API'
+ project.ext.pomDesc = 'API to build lint check tests'
+ 
+-apply from: "$rootDir/buildSrc/base/publish.gradle"
+-apply from: "$rootDir/buildSrc/base/bintray.gradle"
+-apply from: "$rootDir/buildSrc/base/javadoc.gradle"
+ 
+diff --git a/base/misc/screenshot2/build.gradle b/base/misc/screenshot2/build.gradle
+index 51a060f..8704ad4 100644
+--- a/base/misc/screenshot2/build.gradle
++++ b/base/misc/screenshot2/build.gradle
+@@ -1,22 +1,11 @@
+ apply plugin: 'java'
+-apply plugin: 'sdk-java-lib'
++
+ 
+ group = 'com.android.tools'
+ archivesBaseName = 'screenshot2'
+-version = rootProject.ext.baseVersion
++version = '24.5.0'
+ 
+ dependencies {
+     compile project(':base:ddmlib')
+ }
+ 
+-sdk {
+-    linux {
+-        item('etc/screenshot2') { executable true }
+-    }
+-    mac {
+-        item('etc/screenshot2') { executable true }
+-    }
+-}
+-
+-// configure the manifest of the sdkJar task.
+-sdkJar.manifest.attributes("Main-Class": "com.android.screenshot.Screenshot")
+diff --git a/base/ninepatch/build.gradle b/base/ninepatch/build.gradle
+index 7699e1b..17a49b6 100644
+--- a/base/ninepatch/build.gradle
++++ b/base/ninepatch/build.gradle
+@@ -1,10 +1,10 @@
+ apply plugin: 'java'
+ apply plugin: 'jacoco'
+-apply plugin: 'sdk-java-lib'
++
+ 
+ group = 'com.android.tools'
+ archivesBaseName = 'ninepatch'
+-version = rootProject.ext.baseVersion
++version = '24.5.0'
+ 
+ dependencies {
+     testCompile 'junit:junit:4.12'
+diff --git a/base/perflib/build.gradle b/base/perflib/build.gradle
+index a923c0d..dae11eb 100644
+--- a/base/perflib/build.gradle
++++ b/base/perflib/build.gradle
+@@ -3,7 +3,7 @@ apply plugin: 'jacoco'
+ 
+ group = 'com.android.tools.perflib'
+ archivesBaseName = 'perflib'
+-version = rootProject.ext.baseVersion
++version = '24.5.0'
+ 
+ dependencies {
+     compile project(':base:ddmlib')
+@@ -17,4 +17,3 @@ dependencies {
+ project.ext.pomName = 'Android Tools perflib'
+ project.ext.pomDesc = 'Library to handle android performance data'
+ 
+-apply from: "$rootDir/buildSrc/base/javadoc.gradle"
+diff --git a/base/rpclib/build.gradle b/base/rpclib/build.gradle
+index bccfc24..69be33b 100644
+--- a/base/rpclib/build.gradle
++++ b/base/rpclib/build.gradle
+@@ -2,7 +2,7 @@ apply plugin: 'java'
+ 
+ group = 'com.android.tools.rpclib'
+ archivesBaseName = 'rpclib'
+-version = rootProject.ext.baseVersion
++version = '24.5.0'
+ 
+ dependencies {
+   compile project(':base:common')
+@@ -13,4 +13,3 @@ dependencies {
+ project.ext.pomName = 'Android Tools rpclib'
+ project.ext.pomDesc = 'Library to handle Gaze RPC'
+ 
+-apply from: "$rootDir/buildSrc/base/javadoc.gradle"
+diff --git a/base/rule-api/build.gradle b/base/rule-api/build.gradle
+index ed2f763..b7937cc 100644
+--- a/base/rule-api/build.gradle
++++ b/base/rule-api/build.gradle
+@@ -1,9 +1,9 @@
+ apply plugin: 'java'
+-apply plugin: 'sdk-java-lib'
++
+ 
+ group = 'com.android.tools'
+ archivesBaseName = 'rule-api'
+-version = rootProject.ext.baseVersion
++version = '24.5.0'
+ 
+ dependencies {
+     compile project(':base:common')
+diff --git a/base/sdk-common/build.gradle b/base/sdk-common/build.gradle
+index cc946c4..f432f69 100644
+--- a/base/sdk-common/build.gradle
++++ b/base/sdk-common/build.gradle
+@@ -1,11 +1,11 @@
+ apply plugin: 'java'
+ apply plugin: 'jacoco'
+-apply plugin: 'sdk-java-lib'
++
+ apply plugin: 'application'
+ 
+ group = 'com.android.tools'
+ archivesBaseName = 'sdk-common'
+-version = rootProject.ext.baseVersion
++version = '24.5.0'
+ mainClassName = 'com.android.ide.common.vectordrawable.VdPreview'
+ 
+ dependencies {
+@@ -23,7 +23,4 @@ dependencies {
+ project.ext.pomName = 'Android Tools sdk-common library'
+ project.ext.pomDesc = 'sdk-common library used by other Android tools libraries.'
+ 
+-apply from: "$rootDir/buildSrc/base/publish.gradle"
+-apply from: "$rootDir/buildSrc/base/bintray.gradle"
+-apply from: "$rootDir/buildSrc/base/javadoc.gradle"
+ 
+diff --git a/base/sdk-common/generate-locale-data/build.gradle b/base/sdk-common/generate-locale-data/build.gradle
+index 2531629..7535bcb 100644
+--- a/base/sdk-common/generate-locale-data/build.gradle
++++ b/base/sdk-common/generate-locale-data/build.gradle
+@@ -1,5 +1,5 @@
+ apply plugin: 'java'
+-apply plugin: 'sdk-java-lib'
++
+ 
+ dependencies {
+     compile project(':base:sdk-common')
+@@ -9,5 +9,4 @@ dependencies {
+ 
+ group = 'com.android.tools'
+ archivesBaseName = 'generate-locale-data'
+-version = rootProject.ext.baseVersion
+-sdkJar.manifest.attributes("Main-Class": "com.android.ide.common.generate.locale.LocaleTableGenerator")
++version = '24.5.0'
+diff --git a/base/sdklib/build.gradle b/base/sdklib/build.gradle
+index bc76ff4..fd3c225 100644
+--- a/base/sdklib/build.gradle
++++ b/base/sdklib/build.gradle
+@@ -1,12 +1,12 @@
+ apply plugin: 'java'
+ apply plugin: 'jacoco'
+-apply plugin: 'sdk-java-lib'
++
+ 
+ evaluationDependsOn(':base:dvlib')
+ 
+ group = 'com.android.tools'
+ archivesBaseName = 'sdklib'
+-version = rootProject.ext.baseVersion
++version = '24.5.0'
+ 
+ dependencies {
+     compile project(':base:layoutlib-api')
+@@ -62,7 +62,4 @@ copyXsd.doLast {
+ project.ext.pomName = 'Android Tools sdklib'
+ project.ext.pomDesc = 'A library to parse and download the Android SDK.'
+ 
+-apply from: "$rootDir/buildSrc/base/publish.gradle"
+-apply from: "$rootDir/buildSrc/base/bintray.gradle"
+-apply from: "$rootDir/buildSrc/base/javadoc.gradle"
+ 
+diff --git a/base/sdklib/test.gradle b/base/sdklib/test.gradle
+index 4324376..1c402d0 100755
+--- a/base/sdklib/test.gradle
++++ b/base/sdklib/test.gradle
+@@ -5,7 +5,7 @@ evaluationDependsOn(':base:dvlib')
+ 
+ group = 'com.android.tools'
+ archivesBaseName = 'sdklib-test'
+-version = rootProject.ext.baseVersion
++version = '24.5.0'
+ 
+ dependencies {
+     compile project(':base:sdklib')
+diff --git a/base/templates/build.gradle b/base/templates/build.gradle
+index 238c922..e69de29 100644
+--- a/base/templates/build.gradle
++++ b/base/templates/build.gradle
+@@ -1,10 +0,0 @@
+-apply plugin: 'sdk-files'
+-
+-sdk {
+-    common {
+-        item('eclipse/projects')   { into 'templates/projects' }
+-        item('eclipse/activities') { into 'templates/activities' }
+-        item('eclipse/gradle')     { into 'templates/gradle' }
+-        item('eclipse/other')      { into 'templates/other' }
+-    }
+-}
+\ No newline at end of file
+diff --git a/base/testutils/build.gradle b/base/testutils/build.gradle
+index b69a4fb..8b8deb3 100644
+--- a/base/testutils/build.gradle
++++ b/base/testutils/build.gradle
+@@ -3,7 +3,7 @@ apply plugin: 'jacoco'
+ 
+ group = 'com.android.tools'
+ archivesBaseName = 'testutils'
+-version = rootProject.ext.baseVersion
++version = '24.5.0'
+ 
+ dependencies {
+     compile project(':base:common')
+@@ -19,6 +19,3 @@ sourceSets {
+ project.ext.pomName = 'Android Tools Test Utilities'
+ project.ext.pomDesc = 'API used by lint testing infrastructure'
+ 
+-apply from: "$rootDir/buildSrc/base/publish.gradle"
+-apply from: "$rootDir/buildSrc/base/bintray.gradle"
+-apply from: "$rootDir/buildSrc/base/javadoc.gradle"
+diff --git a/build.gradle b/build.gradle
+index a6c30b5..bf35058 100644
+--- a/build.gradle
++++ b/build.gradle
+@@ -1,15 +1,6 @@
+-apply plugin: 'clone-artifacts'
+ 
+ // Currently, the minimum requirement to run Android SDK tools is Java 1.6
+ // So make sure that we are compiling with 1.6
+-task('checkJavaVersion') << {
+-    def jvmVersion = System.getProperty('java.version')
+-    def requiredVersion = System.getenv('JAVA_FOR_TESTS') ?: '1.6'
+-    if (!jvmVersion.startsWith(requiredVersion)) {
+-        throw new RuntimeException("Tools need to be compiled with Java $requiredVersion, you are using Java $jvmVersion.")
+-    }
+-}
+-final def checkJavaVersionTask = tasks['checkJavaVersion']
+ 
+ allprojects { subproject ->
+     tasks.withType(JavaForkOptions) {
+@@ -23,15 +14,10 @@ allprojects { subproject ->
+         final def buildTasks = ['build', 'compileJava', 'compileGroovy', 'classes', 'assemble', 'javadoc', 'groovydoc', 'check']
+         // Task.doFirst does not run if the task has no work to do. Need to be more aggressive than that.
+         // Some projects won't have all of these tasks, so need to use findByName.
+-        buildTasks.each { subproject.tasks.findByName(it)?.dependsOn(checkJavaVersionTask) }
++        buildTasks.each { subproject.tasks.findByName(it) }
+     }
+ }
+ 
+-// artifact cloning destinations
+-cloneArtifacts {
+-    repository = "$rootDir/../prebuilts/tools/common/m2/repository"
+-}
+-
+ if (System.env.USE_EXTERNAL_REPO != null) {
+   allprojects {
+     repositories {
+@@ -55,7 +41,7 @@ if (System.env.DIST_DIR != null && System.env.OUT_DIR != null) {
+     ext.androidHostDist = file(System.env.DIST_DIR)
+ } else {
+     // ext.androidHostOut is shared by all tools/{base,build,swt} gradle projects/
+-    ext.androidHostOut = file("$rootDir/../out")
++    ext.androidHostOut = file("$rootDir/out")
+     ext.androidHostDist = new File(ext.androidHostOut, "dist")
+ }
+ 
+@@ -64,14 +50,9 @@ if (System.env.DIST_DIR != null && System.env.OUT_DIR != null) {
+ buildDir = new File(ext.androidHostOut, "build/root")
+ 
+ 
+-// apply this after the buildDir has been changed.
+-apply plugin: 'sdk-tools'
+-
+ 
+ ext.localRepo = project.hasProperty('localRepo') ? localRepo : "$ext.androidHostOut/repo"
+ 
+-apply from: "$rootDir/buildSrc/base/version.gradle"
+-
+ subprojects { Project project ->
+     // Change buildDir first so that all plugins pick up the new value.
+     project.buildDir = project.file("$project.parent.buildDir/../$project.name/build")
+@@ -117,17 +98,12 @@ task setupGradleInIde << {
+     if (gradleDistLink.exists()) {
+         gradleDistLink.delete()
+     }
+-    String link = dir.path.substring(project.ext.androidHostOut.path.length() + 1)
+-    String command = "ln -s $link ${gradleDistLink.path}"
+-    command.execute()
+ }
+ 
+ // basic task for custom distribution of project should the build server.
+ task dist << {
+ }
+ 
+-apply plugin: 'offline-repo'
+-
+ task clean << {
+   delete 'build'
+ 
+@@ -137,7 +113,6 @@ task clean << {
+     }
+   }
+ }
+-apply plugin: 'presubmit-runner'
+ // Task for initializing a fresh repo.
+ task init {
+   dependsOn prepareRepo
+@@ -150,4 +125,3 @@ task init {
+ // The hierarchy viewer tests require loading SWT jar files.
+ // That fails with the error saying "can't load 32 bit library on 64 bit JVM
+ // Disable these tests from running until that is fixed
+-tasks.findByPath(':swt:hierarchyviewer2lib:test').enabled = false

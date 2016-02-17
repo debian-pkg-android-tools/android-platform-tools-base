@@ -1,0 +1,73 @@
+Source: android-platform-tools-base
+Section: java
+Priority: optional
+Maintainer: Android Tools Maintainer <android-tools-devel@lists.alioth.debian.org>
+Uploaders:
+ Markus Koschany <apo@debian.org>
+Build-Depends:
+ debhelper (>= 9),
+ default-jdk,
+ gradle-debian-helper,
+ javahelper,
+ junit4,
+ libandroid-tools-annotations-java,
+ libandroid-tools-common-java,
+ libasm4-java,
+ libbcpkix-java,
+ libbcprov-java,
+ libcommons-compress-java,
+ libhttpmime-java,
+ libintellij-annotations-java,
+ libjavawriter-java,
+ libjsr305-java,
+ libkxml2-java,
+ libtrove3-java,
+ maven-debian-helper,
+ maven-repo-helper,
+ proguard
+Standards-Version: 3.9.7
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-java/android-platform-tools-base.git
+Vcs-Git: https://anonscm.debian.org/git/pkg-java/android-platform-tools-base.git
+Homepage: https://android.googlesource.com/platform/tools/base/
+
+Package: android-platform-tools-base
+Architecture: all
+Depends:
+ ${misc:Depends}
+Description: base tools for developing applications for the Android system
+ This package includes various tools for developing and building Android
+ applications, e.g.
+ .
+  * Draw 9-patch
+    Allows you to easily create a NinePatch graphic using a WYSIWYG
+    editor. It also previews stretched versions of the image, and
+    highlights the area in which content is allowed.
+ .
+  * JOBB
+    Allows you to build encrypted and unencrypted APK expansion files
+    in Opaque Binary Blob (OBB) format.
+ .
+  * Android plugin for Gradle
+    The Android build system consists of an Android plugin for Gradle.
+    You can build your Android apps from within Android Studio and from
+    the command line on your machine or on machines where Android Studio
+    is not installed (such as continuous integration servers).
+ .
+  * Manifest Merger, ddmlib, layoutlib, chartlib, Jack & Jill (Java Android
+    Compiler Kit)
+
+Package: libandroid-tools-annotations-java
+Architecture: all
+Depends:
+ ${misc:Depends}
+Description: annotations used throughout the Android tools libraries
+ This package provides support for annotations which can be found in all
+ Android tools libraries.
+
+Package: libandroid-tools-common-java
+Architecture: all
+Depends:
+ ${misc:Depends}
+Description: common library used by other Android tools libraries
+ This package provides common tasks and classes which are used by other Android
+ tools libraries.

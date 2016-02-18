@@ -1,0 +1,133 @@
+include ':base:annotations'
+include ':base:api-generator'
+include ':base:ant-tasks'
+include ':base:archquery'
+include ':base:asset-studio'
+include ':base:common'
+include ':base:docs'
+include ':base:ddmlib'
+include ':base:perflib'
+include ':base:chartlib'
+include ':base:draw9patch'
+include ':base:dvlib'
+include ':base:jobb'
+include ':base:layoutlib-api'
+include ':base:lint'
+include ':base:lint-api'
+include ':base:lint-checks'
+include ':base:lint-tests'
+include ':base:manifest-merger'
+include ':base:ninepatch'
+include ':base:rule-api'
+include ':base:screenshot2'
+include ':base:sdk-common'
+include ':base:sdklib'
+include ':base:sdklib-test'
+include ':base:testutils'
+include ':base:gradle-import'
+include ':base:vector-drawable-tool'
+
+include ':base:profile'
+include ':base:builder-model'
+include ':base:builder-test-api'
+include ':base:transform-api'
+include ':base:builder'
+include ':base:gradle-model'
+include ':base:gradle-core'
+include ':base:gradle'
+include ':base:gradle-experimental'
+include ':base:integration-test'
+include ':base:project-test-lib'
+include ':base:project-test'
+include ':base:google-services'
+
+include ':base:templates'
+
+include ':base:jack:jack-api'
+include ':base:jack:jill-api'
+
+project(':base:api-generator'      ).projectDir = new File(rootDir, 'base/misc/api-generator')
+project(':base:ant-tasks'          ).projectDir = new File(rootDir, 'base/legacy/ant-tasks')
+project(':base:archquery'          ).projectDir = new File(rootDir, 'base/legacy/archquery')
+project(':base:dvlib'              ).projectDir = new File(rootDir, 'base/device_validator/dvlib')
+project(':base:lint'               ).projectDir = new File(rootDir, 'base/lint/cli')
+project(':base:lint-api'           ).projectDir = new File(rootDir, 'base/lint/libs/lint-api')
+project(':base:lint-checks'        ).projectDir = new File(rootDir, 'base/lint/libs/lint-checks')
+project(':base:lint-tests'         ).projectDir = new File(rootDir, 'base/lint/libs/lint-tests')
+project(':base:screenshot2'        ).projectDir = new File(rootDir, 'base/misc/screenshot2')
+project(':base:sdklib-test'        ).projectDir = new File(rootDir, 'base/sdklib')
+project(':base:sdklib-test'        ).buildFileName = 'test.gradle'
+
+project(':base:profile'            ).projectDir = new File(rootDir, 'base/build-system/profile')
+project(':base:builder-model'      ).projectDir = new File(rootDir, 'base/build-system/builder-model')
+project(':base:builder-test-api'   ).projectDir = new File(rootDir, 'base/build-system/builder-test-api')
+project(':base:transform-api'      ).projectDir = new File(rootDir, 'base/build-system/transform-api')
+project(':base:builder'            ).projectDir = new File(rootDir, 'base/build-system/builder')
+project(':base:docs'               ).projectDir = new File(rootDir, 'base/build-system/docs')
+project(':base:manifest-merger'    ).projectDir = new File(rootDir, 'base/build-system/manifest-merger')
+project(':base:gradle-core'        ).projectDir = new File(rootDir, 'base/build-system/gradle-core')
+project(':base:gradle'             ).projectDir = new File(rootDir, 'base/build-system/gradle')
+project(':base:gradle-experimental').projectDir = new File(rootDir, 'base/build-system/gradle-experimental')
+project(':base:integration-test'   ).projectDir = new File(rootDir, 'base/build-system/integration-test')
+project(':base:project-test-lib'   ).projectDir = new File(rootDir, 'base/build-system/project-test-lib')
+project(':base:project-test'       ).projectDir = new File(rootDir, 'base/build-system/project-test')
+project(':base:google-services'    ).projectDir = new File(rootDir, 'base/build-system/google-services')
+
+include ':swt:chimpchat'
+include ':swt:ddms'
+include ':swt:ddmuilib'
+include ':swt:hierarchyviewer2'
+include ':swt:hierarchyviewer2lib'
+include ':swt:monkeyrunner'
+include ':swt:sdkmanager'
+include ':swt:sdkuilib'
+include ':swt:sdkstats'
+include ':swt:swtmenubar'
+include ':swt:traceview'
+include ':swt:uiautomatorviewer'
+
+project(':swt:ddms'               ).projectDir = new File(rootDir, 'swt/ddms/app')
+project(':swt:ddmuilib'           ).projectDir = new File(rootDir, 'swt/ddms/ddmuilib')
+project(':swt:hierarchyviewer2'   ).projectDir = new File(rootDir, 'swt/hierarchyviewer2/app')
+project(':swt:hierarchyviewer2lib').projectDir = new File(rootDir, 'swt/hierarchyviewer2/hierarchyviewer2lib')
+project(':swt:sdkmanager'         ).projectDir = new File(rootDir, 'swt/sdkmanager/app')
+project(':swt:sdkuilib'           ).projectDir = new File(rootDir, 'swt/sdkmanager/sdkuilib')
+
+
+include ':sdk'
+project(':sdk').projectDir = new File(rootDir.getParentFile(), "sdk")
+
+include ':sdk:annotations'
+project(':sdk:annotations').projectDir = new File(rootDir.getParentFile(), "sdk/annotations")
+
+include ':sdk:find-java'
+project(':sdk:find-java').projectDir = new File(rootDir.getParentFile(), "sdk/find_java")
+
+include ':sdk:avdlauncher'
+project(':sdk:avdlauncher').projectDir = new File(rootDir.getParentFile(), "sdk/avdlauncher")
+
+include ':sdk:eclipse:monitor'
+project(':sdk:eclipse:monitor').projectDir = new File(rootDir.getParentFile(), "sdk/eclipse/monitor")
+
+include ':sdk:sdklauncher'
+project(':sdk:sdklauncher').projectDir = new File(rootDir.getParentFile(), "sdk/sdklauncher")
+
+include ':emulator'
+project(':emulator').projectDir = new File(rootDir.getParentFile(), "external/qemu")
+
+include ':mksdcard'
+project(':mksdcard').projectDir = new File(rootDir.getParentFile(), "sdk/emulator/mksdcard")
+
+include ':external:fat32lib'
+
+include ':external:emma'
+project(':external:emma').projectDir = new File(rootDir.getParentFile(), "external/emma")
+
+include ':dataBinding'
+project(':dataBinding').projectDir = new File(rootDir, "data-binding")
+include ':dataBinding:baseLibrary'
+project(':dataBinding:baseLibrary').projectDir = new File(rootDir, "data-binding/baseLibrary")
+include ':dataBinding:compiler'
+project(':dataBinding:compiler').projectDir = new File(rootDir, "data-binding/compiler")
+include ':dataBinding:compilerCommon'
+project(':dataBinding:compilerCommon').projectDir = new File(rootDir, "data-binding/compilerCommon")

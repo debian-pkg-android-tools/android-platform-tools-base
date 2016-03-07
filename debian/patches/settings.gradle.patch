@@ -3,14 +3,14 @@ Date: Fri, 22 Jan 2016 00:51:17 +0100
 Subject: settings.gradle
 
 ---
- settings.gradle | 38 +++++++++++++++++++-------------------
- 1 file changed, 19 insertions(+), 19 deletions(-)
+ settings.gradle | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
 diff --git a/settings.gradle b/settings.gradle
-index eb684bb..9ccf1b2 100644
+index eb684bb..8a89e25 100644
 --- a/settings.gradle
 +++ b/settings.gradle
-@@ -4,18 +4,18 @@ include ':base:ant-tasks'
+@@ -4,7 +4,7 @@ include ':base:ant-tasks'
  include ':base:archquery'
  include ':base:asset-studio'
  include ':base:common'
@@ -19,22 +19,6 @@ index eb684bb..9ccf1b2 100644
  include ':base:ddmlib'
  include ':base:perflib'
  include ':base:chartlib'
- include ':base:draw9patch'
- include ':base:dvlib'
--include ':base:jobb'
-+//include ':base:jobb'
- include ':base:layoutlib-api'
--include ':base:lint'
--include ':base:lint-api'
--include ':base:lint-checks'
--include ':base:lint-tests'
-+//include ':base:lint'
-+//include ':base:lint-api'
-+//include ':base:lint-checks'
-+//include ':base:lint-tests'
- include ':base:manifest-merger'
- include ':base:ninepatch'
- include ':base:rule-api'
 @@ -35,10 +35,10 @@ include ':base:builder'
  include ':base:gradle-model'
  include ':base:gradle-core'
@@ -50,21 +34,6 @@ index eb684bb..9ccf1b2 100644
  include ':base:google-services'
  
  include ':base:templates'
-@@ -50,10 +50,10 @@ project(':base:api-generator'      ).projectDir = new File(rootDir, 'base/misc/a
- project(':base:ant-tasks'          ).projectDir = new File(rootDir, 'base/legacy/ant-tasks')
- project(':base:archquery'          ).projectDir = new File(rootDir, 'base/legacy/archquery')
- project(':base:dvlib'              ).projectDir = new File(rootDir, 'base/device_validator/dvlib')
--project(':base:lint'               ).projectDir = new File(rootDir, 'base/lint/cli')
--project(':base:lint-api'           ).projectDir = new File(rootDir, 'base/lint/libs/lint-api')
--project(':base:lint-checks'        ).projectDir = new File(rootDir, 'base/lint/libs/lint-checks')
--project(':base:lint-tests'         ).projectDir = new File(rootDir, 'base/lint/libs/lint-tests')
-+//project(':base:lint'               ).projectDir = new File(rootDir, 'base/lint/cli')
-+//project(':base:lint-api'           ).projectDir = new File(rootDir, 'base/lint/libs/lint-api')
-+//project(':base:lint-checks'        ).projectDir = new File(rootDir, 'base/lint/libs/lint-checks')
-+//project(':base:lint-tests'         ).projectDir = new File(rootDir, 'base/lint/libs/lint-tests')
- project(':base:screenshot2'        ).projectDir = new File(rootDir, 'base/misc/screenshot2')
- project(':base:sdklib-test'        ).projectDir = new File(rootDir, 'base/sdklib')
- project(':base:sdklib-test'        ).buildFileName = 'test.gradle'
 @@ -63,14 +63,14 @@ project(':base:builder-model'      ).projectDir = new File(rootDir, 'base/build-
  project(':base:builder-test-api'   ).projectDir = new File(rootDir, 'base/build-system/builder-test-api')
  project(':base:transform-api'      ).projectDir = new File(rootDir, 'base/build-system/transform-api')

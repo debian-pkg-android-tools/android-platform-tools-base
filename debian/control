@@ -39,23 +39,20 @@ Description: base tools for developing applications for the Android system
  This package includes various tools for developing and building Android
  applications, e.g.
  .
-  * Draw 9-patch
-    Allows you to easily create a NinePatch graphic using a WYSIWYG
-    editor. It also previews stretched versions of the image, and
+  * Draw 9-patch: Allows you to easily create a NinePatch graphic using a
+    WYSIWYG editor. It also previews stretched versions of the image, and
     highlights the area in which content is allowed.
  .
-  * JOBB
-    Allows you to build encrypted and unencrypted APK expansion files
-    in Opaque Binary Blob (OBB) format.
+  * JOBB: Allows you to build encrypted and unencrypted APK expansion files in
+    Opaque Binary Blob (OBB) format.
  .
-  * Android plugin for Gradle
-    The Android build system consists of an Android plugin for Gradle.
-    You can build your Android apps from within Android Studio and from
-    the command line on your machine or on machines where Android Studio
-    is not installed (such as continuous integration servers).
+  * Android plugin for Gradle: The Android build system consists of an Android
+    plugin for Gradle.  You can build your Android apps from within Android
+    Studio and from the command line on your machine or on machines where Android
+    Studio is not installed (such as continuous integration servers).
  .
   * Manifest Merger, ddmlib, layoutlib, chartlib, Jack & Jill (Java Android
-    Compiler Kit)
+    Compiler Kit) and Lint.
 
 Package: libandroid-tools-annotations-java
 Architecture: all

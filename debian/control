@@ -21,6 +21,7 @@ Build-Depends:
  libjavawriter-java,
  libjsr305-java,
  libkxml2-java,
+ liblombok-ast-java,
  libtrove3-java,
  maven-debian-helper,
  maven-repo-helper,

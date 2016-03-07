@@ -25,3 +25,7 @@ out/build/base/sdk-common/build/libs/sdk-common-24.5.0.jar usr/share/android-pla
 out/build/base/rule-api/build/libs/rule-api-24.5.0.jar usr/share/android-platform-tools-base
 out/build/base/api-generator/build/libs/api-generator.jar usr/share/android-platform-tools-base
 out/build/base/ddmlib/build/libs/ddmlib-24.5.0.jar usr/share/android-platform-tools-base
+out/build/base/lint/build/libs/lint-24.5.0.jar usr/share/android-platform-tools-base
+out/build/base/lint-api/build/libs/lint-api-24.5.0.jar usr/share/android-platform-tools-base
+out/build/base/lint-tests/build/libs/lint-tests-24.5.0.jar usr/share/android-platform-tools-base
+out/build/base/lint-checks/build/libs/lint-checks-24.5.0.jar usr/share/android-platform-tools-base

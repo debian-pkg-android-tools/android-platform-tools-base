@@ -43,8 +43,8 @@ Description: base tools for developing applications for the Android system
     WYSIWYG editor. It also previews stretched versions of the image, and
     highlights the area in which content is allowed.
  .
-  * JOBB: Allows you to build encrypted and unencrypted APK expansion files in
-    Opaque Binary Blob (OBB) format.
+  * Lint: Android Lint is a tool that scans Android projects for potential
+    bugs.
  .
   * Android plugin for Gradle: The Android build system consists of an Android
     plugin for Gradle.  You can build your Android apps from within Android
@@ -52,7 +52,7 @@ Description: base tools for developing applications for the Android system
     Studio is not installed (such as continuous integration servers).
  .
   * Manifest Merger, ddmlib, layoutlib, chartlib, Jack & Jill (Java Android
-    Compiler Kit) and Lint.
+    Compiler Kit).
 
 Package: libandroid-tools-annotations-java
 Architecture: all

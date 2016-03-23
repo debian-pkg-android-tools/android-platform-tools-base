@@ -48,8 +48,8 @@ Description: base tools for developing applications for the Android system
  .
   * Android plugin for Gradle: The Android build system consists of an Android
     plugin for Gradle.  You can build your Android apps from within Android
-    Studio and from the command line on your machine or on machines where Android
-    Studio is not installed (such as continuous integration servers).
+    Studio and from the command line on your machine or on machines where
+    Android Studio is not installed (such as continuous integration servers).
  .
   * Manifest Merger, ddmlib, layoutlib, chartlib, Jack & Jill (Java Android
     Compiler Kit).

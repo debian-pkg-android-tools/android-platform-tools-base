@@ -1,11 +1,11 @@
 android-platform-tools-base (1.5.0-2) unstable; urgency=medium
 
-  * Drop disable-lint.patch because the new build-dependency
+  * Drop disable-lint.patch and build Lint because the new build-dependency
     liblombok-ast-java is available now.
   * Add liblombok-ast-java to Build-Depends.
   * Update package description and mention Android's Lint tool.
 
- -- Markus Koschany <apo@debian.org>  Wed, 23 Mar 2016 00:14:05 +0100
+ -- Markus Koschany <apo@debian.org>  Wed, 23 Mar 2016 14:08:28 +0100
 
 android-platform-tools-base (1.5.0-1) unstable; urgency=medium
 

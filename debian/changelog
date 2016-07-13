@@ -1,3 +1,15 @@
+android-platform-tools-base (1.5.0-3) unstable; urgency=medium
+
+  * Declare compliance with Debian Policy 3.9.8.
+  * Build-Depend on libhttpcore-java.
+  * Add libhttpcore-java-ThreadSafe.patch.
+    Replace removed ThreadSafe annotation class with custom built annotations.
+    Thanks to Chris Lamb for the report. (Closes: #828813)
+  * Remove jlibs files and javahelper build-dependency. Make use of
+    maven_repo_helper's --java-lib option instead.
+
+ -- Markus Koschany <apo@debian.org>  Wed, 13 Jul 2016 21:34:58 +0200
+
 android-platform-tools-base (1.5.0-2) unstable; urgency=medium
 
   * Drop disable-lint.patch and build Lint because the new build-dependency

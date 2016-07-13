@@ -16,6 +16,7 @@ Build-Depends:
  libbcpkix-java,
  libbcprov-java,
  libcommons-compress-java,
+ libhttpcore-java,
  libhttpmime-java,
  libintellij-annotations-java,
  libjavawriter-java,

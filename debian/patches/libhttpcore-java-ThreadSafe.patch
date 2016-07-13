@@ -1,0 +1,36 @@
+From: Markus Koschany <apo@debian.org>
+Date: Wed, 13 Jul 2016 21:25:14 +0200
+Subject: libhttpcore-java ThreadSafe
+
+The ThreadSafe annotation class was removed from libhttpcore-java in version
+4.4.5. This patch fixes the issue.
+
+Debian-Bug: https://bugs.debian.org/828813
+Forwarded: no
+---
+ .../main/java/com/android/builder/core/DefaultManifestParser.java    | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/base/build-system/builder/src/main/java/com/android/builder/core/DefaultManifestParser.java b/base/build-system/builder/src/main/java/com/android/builder/core/DefaultManifestParser.java
+index 0d1f9f1..8c714a8 100644
+--- a/base/build-system/builder/src/main/java/com/android/builder/core/DefaultManifestParser.java
++++ b/base/build-system/builder/src/main/java/com/android/builder/core/DefaultManifestParser.java
+@@ -25,7 +25,8 @@ import com.android.xml.AndroidManifest;
+ import com.android.xml.AndroidXPathFactory;
+ import com.google.common.base.Optional;
+ 
+-import org.apache.http.annotation.ThreadSafe;
++import org.apache.http.annotation.ThreadingBehavior;
++import org.apache.http.annotation.Contract;
+ import org.xml.sax.InputSource;
+ 
+ import java.io.File;
+@@ -34,7 +35,7 @@ import java.io.IOException;
+ import javax.xml.xpath.XPath;
+ import javax.xml.xpath.XPathExpressionException;
+ 
+-@ThreadSafe
++@Contract(threading = ThreadingBehavior.SAFE)
+ class DefaultManifestParser implements ManifestParser {
+ 
+     Optional<Object> mMinSdkVersion;

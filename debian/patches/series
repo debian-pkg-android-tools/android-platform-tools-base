@@ -4,3 +4,4 @@ gradle-experimental.patch
 SdkTestCase.patch
 project-test-lib.patch
 trove3.patch
+libhttpcore-java-ThreadSafe.patch

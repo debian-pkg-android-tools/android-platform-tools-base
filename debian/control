@@ -8,6 +8,7 @@ Build-Depends:
  debhelper (>= 9),
  default-jdk,
  gradle-debian-helper,
+ groovy,
  junit4,
  libandroid-tools-annotations-java,
  libandroid-tools-common-java,

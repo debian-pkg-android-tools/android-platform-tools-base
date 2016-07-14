@@ -12,7 +12,7 @@ Forwarded: not-needed
  base/build-system/builder-test-api/build.gradle    |  8 +-----
  base/build-system/builder/build.gradle             | 19 +++-----------
  base/build-system/google-services/build.gradle     |  7 +----
- base/build-system/gradle-core/build.gradle         |  6 +----
+ base/build-system/gradle-core/build.gradle         |  7 ++---
  base/build-system/gradle-experimental/build.gradle |  7 +----
  base/build-system/gradle/build.gradle              |  9 +------
  base/build-system/integration-test/build.gradle    |  5 ++--
@@ -48,7 +48,7 @@ Forwarded: not-needed
  base/templates/build.gradle                        | 10 --------
  base/testutils/build.gradle                        |  5 +---
  build.gradle                                       | 30 ++--------------------
- 42 files changed, 65 insertions(+), 250 deletions(-)
+ 42 files changed, 66 insertions(+), 250 deletions(-)
 
 diff --git a/base/annotations/build.gradle b/base/annotations/build.gradle
 index dbfcea6..d448bbf 100644
@@ -251,7 +251,7 @@ index e5afe75..663364e 100644
  groovydoc {
      exclude     "**/internal/**"
 diff --git a/base/build-system/gradle-core/build.gradle b/base/build-system/gradle-core/build.gradle
-index 2505e6d..7e3a673 100644
+index 2505e6d..f9ce6ed 100644
 --- a/base/build-system/gradle-core/build.gradle
 +++ b/base/build-system/gradle-core/build.gradle
 @@ -1,6 +1,4 @@
@@ -261,7 +261,15 @@ index 2505e6d..7e3a673 100644
  
  configurations {
      provided
-@@ -36,13 +34,11 @@ tasks.compileJava.dependsOn ":setupGradleInIde"
+@@ -20,6 +18,7 @@ dependencies {
+     compile project(':base:builder')
+     compile project(':base:lint')
+     compile "net.sf.proguard:proguard-gradle:${project.ext.proguardVersion}"
++    compile "org.codehaus.groovy:groovy-all:2.3.8"
+ 
+     // Add gradleApi to classpath for compilation, but use provided configuration so that groovy is
+     // not exposed as a runtime dependency.
+@@ -36,13 +35,11 @@ tasks.compileJava.dependsOn ":setupGradleInIde"
  
  group = 'com.android.tools.build'
  archivesBaseName = 'gradle-core'

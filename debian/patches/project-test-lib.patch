@@ -8,10 +8,10 @@ Subject: project-test-lib
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/base/build-system/gradle-core/build.gradle b/base/build-system/gradle-core/build.gradle
-index 7e3a673..e36483b 100644
+index f9ce6ed..1fb5f80 100644
 --- a/base/build-system/gradle-core/build.gradle
 +++ b/base/build-system/gradle-core/build.gradle
-@@ -26,7 +26,7 @@ dependencies {
+@@ -27,7 +27,7 @@ dependencies {
  
      testCompile 'junit:junit:4.12'
      testCompile 'org.mockito:mockito-all:1.9.5'

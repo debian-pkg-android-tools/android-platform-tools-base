@@ -7,6 +7,9 @@ android-platform-tools-base (1.5.0-3) unstable; urgency=medium
     Thanks to Chris Lamb for the report. (Closes: #828813)
   * Remove jlibs files and javahelper build-dependency. Make use of
     maven_repo_helper's --java-lib option instead.
+  * Build-Depend on Groovy and update build.gradle.patch to fix build failure
+    Cannot infer Groovy class path because no Groovy Jar was found on class
+    path.
 
  -- Markus Koschany <apo@debian.org>  Wed, 13 Jul 2016 21:34:58 +0200
 

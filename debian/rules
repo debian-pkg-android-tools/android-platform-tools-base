@@ -1,5 +1,6 @@
 #!/usr/bin/make -f
 
+include /usr/share/dpkg/pkg-info.mk
 export JAVA_HOME=/usr/lib/jvm/default-java
 
 %:
@@ -9,3 +10,9 @@ override_dh_auto_build:
 	dh_auto_build -- -x test assemble
 	mv out/build/base/common/build/libs/common-24.5.0.jar com.android.tools.common.jar
 	mv out/build/base/annotations/build/libs/annotations-24.5.0.jar com.android.tools.annotations.jar
+
+get-orig-source: gradle_$(DEB_VERSION_UPSTREAM).tar.gz
+	mk-origtargz --repack --compression xz $<
+
+gradle_$(DEB_VERSION_UPSTREAM).tar.gz:
+	wget https://android.googlesource.com/platform/tools/base/+archive/gradle_$(DEB_VERSION_UPSTREAM).tar.gz

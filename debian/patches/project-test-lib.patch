@@ -7,24 +7,19 @@ Subject: project-test-lib
  base/build-system/gradle/build.gradle      | 2 +-
  2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/base/build-system/gradle-core/build.gradle b/base/build-system/gradle-core/build.gradle
-index f9ce6ed..1fb5f80 100644
---- a/base/build-system/gradle-core/build.gradle
-+++ b/base/build-system/gradle-core/build.gradle
-@@ -27,7 +27,7 @@ dependencies {
- 
-     testCompile 'junit:junit:4.12'
+--- a/build-system/gradle-core/build.gradle
++++ b/build-system/gradle-core/build.gradle
+@@ -54,7 +54,6 @@
+     testCompile 'com.google.truth:truth:0.28'
      testCompile 'org.mockito:mockito-all:1.9.5'
+     testCompile 'com.google.guava:guava:17.0'
 -    testCompile project(':base:project-test-lib')
-+    //testCompile project(':base:project-test-lib')
      testCompile project(':base:testutils')
  }
  
-diff --git a/base/build-system/gradle/build.gradle b/base/build-system/gradle/build.gradle
-index b36e23e..affa879 100644
---- a/base/build-system/gradle/build.gradle
-+++ b/base/build-system/gradle/build.gradle
-@@ -5,7 +5,7 @@ dependencies {
+--- a/build-system/gradle/build.gradle
++++ b/build-system/gradle/build.gradle
+@@ -5,7 +5,7 @@
      compile gradleApi()
  
      testCompile 'junit:junit:4.12'

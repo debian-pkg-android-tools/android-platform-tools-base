@@ -11,11 +11,9 @@ Forwarded: no
  .../main/java/com/android/builder/core/DefaultManifestParser.java    | 5 +++--
  1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/base/build-system/builder/src/main/java/com/android/builder/core/DefaultManifestParser.java b/base/build-system/builder/src/main/java/com/android/builder/core/DefaultManifestParser.java
-index 0d1f9f1..8c714a8 100644
---- a/base/build-system/builder/src/main/java/com/android/builder/core/DefaultManifestParser.java
-+++ b/base/build-system/builder/src/main/java/com/android/builder/core/DefaultManifestParser.java
-@@ -25,7 +25,8 @@ import com.android.xml.AndroidManifest;
+--- a/build-system/builder/src/main/java/com/android/builder/core/DefaultManifestParser.java
++++ b/build-system/builder/src/main/java/com/android/builder/core/DefaultManifestParser.java
+@@ -25,7 +25,8 @@
  import com.android.xml.AndroidXPathFactory;
  import com.google.common.base.Optional;
  
@@ -25,7 +23,7 @@ index 0d1f9f1..8c714a8 100644
  import org.xml.sax.InputSource;
  
  import java.io.File;
-@@ -34,7 +35,7 @@ import java.io.IOException;
+@@ -34,7 +35,7 @@
  import javax.xml.xpath.XPath;
  import javax.xml.xpath.XPathExpressionException;
  

@@ -12,11 +12,9 @@ Subject: trove3
  .../android/tools/perflib/heap/analysis/TopologicalSort.java |  2 +-
  7 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/base/chartlib/src/main/java/com/android/tools/chartlib/TimelineComponent.java b/base/chartlib/src/main/java/com/android/tools/chartlib/TimelineComponent.java
-index d90b1b8..8138478 100644
---- a/base/chartlib/src/main/java/com/android/tools/chartlib/TimelineComponent.java
-+++ b/base/chartlib/src/main/java/com/android/tools/chartlib/TimelineComponent.java
-@@ -36,7 +36,7 @@ import java.util.Map;
+--- a/chartlib/src/main/java/com/android/tools/chartlib/TimelineComponent.java
++++ b/chartlib/src/main/java/com/android/tools/chartlib/TimelineComponent.java
+@@ -35,7 +35,7 @@
  
  import javax.swing.Icon;
  
@@ -25,11 +23,9 @@ index d90b1b8..8138478 100644
  
  /**
   * A component to display a TimelineData object. It locks the timeline object to prevent
-diff --git a/base/perflib/src/main/java/com/android/tools/perflib/heap/ClassObj.java b/base/perflib/src/main/java/com/android/tools/perflib/heap/ClassObj.java
-index 121c27c..213deae 100644
---- a/base/perflib/src/main/java/com/android/tools/perflib/heap/ClassObj.java
-+++ b/base/perflib/src/main/java/com/android/tools/perflib/heap/ClassObj.java
-@@ -19,7 +19,7 @@ package com.android.tools.perflib.heap;
+--- a/perflib/src/main/java/com/android/tools/perflib/heap/ClassObj.java
++++ b/perflib/src/main/java/com/android/tools/perflib/heap/ClassObj.java
+@@ -19,7 +19,7 @@
  import com.android.annotations.NonNull;
  import com.android.annotations.Nullable;
  import com.android.annotations.VisibleForTesting;
@@ -38,7 +34,7 @@ index 121c27c..213deae 100644
  
  import java.util.*;
  
-@@ -267,7 +267,7 @@ public class ClassObj extends Instance implements Comparable<ClassObj> {
+@@ -270,7 +270,7 @@
  
      public int getInstanceCount() {
          int count = 0;
@@ -47,7 +43,7 @@ index 121c27c..213deae 100644
              count += ((HeapData)heapStat).mInstances.size();
          }
          return count;
-@@ -275,7 +275,7 @@ public class ClassObj extends Instance implements Comparable<ClassObj> {
+@@ -278,7 +278,7 @@
  
      public int getShallowSize() {
          int size = 0;
@@ -56,11 +52,9 @@ index 121c27c..213deae 100644
              size += ((HeapData)heapStat).mShallowSize;
          }
          return size;
-diff --git a/base/perflib/src/main/java/com/android/tools/perflib/heap/Heap.java b/base/perflib/src/main/java/com/android/tools/perflib/heap/Heap.java
-index 3d617e6..95d45dc 100644
---- a/base/perflib/src/main/java/com/android/tools/perflib/heap/Heap.java
-+++ b/base/perflib/src/main/java/com/android/tools/perflib/heap/Heap.java
-@@ -22,9 +22,9 @@ import java.util.ArrayList;
+--- a/perflib/src/main/java/com/android/tools/perflib/heap/Heap.java
++++ b/perflib/src/main/java/com/android/tools/perflib/heap/Heap.java
+@@ -22,9 +22,9 @@
  import java.util.Collection;
  
  import com.google.common.collect.*;
@@ -73,7 +67,7 @@ index 3d617e6..95d45dc 100644
  
  public class Heap {
  
-@@ -145,7 +145,7 @@ public class Heap {
+@@ -110,7 +110,7 @@
      }
  
      public final void dumpInstanceCounts() {
@@ -82,7 +76,7 @@ index 3d617e6..95d45dc 100644
              ClassObj theClass = (ClassObj) value;
              int count = theClass.getInstanceCount();
  
-@@ -156,7 +156,7 @@ public class Heap {
+@@ -121,7 +121,7 @@
      }
  
      public final void dumpSubclasses() {
@@ -91,7 +85,7 @@ index 3d617e6..95d45dc 100644
              ClassObj theClass = (ClassObj) value;
              int count = theClass.mSubclasses.size();
  
-@@ -168,7 +168,7 @@ public class Heap {
+@@ -133,7 +133,7 @@
      }
  
      public final void dumpSizes() {
@@ -100,24 +94,20 @@ index 3d617e6..95d45dc 100644
              ClassObj theClass = (ClassObj) value;
  
              int size = 0;
-diff --git a/base/perflib/src/main/java/com/android/tools/perflib/heap/HprofParser.java b/base/perflib/src/main/java/com/android/tools/perflib/heap/HprofParser.java
-index 80271ab..e4d9767 100644
---- a/base/perflib/src/main/java/com/android/tools/perflib/heap/HprofParser.java
-+++ b/base/perflib/src/main/java/com/android/tools/perflib/heap/HprofParser.java
-@@ -24,7 +24,7 @@ import com.google.common.primitives.UnsignedInts;
+--- a/perflib/src/main/java/com/android/tools/perflib/heap/HprofParser.java
++++ b/perflib/src/main/java/com/android/tools/perflib/heap/HprofParser.java
+@@ -24,7 +24,7 @@
  import java.io.EOFException;
  import java.io.IOException;
  
 -import gnu.trove.TLongObjectHashMap;
 +import gnu.trove.map.hash.TLongObjectHashMap;
  
- public class HprofParser {
+ class HprofParser {
  
-diff --git a/base/perflib/src/main/java/com/android/tools/perflib/heap/NonRecursiveVisitor.java b/base/perflib/src/main/java/com/android/tools/perflib/heap/NonRecursiveVisitor.java
-index c481321..b94f1e9 100644
---- a/base/perflib/src/main/java/com/android/tools/perflib/heap/NonRecursiveVisitor.java
-+++ b/base/perflib/src/main/java/com/android/tools/perflib/heap/NonRecursiveVisitor.java
-@@ -21,7 +21,7 @@ import com.android.annotations.NonNull;
+--- a/perflib/src/main/java/com/android/tools/perflib/heap/NonRecursiveVisitor.java
++++ b/perflib/src/main/java/com/android/tools/perflib/heap/NonRecursiveVisitor.java
+@@ -21,7 +21,7 @@
  import java.util.ArrayDeque;
  import java.util.Deque;
  
@@ -126,24 +116,20 @@ index c481321..b94f1e9 100644
  
  /**
   * Non-recursive depth-first visitor, managing its own stack.
-diff --git a/base/perflib/src/main/java/com/android/tools/perflib/heap/Snapshot.java b/base/perflib/src/main/java/com/android/tools/perflib/heap/Snapshot.java
-index 0b074bf..b216001 100644
---- a/base/perflib/src/main/java/com/android/tools/perflib/heap/Snapshot.java
-+++ b/base/perflib/src/main/java/com/android/tools/perflib/heap/Snapshot.java
-@@ -23,7 +23,7 @@ import com.android.tools.perflib.heap.analysis.ShortestDistanceVisitor;
- import com.android.tools.perflib.heap.analysis.TopologicalSort;
- import com.android.tools.perflib.heap.io.HprofBuffer;
- import com.google.common.collect.ImmutableList;
+--- a/perflib/src/main/java/com/android/tools/perflib/heap/Snapshot.java
++++ b/perflib/src/main/java/com/android/tools/perflib/heap/Snapshot.java
+@@ -32,7 +32,7 @@
+ import java.util.Collection;
+ import java.util.List;
+ 
 -import gnu.trove.THashSet;
 +import gnu.trove.set.hash.THashSet;
- 
- import java.util.*;
- 
-diff --git a/base/perflib/src/main/java/com/android/tools/perflib/heap/analysis/TopologicalSort.java b/base/perflib/src/main/java/com/android/tools/perflib/heap/analysis/TopologicalSort.java
-index 3bcc704..02b08cc 100644
---- a/base/perflib/src/main/java/com/android/tools/perflib/heap/analysis/TopologicalSort.java
-+++ b/base/perflib/src/main/java/com/android/tools/perflib/heap/analysis/TopologicalSort.java
-@@ -26,7 +26,7 @@ import com.google.common.collect.Lists;
+ import gnu.trove.TIntObjectHashMap;
+ import gnu.trove.TLongObjectHashMap;
+ import gnu.trove.TObjectProcedure;
+--- a/perflib/src/main/java/com/android/tools/perflib/heap/analysis/TopologicalSort.java
++++ b/perflib/src/main/java/com/android/tools/perflib/heap/analysis/TopologicalSort.java
+@@ -26,7 +26,7 @@
  
  import java.util.List;
  
@@ -151,4 +137,4 @@ index 3bcc704..02b08cc 100644
 +import gnu.trove.set.hash.TLongHashSet;
  
  public class TopologicalSort {
- 
+     @NonNull

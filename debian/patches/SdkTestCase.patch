@@ -6,11 +6,9 @@ Subject: SdkTestCase
  .../testutils/src/main/java/com/android/testutils/SdkTestCase.java | 7 -------
  1 file changed, 7 deletions(-)
 
-diff --git a/base/testutils/src/main/java/com/android/testutils/SdkTestCase.java b/base/testutils/src/main/java/com/android/testutils/SdkTestCase.java
-index 75877a5..2a3eded 100644
---- a/base/testutils/src/main/java/com/android/testutils/SdkTestCase.java
-+++ b/base/testutils/src/main/java/com/android/testutils/SdkTestCase.java
-@@ -353,13 +353,6 @@ public abstract class SdkTestCase extends TestCase {
+--- a/testutils/src/main/java/com/android/testutils/SdkTestCase.java
++++ b/testutils/src/main/java/com/android/testutils/SdkTestCase.java
+@@ -354,13 +354,6 @@
              tempFile.delete();
          }
  

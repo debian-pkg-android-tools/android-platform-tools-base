@@ -1,62 +1,14 @@
-From: Markus Koschany <apo@debian.org>
-Date: Sat, 6 Feb 2016 21:14:41 +0100
-Subject: gradle experimental
-
----
- base/build-system/gradle-experimental/build.gradle | 24 +++++++++++-----------
- build.gradle                                       |  2 +-
- 2 files changed, 13 insertions(+), 13 deletions(-)
-
-diff --git a/base/build-system/gradle-experimental/build.gradle b/base/build-system/gradle-experimental/build.gradle
-index ce579e0..c224332 100644
---- a/base/build-system/gradle-experimental/build.gradle
-+++ b/base/build-system/gradle-experimental/build.gradle
-@@ -1,23 +1,23 @@
- apply plugin: 'groovy'
- 
- // Extract gradle libraries to ensure gradle-core is compatible with older version.
--String gradleVersion = "2.5"
--File gradleBinary = file("$rootProject.projectDir/external/gradle/gradle-$gradleVersion-all.zip")
--File gradleLib = file("$rootProject.ext.androidHostOut/alternate-gradle/gradle-$gradleVersion/lib")
-+//String gradleVersion = "2.5"
-+//File gradleBinary = file("$rootProject.projectDir/external/gradle/gradle-$gradleVersion-all.zip")
-+//File gradleLib = file("$rootProject.ext.androidHostOut/alternate-gradle/gradle-$gradleVersion/lib")
- 
--task extractGradleLibs(type: Copy) {
--    from zipTree(gradleBinary)
--    into gradleLib.parentFile.parentFile
--}
-+//task extractGradleLibs(type: Copy) {
-+//    from zipTree(gradleBinary)
-+//    into gradleLib.parentFile.parentFile
-+//}
- 
--compileJava.dependsOn extractGradleLibs
-+//compileJava.dependsOn extractGradleLibs
- 
--task setupGradleInIde {
--    dependsOn extractGradleLibs
--}
-+//task setupGradleInIde {
-+//    dependsOn extractGradleLibs
-+//}
+Author: Markus Koschany <apo@debian.org>
+        Kai-Chung Yan
+Last-Update: 2016-07-19
+Description: gradle experimental
+--- a/build-system/gradle-experimental/build.gradle
++++ b/build-system/gradle-experimental/build.gradle
+@@ -15,7 +15,6 @@
+ }
  
  dependencies {
 -    compile fileTree(dir:gradleLib)
-+    //compile fileTree(dir:gradleLib)
      compile project(':base:gradle-core')
  
      testCompile 'junit:junit:4.12'
-diff --git a/build.gradle b/build.gradle
-index bf35058..6674c9a 100644
---- a/build.gradle
-+++ b/build.gradle
-@@ -118,7 +118,7 @@ task init {
-   dependsOn prepareRepo
-   dependsOn setupGradleInIde
-   dependsOn copyGradleProperty
--  dependsOn tasks.findByPath(':base:gradle-experimental:setupGradleInIde')
-+//dependsOn tasks.findByPath(':base:gradle-experimental:setupGradleInIde')
-   dependsOn tasks.findByPath(':base:builder:generateVersionConstantsJava')
- }
- 

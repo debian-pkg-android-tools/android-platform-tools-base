@@ -7,7 +7,7 @@ export JAVA_HOME=/usr/lib/jvm/default-java
 	dh $@ --parallel --with maven_repo_helper --buildsystem=gradle
 
 override_dh_auto_build:
-	dh_auto_build -- -x test --project-prop release=true --settings-file debian/settings.gradle assemble
+	dh_auto_build -- -x test --settings-file debian/settings.gradle assemble
 
 get-orig-source: gradle_$(DEB_VERSION_UPSTREAM).tar.gz
 	mk-origtargz --repack --compression xz $<

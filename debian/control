@@ -54,8 +54,7 @@ Description: base tools for developing applications for the Android system
     Studio and from the command line on your machine or on machines where
     Android Studio is not installed (such as continuous integration servers).
  .
-  * Manifest Merger, ddmlib, layoutlib, chartlib, Jack & Jill (Java Android
-    Compiler Kit).
+  * Various Java libraries used by Android SDK.
 
 Package: libandroid-tools-annotations-java
 Architecture: all
@@ -72,3 +71,39 @@ Depends:
 Description: common library used by other Android tools libraries
  This package provides common tasks and classes which are used by other Android
  tools libraries.
+
+Package: libgradle-android-plugin-java
+Architecture: all
+Depends: android-platform-tools-base,
+         ${misc:Depends}
+Breaks: android-platform-tools-base (<< 2.0.0-1)
+Replaces: android-platform-tools-base (<< 2.0.0-1)
+Suggest: gradle
+Description: Android Plugin for Gradle
+ The Android build system uses the Android Plugin for Gradle to support building
+ Android applications with the Gradle build toolkit. The plugin runs independent
+ of Android Studio so the plugin and the Gradle build system can be updated
+ independently of Android Studio. You can build your Android applications from
+ within Android Studio or from the command line on your machine or on machines
+ where Android Studio is not installed (such as continuous integration servers).
+ .
+ This package does not include gradle-experimental.jar because its dependencies
+ are hard to resolve in Debian.
+ .
+ To build an Android application using the plugin in Debian, add a Maven
+ repository with a URL "file:///usr/share/maven-repo", and change the plugin
+ classpath to "com.android.tools.build:gradle:debian".
+
+Package: libgradle-android-plugin-java-doc
+Architecture: all
+Section: doc
+Depends: ${misc:Depends}
+Description: Android Plugin for Gradle - Documentations
+ The Android build system uses the Android Plugin for Gradle to support building
+ Android applications with the Gradle build toolkit. The plugin runs independent
+ of Android Studio so the plugin and the Gradle build system can be updated
+ independently of Android Studio. You can build your Android applications from
+ within Android Studio or from the command line on your machine or on machines
+ where Android Studio is not installed (such as continuous integration servers).
+ .
+ This package provides some templates for using the Gradle plugin.

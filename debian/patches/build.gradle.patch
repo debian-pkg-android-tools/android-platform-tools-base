@@ -83,14 +83,13 @@ Description: Patch upstream's build system for Debian.
 -
 --- a/build-system/builder/build.gradle
 +++ b/build-system/builder/build.gradle
-@@ -1,6 +1,4 @@
+@@ -1,5 +1,4 @@
  apply plugin: 'java'
 -apply plugin: 'clone-artifacts'
--apply plugin: 'jacoco'
+ apply plugin: 'jacoco'
  
  evaluationDependsOn(':base:builder-model')
- evaluationDependsOn(':base:builder-test-api')
-@@ -28,7 +26,7 @@
+@@ -28,7 +27,7 @@
      testCompile 'org.mockito:mockito-all:1.9.5'
      testCompile 'com.google.truth:truth:0.28'
      testCompile project(':base:testutils')
@@ -99,7 +98,7 @@ Description: Patch upstream's build system for Debian.
  }
  
  test {
-@@ -42,9 +40,6 @@
+@@ -42,9 +41,6 @@
  project.ext.pomName = 'Android Builder library'
  project.ext.pomDesc = 'Library to build Android applications.'
  
@@ -109,31 +108,49 @@ Description: Patch upstream's build system for Debian.
  
  jar.manifest.attributes("Builder-Version": version)
  
-@@ -98,11 +93,7 @@
+@@ -54,6 +50,7 @@
+     main {
+         java {
+             srcDir generated
++            srcDir '../profile/src/main/java'
+         }
+     }
+ }
+@@ -86,23 +83,6 @@
+     sourcesProvided
+ }
+ 
+-dependencies {
+-    provided(project(':base:profile')) {
+-        transitive = false
+-    }
+-    sourcesProvided(project(path:':base:profile', configuration:'sourcesOnly')) {
+-        transitive = false
+-    }
+-}
+-
  sourceSets.main.compileClasspath += [configurations.provided]
  sourceSets.test.runtimeClasspath += [configurations.provided]
- tasks.compileJava.dependsOn(configurations.provided)
+-tasks.compileJava.dependsOn(configurations.provided)
 -tasks.sourcesJar.dependsOn(configurations.sourcesProvided)
- 
- tasks.jar {
-     from({zipTree(configurations.provided.singleFile)})
+-
+-tasks.jar {
+-    from({zipTree(configurations.provided.singleFile)})
 -}
 -tasks.sourcesJar {
 -    from({zipTree(configurations.sourcesProvided.singleFile)})
 -}
-+}
++tasks.compileJava.dependsOn(configurations.provided)
 \ No newline at end of file
 --- a/build-system/google-services/build.gradle
 +++ b/build-system/google-services/build.gradle
-@@ -1,7 +1,4 @@
+@@ -1,5 +1,4 @@
  apply plugin: 'groovy'
 -apply plugin: 'clone-artifacts'
--apply plugin: 'idea'
--apply plugin: 'jacoco'
+ apply plugin: 'idea'
+ apply plugin: 'jacoco'
  
- dependencies {
-     compile gradleApi()
-@@ -21,8 +18,6 @@
+@@ -21,8 +20,6 @@
  project.ext.pomName = 'Gradle Plug-in for Google Services'
  project.ext.pomDesc = 'Gradle plug-in for Google Services'
  

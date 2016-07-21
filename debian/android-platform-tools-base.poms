@@ -1,2 +1,11 @@
-draw9patch/build/draw9patch.pom --java-lib --artifact=draw9patch/build/libs/*.jar
-misc/screenshot2/build/screenshot2.pom --java-lib --usj-name=com.android.tools.screenshot2 --artifact=misc/screenshot2/build/libs/*.jar
+asset-studio/build/asset-studio.pom    --java-lib --artifact=asset-studio/build/libs/*.jar           --usj-name=com.android.tools.asset-studio
+ddmlib/build/ddmlib.pom                --java-lib --artifact=ddmlib/build/libs/*.jar                 --usj-name=com.android.tools.ddms.ddmlib
+device_validator/dvlib/build/dvlib.pom --java-lib --artifact=device_validator/dvlib/build/libs/*.jar --usj-name=com.android.tools.dvlib
+draw9patch/build/draw9patch.pom        --java-lib --artifact=draw9patch/build/libs/*.jar             --usj-name=com.android.tools.draw9patch
+layoutlib-api/build/layoutlib-api.pom  --java-lib --artifact=layoutlib-api/build/libs/*.jar          --usj-name=com.android.tools.layoutlib.layoutlib-api
+legacy/archquery/build/archquery.pom   --java-lib --artifact=legacy/archquery/build/libs/*.jar       --usj-name=com.android.tools.archquery
+misc/screenshot2/build/screenshot2.pom --java-lib --artifact=misc/screenshot2/build/libs/*.jar       --usj-name=com.android.tools.screenshot2
+repository/build/repository.pom        --java-lib --artifact=repository/build/libs/*.jar             --usj-name=com.android.tools.repository
+sdk-common/build/sdk-common.pom        --java-lib --artifact=sdk-common/build/libs/*.jar             --usj-name=com.android.tools.sdk-common
+sdklib/build/sdklib.pom                --java-lib --artifact=sdklib/build/libs/*.jar                 --usj-name=com.android.tools.sdklib
+testutils/build/testutils.pom          --java-lib --artifact=testutils/build/libs/*.jar              --usj-name=com.android.tools.testutils

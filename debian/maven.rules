@@ -10,3 +10,4 @@ org.gradle s/messaging/gradle-messaging/ * s/.*/debian/ * *
 org.gradle s/core/gradle-core/ * s/.*/debian/ * *
 org.gradle s/wrapper/gradle-wrapper/ * s/.*/debian/ * *
 org.gradle s/baseServices/gradle-base-services/ * s/.*/debian/ * *
+org.antlr antlr * s/.*/3.x/ * *

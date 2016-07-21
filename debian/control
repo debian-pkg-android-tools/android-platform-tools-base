@@ -5,11 +5,13 @@ Maintainer: Android Tools Maintainer <android-tools-devel@lists.alioth.debian.or
 Uploaders:
  Markus Koschany <apo@debian.org>
 Build-Depends:
+ antlr3,
  debhelper (>= 9),
  default-jdk,
  gradle-debian-helper,
  groovy,
  junit4,
+ libandroid-databinding-java,
  libandroid-tools-annotations-java,
  libandroid-tools-common-java,
  libasm4-java,

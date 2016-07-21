@@ -1,1 +1,1 @@
-debian/poms/android-tools-annotations-pom.xml --java-lib --no-parent --usj-name=com.android.tools.annotations --artifact=com.android.tools.annotations.jar
+debian/poms/android-tools-annotations-pom.xml --java-lib --usj-name=com.android.tools.annotations --artifact=annotations/build/libs/*.jar

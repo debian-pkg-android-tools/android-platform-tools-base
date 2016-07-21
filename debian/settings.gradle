@@ -1,0 +1,62 @@
+rootProject.projectDir = file("${rootDir}/..")
+
+include ':base'
+project(':base').projectDir = rootDir
+
+//include ':base:gradle-experimental'
+//include ':base:jobb'
+include ':base:annotations'
+include ':base:ant-tasks'
+include ':base:archquery'
+include ':base:asset-studio'
+include ':base:builder-model'
+include ':base:builder-test-api'
+include ':base:builder'
+include ':base:common'
+include ':base:ddmlib'
+include ':base:draw9patch'
+include ':base:dvlib'
+include ':base:google-services'
+include ':base:gradle-api'
+include ':base:gradle-core'
+include ':base:gradle'
+//include ':base:instant-run:instant-run-annotations'
+//include ':base:instant-run:instant-run-client'
+//include ':base:instant-run:instant-run-common'
+//include ':base:instant-run:instant-run-runtime'
+//include ':base:instant-run:instant-run-server'
+include ':base:jack:jack-api'
+include ':base:jack:jill-api'
+include ':base:layoutlib-api'
+include ':base:lint-api'
+include ':base:lint-checks'
+include ':base:lint'
+include ':base:manifest-merger'
+include ':base:ninepatch'
+include ':base:profile'
+include ':base:rule-api'
+include ':base:repository'
+include ':base:screenshot2'
+include ':base:sdk-common'
+include ':base:sdklib'
+include ':base:testutils'
+include ':base:transform-api'
+
+project(':base:ant-tasks'       ).projectDir = new File(rootDir, 'legacy/ant-tasks')
+project(':base:archquery'       ).projectDir = new File(rootDir, 'legacy/archquery')
+project(':base:builder-model'   ).projectDir = new File(rootDir, 'build-system/builder-model')
+project(':base:builder-test-api').projectDir = new File(rootDir, 'build-system/builder-test-api')
+project(':base:builder'         ).projectDir = new File(rootDir, 'build-system/builder')
+project(':base:dvlib'           ).projectDir = new File(rootDir, 'device_validator/dvlib')
+project(':base:google-services' ).projectDir = new File(rootDir, 'build-system/google-services')
+project(':base:gradle-api'      ).projectDir = new File(rootDir, 'build-system/gradle-api')
+project(':base:gradle-core'     ).projectDir = new File(rootDir, 'build-system/gradle-core')
+project(':base:gradle'          ).projectDir = new File(rootDir, 'build-system/gradle')
+project(':base:layoutlib-api'   ).projectDir = new File(rootDir, 'layoutlib-api')
+project(':base:lint-api'        ).projectDir = new File(rootDir, 'lint/libs/lint-api')
+project(':base:lint-checks'     ).projectDir = new File(rootDir, 'lint/libs/lint-checks')
+project(':base:lint'            ).projectDir = new File(rootDir, 'lint/cli')
+project(':base:manifest-merger' ).projectDir = new File(rootDir, 'build-system/manifest-merger')
+project(':base:profile'         ).projectDir = new File(rootDir, 'build-system/profile')
+project(':base:screenshot2'     ).projectDir = new File(rootDir, 'misc/screenshot2')
+project(':base:transform-api'   ).projectDir = new File(rootDir, 'build-system/transform-api')

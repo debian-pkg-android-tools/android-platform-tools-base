@@ -1,0 +1,5 @@
+project.ext.apiVersion = 3
+project.ext.baseVersion = '25.0.0'
+project.ext.buildVersion = '2.0.0'
+project.ext.experimentalVersion = '0.6.0'
+project.ext.nativeApiVersion = 0

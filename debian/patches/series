@@ -4,3 +4,5 @@ SdkTestCase.patch
 project-test-lib.patch
 trove3.patch
 libhttpcore-java-ThreadSafe.patch
+exclude_instant-run.patch
+disable_jacoco.patch

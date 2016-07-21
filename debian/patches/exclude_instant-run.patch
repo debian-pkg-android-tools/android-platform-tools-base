@@ -1,0 +1,27 @@
+Author: Kai-Chung Yan <seamlikok@gmail.com>
+Last-Update: 2016-07-20
+Description: Exclude instant-run libraries from gradle-core
+ Building instant-run-server needs Android Platform "android.jar" which is not
+ available yet, so let's excluded it for now.
+--- a/build-system/gradle-core/build.gradle
++++ b/build-system/gradle-core/build.gradle
+@@ -38,8 +38,8 @@
+     compile 'org.ow2.asm:asm-commons:5.0.3'
+     compile "net.sf.proguard:proguard-gradle:${project.ext.proguardVersion}"
+     compile "org.jacoco:org.jacoco.core:0.7.4.201502262128"
+-    testCompile project(':base:instant-run:instant-run-annotations')
+-    testCompile project(':base:instant-run:instant-run-runtime')
++    //testCompile project(':base:instant-run:instant-run-annotations')
++    //testCompile project(':base:instant-run:instant-run-runtime')
+ 
+ 
+     // Add gradleApi to classpath for compilation, but use provided configuration so that groovy is
+@@ -48,7 +48,7 @@
+     testCompile gradleApi()
+     compile localGroovy()
+ 
+-    includeInJar project(':base:instant-run:instant-run-server')
++    //includeInJar project(':base:instant-run:instant-run-server')
+ 
+     antlr 'org.antlr:antlr:3.5.2'
+ 

@@ -4,6 +4,7 @@ Priority: optional
 Maintainer: Android Tools Maintainer <android-tools-devel@lists.alioth.debian.org>
 Uploaders:
  Markus Koschany <apo@debian.org>
+ Kai-Chung Yan <seamlikok@gmail.com>
 Build-Depends:
  antlr3,
  debhelper (>= 9),

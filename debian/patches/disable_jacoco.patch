@@ -1,3 +1,6 @@
+Author: Kai-Chung Yan
+Last-Update: 2016-07-21
+Description: JaCoCo is not in Debian yet, disabling codes that use it.
 --- a/build-system/gradle-core/build.gradle
 +++ b/build-system/gradle-core/build.gradle
 @@ -15,6 +15,7 @@

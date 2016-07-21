@@ -2,6 +2,7 @@ Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: Android Platform Tools Base
 Source: https://android.googlesource.com/platform/tools/base/
 Files-Excluded:
+ *.aar
  *.jar
  *.so
  *.zip

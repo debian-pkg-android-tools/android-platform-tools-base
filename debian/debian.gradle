@@ -1,0 +1,38 @@
+apply plugin: 'maven'
+
+/* No idea why adding any tasks with wahtever name would make Gradle complain
+   that this task exists. Therefore I have to set the "overwrite". */
+task generatePom(overwrite: true) {
+  outputs.files "${buildDir}/${project.name}.pom"
+  doFirst {
+    pom {
+      project {
+        if (hasProperty('pomName')) name pomName
+        if (hasProperty('pomDesc')) description pomDesc
+        url 'http://tools.android.com'
+        inceptionYear '2007'
+        licenses {
+          license {
+            name 'The Apache Software License, Version 2.0'
+            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+          }
+        }
+        scm {
+          url 'https://android.googlesource.com/platform/tools/base'
+          connection 'git://android.googlesource.com/platform/tools/base.git'
+        }
+        developers {
+          developer {
+            name 'The Android Open Source Project'
+          }
+        }
+      }
+    }.writeTo("${buildDir}/${project.name}.pom")
+  }
+}
+
+clean.doLast {
+  delete "${buildDir}/${project.name}.pom"
+}
+
+assemble.dependsOn generatePom

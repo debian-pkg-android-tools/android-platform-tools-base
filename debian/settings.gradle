@@ -6,7 +6,6 @@ project(':base').projectDir = rootDir
 //include ':base:gradle-experimental'
 //include ':base:jobb'
 include ':base:annotations'
-include ':base:ant-tasks'
 include ':base:archquery'
 include ':base:asset-studio'
 include ':base:builder-model'
@@ -42,7 +41,6 @@ include ':base:sdklib'
 include ':base:testutils'
 include ':base:transform-api'
 
-project(':base:ant-tasks'       ).projectDir = new File(rootDir, 'legacy/ant-tasks')
 project(':base:archquery'       ).projectDir = new File(rootDir, 'legacy/archquery')
 project(':base:builder-model'   ).projectDir = new File(rootDir, 'build-system/builder-model')
 project(':base:builder-test-api').projectDir = new File(rootDir, 'build-system/builder-test-api')

@@ -1,1 +1,1 @@
-debian/poms/android-tools-common-pom.xml --java-lib --usj-name=com.android.tools.common --artifact=common/build/libs/*.jar
+common/build/common.pom --java-lib --usj-name=com.android.tools.common --artifact=common/build/libs/*.jar

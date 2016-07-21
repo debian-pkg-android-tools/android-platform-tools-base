@@ -1,0 +1,2 @@
+draw9patch/build/draw9patch.pom --java-lib --artifact=draw9patch/build/libs/*.jar
+misc/screenshot2/build/screenshot2.pom --java-lib --usj-name=com.android.tools.screenshot2 --artifact=misc/screenshot2/build/libs/*.jar

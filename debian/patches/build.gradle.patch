@@ -487,15 +487,6 @@ Description: Patch upstream's build system for Debian.
 -
 -// configure the manifest of the sdkJar task.
 -sdkJar.manifest.attributes("Main-Class": "com.android.screenshot.Screenshot")
---- a/rule-api/build.gradle
-+++ b/rule-api/build.gradle
-@@ -1,5 +1,5 @@
- apply plugin: 'java'
--apply plugin: 'sdk-java-lib'
-+
- 
- group = 'com.android.tools'
- archivesBaseName = 'rule-api'
 --- a/sdk-common/build.gradle
 +++ b/sdk-common/build.gradle
 @@ -1,6 +1,5 @@
@@ -611,4 +602,24 @@ Description: Patch upstream's build system for Debian.
 -apply from: "$rootDir/buildSrc/base/javadoc.gradle"
 -
 +project.ext.pomDesc = 'Deprecated, use gradle-api'
+\ No newline at end of file
+--- a/common/build.gradle
++++ b/common/build.gradle
+@@ -1,6 +1,5 @@
+ apply plugin: 'java'
+ apply plugin: 'jacoco'
+-apply plugin: 'sdk-java-lib'
+ 
+ dependencies {
+     compile project(':base:annotations')
+@@ -15,8 +14,4 @@
+ version = rootProject.ext.baseVersion
+ 
+ project.ext.pomName = 'Android Tools common library'
+-project.ext.pomDesc = 'common library used by other Android tools libraries.'
+-
+-apply from: "$rootDir/buildSrc/base/publish.gradle"
+-apply from: "$rootDir/buildSrc/base/bintray.gradle"
+-apply from: "$rootDir/buildSrc/base/javadoc.gradle"
++project.ext.pomDesc = 'common library used by other Android tools libraries.'
 \ No newline at end of file

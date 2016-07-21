@@ -226,29 +226,6 @@ Description: Patch upstream's build system for Debian.
  jar.manifest.attributes("Plugin-Version": version)
  jar.manifest.attributes("Inception-Date":"${Calendar.getInstance().get(Calendar.YEAR)}:" +
          "${Calendar.getInstance().get(Calendar.MONTH)}:${Calendar.getInstance().get(Calendar.DATE)}")
---- a/build-system/integration-test/build.gradle
-+++ b/build-system/integration-test/build.gradle
-@@ -1,5 +1,4 @@
- apply plugin: 'groovy'
--apply plugin: 'jacoco'
- 
- repositories {
-     maven { url = uri(rootProject.cloneArtifacts.repository) }
---- a/build-system/integration-test/test-projects/3rdPartyTests/buildSrc/build.gradle
-+++ b/build-system/integration-test/test-projects/3rdPartyTests/buildSrc/build.gradle
-@@ -1,5 +1,4 @@
- apply plugin: 'java'
--apply plugin: 'idea'
- 
- def env = new Object() {
-     String gradleVersion
-@@ -11,4 +10,4 @@
- 
- dependencies {
-     compile "com.android.tools.build:builder-test-api:$env.gradleVersion"
--}
-\ No newline at end of file
-+}
 --- a/build-system/manifest-merger/build.gradle
 +++ b/build-system/manifest-merger/build.gradle
 @@ -1,6 +1,6 @@
@@ -267,48 +244,6 @@ Description: Patch upstream's build system for Debian.
 -apply from: "$rootDir/buildSrc/base/bintray.gradle"
 -apply from: "$rootDir/buildSrc/base/javadoc.gradle"
  
---- a/build-system/project-test-lib/build.gradle
-+++ b/build-system/project-test-lib/build.gradle
-@@ -1,6 +1,4 @@
- apply plugin: 'java'
--apply plugin: 'clone-artifacts'
--apply plugin: 'idea'
- 
- def toolingApiVersion = gradle.gradleVersion
- dependencies {
---- a/build-system/project-test/build.gradle
-+++ b/build-system/project-test/build.gradle
-@@ -1,6 +1,4 @@
- apply plugin: 'java'
--apply plugin: 'clone-artifacts'
--apply plugin: 'idea'
- apply plugin: 'application'
- 
- dependencies {
---- a/chartlib/build.gradle
-+++ b/chartlib/build.gradle
-@@ -14,4 +14,3 @@
- project.ext.pomName = 'Android Tools chartlib'
- project.ext.pomDesc = 'Library with Swing chart widgets'
- 
--apply from: "$rootDir/buildSrc/base/javadoc.gradle"
---- a/common/build.gradle
-+++ b/common/build.gradle
-@@ -1,6 +1,6 @@
- apply plugin: 'java'
- apply plugin: 'jacoco'
--apply plugin: 'sdk-java-lib'
-+
- 
- dependencies {
-     compile project(':base:annotations')
-@@ -17,6 +17,3 @@
- project.ext.pomName = 'Android Tools common library'
- project.ext.pomDesc = 'common library used by other Android tools libraries.'
- 
--apply from: "$rootDir/buildSrc/base/publish.gradle"
--apply from: "$rootDir/buildSrc/base/bintray.gradle"
--apply from: "$rootDir/buildSrc/base/javadoc.gradle"
 --- a/ddmlib/build.gradle
 +++ b/ddmlib/build.gradle
 @@ -1,6 +1,6 @@
@@ -528,16 +463,6 @@ Description: Patch upstream's build system for Debian.
 -apply from: "$rootDir/buildSrc/base/bintray.gradle"
 -apply from: "$rootDir/buildSrc/base/javadoc.gradle"
  
---- a/lint/libs/lint-tests/build.gradle
-+++ b/lint/libs/lint-tests/build.gradle
-@@ -24,7 +24,4 @@
- project.ext.pomName = 'Android Tools Lint Test API'
- project.ext.pomDesc = 'API to build lint check tests'
- 
--apply from: "$rootDir/buildSrc/base/publish.gradle"
--apply from: "$rootDir/buildSrc/base/bintray.gradle"
--apply from: "$rootDir/buildSrc/base/javadoc.gradle"
- 
 --- a/misc/screenshot2/build.gradle
 +++ b/misc/screenshot2/build.gradle
 @@ -1,5 +1,5 @@
@@ -562,30 +487,6 @@ Description: Patch upstream's build system for Debian.
 -
 -// configure the manifest of the sdkJar task.
 -sdkJar.manifest.attributes("Main-Class": "com.android.screenshot.Screenshot")
---- a/ninepatch/build.gradle
-+++ b/ninepatch/build.gradle
-@@ -1,6 +1,6 @@
- apply plugin: 'java'
- apply plugin: 'jacoco'
--apply plugin: 'sdk-java-lib'
-+
- 
- group = 'com.android.tools'
- archivesBaseName = 'ninepatch'
---- a/perflib/build.gradle
-+++ b/perflib/build.gradle
-@@ -17,4 +17,3 @@
- project.ext.pomName = 'Android Tools perflib'
- project.ext.pomDesc = 'Library to handle android performance data'
- 
--apply from: "$rootDir/buildSrc/base/javadoc.gradle"
---- a/rpclib/build.gradle
-+++ b/rpclib/build.gradle
-@@ -13,4 +13,3 @@
- project.ext.pomName = 'Android Tools rpclib'
- project.ext.pomDesc = 'Library to handle Gaze RPC'
- 
--apply from: "$rootDir/buildSrc/base/javadoc.gradle"
 --- a/rule-api/build.gradle
 +++ b/rule-api/build.gradle
 @@ -1,5 +1,5 @@
@@ -612,20 +513,6 @@ Description: Patch upstream's build system for Debian.
 -apply from: "$rootDir/buildSrc/base/bintray.gradle"
 -apply from: "$rootDir/buildSrc/base/javadoc.gradle"
  
---- a/sdk-common/generate-locale-data/build.gradle
-+++ b/sdk-common/generate-locale-data/build.gradle
-@@ -1,5 +1,5 @@
- apply plugin: 'java'
--apply plugin: 'sdk-java-lib'
-+
- 
- dependencies {
-     compile project(':base:sdk-common')
-@@ -10,4 +10,3 @@
- group = 'com.android.tools'
- archivesBaseName = 'generate-locale-data'
- version = rootProject.ext.baseVersion
--sdkJar.manifest.attributes("Main-Class": "com.android.ide.common.generate.locale.LocaleTableGenerator")
 --- a/sdklib/build.gradle
 +++ b/sdklib/build.gradle
 @@ -1,6 +1,6 @@

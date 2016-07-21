@@ -3,7 +3,7 @@ Section: java
 Priority: optional
 Maintainer: Android Tools Maintainers <android-tools-devel@lists.alioth.debian.org>
 Uploaders:
- Markus Koschany <apo@debian.org>
+ Markus Koschany <apo@debian.org>,
  Kai-Chung Yan <seamlikok@gmail.com>
 Build-Depends:
  antlr3,

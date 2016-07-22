@@ -55,7 +55,7 @@ Depends:
  libkxml2-java,
  liblombok-ast-java,
  ${misc:Depends}
-Suggest: default-jre
+Suggests: default-jre
 Description: base tools for developing applications for the Android system
  This package includes various tools for developing and building Android
  applications, e.g.
@@ -106,7 +106,7 @@ Depends: android-platform-tools-base,
          ${misc:Depends}
 Breaks: android-platform-tools-base (<< 2.0.0-1)
 Replaces: android-platform-tools-base (<< 2.0.0-1)
-Suggest: gradle
+Suggests: gradle
 Description: Android Plugin for Gradle
  The Android build system uses the Android Plugin for Gradle to support building
  Android applications with the Gradle build toolkit. The plugin runs independent

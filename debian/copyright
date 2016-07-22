@@ -48,8 +48,8 @@ Files: jobb/src/main/java/com/android/jobb/Base64.java
 Copyright: 2000, The Legion Of The Bouncy Castle
 License: BSD-3-clause
 
-Files: build-system/docs/src/fromGradle
-       build-system/gradle-core/src/fromGradle
+Files: build-system/docs/src/fromGradle/*
+       build-system/gradle-core/src/fromGradle/*
 Copyright: 2010, original authors of Gradle
 License: Apache-2.0
 

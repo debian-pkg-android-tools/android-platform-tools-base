@@ -1,0 +1,32 @@
+Author: Kai-Chung Yan <seamlikok@gmail.com>
+Last-Update: 2016-07-22
+Description: Remove the dynamic Inception-Date attributes
+ Some JAR's manifest includes a dynamic "Inception-Date" attributes which are
+ set as the date when the package is built. For reproducibility, the date is
+ manually set at when the code of this version of Gradle Plugin is commited.
+ The date is read from <https://android.googlesource.com/platform/tools/base>.
+--- a/build-system/gradle-experimental/build.gradle
++++ b/build-system/gradle-experimental/build.gradle
+@@ -30,9 +30,7 @@
+ 
+ 
+ jar.manifest.attributes("Plugin-Version": version)
+-jar.manifest.attributes("Inception-Date":"${Calendar.getInstance().get(Calendar.YEAR)}:" +
+-        "${Calendar.getInstance().get(Calendar.MONTH)}:${Calendar.getInstance().get(Calendar.DATE)}")
+-
++jar.manifest.attributes("Inception-Date": rootProject.ext.inceptionDate)
+ 
+ test {
+     environment("CUSTOM_REPO", rootProject.file("../out/repo"))
+--- a/build-system/gradle/build.gradle
++++ b/build-system/gradle/build.gradle
+@@ -15,8 +15,7 @@
+ project.ext.pomDesc = 'Gradle plug-in to build Android applications.'
+ 
+ jar.manifest.attributes("Plugin-Version": version)
+-jar.manifest.attributes("Inception-Date":"${Calendar.getInstance().get(Calendar.YEAR)}:" +
+-        "${Calendar.getInstance().get(Calendar.MONTH)}:${Calendar.getInstance().get(Calendar.DATE)}")
++jar.manifest.attributes("Inception-Date": rootProject.ext.inceptionDate)
+ 
+ test {
+     environment("CUSTOM_REPO", rootProject.file("../out/repo"))

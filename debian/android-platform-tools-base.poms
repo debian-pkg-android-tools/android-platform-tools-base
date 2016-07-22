@@ -4,7 +4,7 @@ device_validator/dvlib/build/dvlib.pom      --java-lib --artifact=device_validat
 draw9patch/build/draw9patch.pom             --java-lib --artifact=draw9patch/build/libs/*.jar             --usj-name=com.android.tools.draw9patch
 layoutlib-api/build/layoutlib-api.pom       --java-lib --artifact=layoutlib-api/build/libs/*.jar          --usj-name=com.android.tools.layoutlib.layoutlib-api
 legacy/archquery/build/archquery.pom        --java-lib --artifact=legacy/archquery/build/libs/*.jar       --usj-name=com.android.tools.archquery
-lint/cli/build/lint.pom                     --java-lib --artifact=lint/cli/build/libs/*.jar               --usj-name=com.android.tools.lint
+lint/cli/build/lint.pom                     --java-lib --artifact=lint/cli/build/libs/*.jar               --usj-name=com.android.tools.lint.lint
 lint/libs/lint-api/build/lint-api.pom       --java-lib --artifact=lint/libs/lint-api/build/libs/*.jar     --usj-name=com.android.tools.lint.lint-api
 lint/libs/lint-checks/build/lint-checks.pom --java-lib --artifact=lint/libs/lint-checks/build/libs/*.jar  --usj-name=com.android.tools.lint.lint-checks
 misc/screenshot2/build/screenshot2.pom      --java-lib --artifact=misc/screenshot2/build/libs/*.jar       --usj-name=com.android.tools.screenshot2

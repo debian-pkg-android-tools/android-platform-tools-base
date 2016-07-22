@@ -1,5 +1,11 @@
 apply plugin: 'maven'
 
+def pomFilePath = "${buildDir}/${project.name}.pom"
+def classpathsFilePath = "${buildDir}/${project.name}.classpaths"
+
+/* ********************
+ * Task generatePom   *
+ **********************/
 /* No idea why adding any tasks with wahtever name would make Gradle complain
    that this task exists. Therefore I have to set the "overwrite". */
 task generatePom(overwrite: true) {
@@ -30,9 +36,34 @@ task generatePom(overwrite: true) {
     }.writeTo("${buildDir}/${project.name}.pom")
   }
 }
-
-clean.doLast {
-  delete "${buildDir}/${project.name}.pom"
-}
-
+clean.doLast { delete pomFilePath }
 assemble.dependsOn generatePom
+
+/***************************
+ * Task generateClasspaths *
+ ***************************/
+task generateClasspaths(overwrite: true) {
+  outputs.files classpathsFilePath
+  doFirst {
+    mkdir buildDir
+    def classpathsFile = file(classpathsFilePath)
+    classpathsFile.createNewFile()
+    classpathsFile.write(
+      configurations.runtime.collect {
+        if (it.path.startsWith('/usr/share/')) {
+          it.path
+        } else {
+          "/usr/share/java/${it.name}"
+        }
+      }.toSorted().join(':')
+    )
+  }
+}
+clean.doLast { delete classpathsFilePath }
+assemble.dependsOn generateClasspaths
+
+/* Not sure this file is included before or after when each project sets their
+   "archivesBaseName". For insurance, do it after the evaluation completed. */
+afterEvaluate {
+  jar.baseName = "${group}.${archivesBaseName}"
+}

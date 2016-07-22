@@ -310,7 +310,7 @@ Description: Patch upstream's build system for Debian.
  
  group = 'com.android.tools'
  archivesBaseName = 'draw9patch'
-@@ -15,16 +15,3 @@
+@@ -15,16 +15,4 @@
      test.resources.srcDir 'src/test/java'
  }
  
@@ -327,6 +327,8 @@ Description: Patch upstream's build system for Debian.
 -}
 -
 -sdkJar.manifest.attributes("Main-Class": "com.android.draw9patch.Application")
++jar.manifest.attributes("Main-Class": "com.android.draw9patch.Application")
+\ No newline at end of file
 --- a/jack/jack-api/build.gradle
 +++ b/jack/jack-api/build.gradle
 @@ -17,9 +17,6 @@
@@ -365,7 +367,7 @@ Description: Patch upstream's build system for Debian.
  
  // configure the manifest of the sdkJar task
 -sdkJar.manifest.attributes("Main-Class": "com.android.jobb.Main")
- 
+-
 -sdk {
 -    linux {
 -        item('etc/jobb') { executable true }
@@ -377,6 +379,7 @@ Description: Patch upstream's build system for Debian.
 -        item 'etc/jobb.bat'
 -    }
 -}
++jar.manifest.attributes("Main-Class": "com.android.jobb.Main")
 --- a/layoutlib-api/build.gradle
 +++ b/layoutlib-api/build.gradle
 @@ -1,6 +1,6 @@
@@ -418,7 +421,7 @@ Description: Patch upstream's build system for Debian.
  
  group = 'com.android.tools.lint'
  archivesBaseName = 'lint'
-@@ -20,24 +20,10 @@
+@@ -20,24 +20,11 @@
      maxParallelForks = Runtime.runtime.availableProcessors() / 2
  }
  
@@ -437,6 +440,7 @@ Description: Patch upstream's build system for Debian.
  
  // configure the manifest of the sdkJar task.
 -sdkJar.manifest.attributes("Main-Class": "com.android.tools.lint.Main")
++jar.manifest.attributes("Main-Class": "com.android.tools.lint.Main")
  
  project.ext.pomName = 'Android Lint Tool'
  project.ext.pomDesc = 'Lint tools. Both a Command line tool and a library to add lint features to other tools'
@@ -489,7 +493,7 @@ Description: Patch upstream's build system for Debian.
  
  group = 'com.android.tools'
  archivesBaseName = 'screenshot2'
-@@ -9,14 +9,3 @@
+@@ -9,14 +9,4 @@
      compile project(':base:ddmlib')
  }
  
@@ -504,6 +508,7 @@ Description: Patch upstream's build system for Debian.
 -
 -// configure the manifest of the sdkJar task.
 -sdkJar.manifest.attributes("Main-Class": "com.android.screenshot.Screenshot")
++jar.manifest.attributes("Main-Class": "com.android.screenshot.Screenshot")
 --- a/sdk-common/build.gradle
 +++ b/sdk-common/build.gradle
 @@ -1,6 +1,5 @@

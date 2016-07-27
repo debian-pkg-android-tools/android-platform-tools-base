@@ -1,4 +1,4 @@
-templates/activities      usr/share/doc/libgradle-android-plugin-java/templates
-templates/gradle          usr/share/doc/libgradle-android-plugin-java/templates
-templates/gradle-projects usr/share/doc/libgradle-android-plugin-java/templates
-templates/other           usr/share/doc/libgradle-android-plugin-java/templates
+templates/activities      usr/lib/android-sdk/tools/templates
+templates/gradle          usr/lib/android-sdk/tools/templates
+templates/gradle-projects usr/lib/android-sdk/tools/templates
+templates/other           usr/lib/android-sdk/tools/templates

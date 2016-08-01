@@ -9,6 +9,10 @@ export JAVA_HOME=/usr/lib/jvm/default-java
 override_dh_auto_build:
 	dh_auto_build -- -x test --settings-file debian/settings.gradle assemble
 
+override_dh_install:
+	dh_install
+	chmod -x debian/libgradle-android-plugin-java-doc/usr/lib/android-sdk/tools/templates/gradle-projects/NewAndroidAutoProject/template.xml
+
 get-orig-source: gradle_$(DEB_VERSION_UPSTREAM).tar.gz
 	mk-origtargz --repack --compression xz $<
 

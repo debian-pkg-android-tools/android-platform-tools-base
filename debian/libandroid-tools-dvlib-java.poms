@@ -1,0 +1,1 @@
+device_validator/dvlib/build/dvlib.pom --java-lib --artifact=device_validator/dvlib/build/libs/*.jar --usj-name=com.android.tools.dvlib

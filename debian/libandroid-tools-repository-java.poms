@@ -1,0 +1,1 @@
+repository/build/repository.pom --java-lib --artifact=repository/build/libs/*.jar --usj-name=com.android.tools.repository

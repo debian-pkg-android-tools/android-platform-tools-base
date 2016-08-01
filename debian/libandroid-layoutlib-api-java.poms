@@ -1,0 +1,1 @@
+layoutlib-api/build/layoutlib-api.pom --java-lib --artifact=layoutlib-api/build/libs/*.jar --usj-name=com.android.tools.layoutlib.layoutlib-api

@@ -38,20 +38,19 @@ Package: android-platform-tools-base
 Architecture: all
 Depends:
  default-jre-headless (>= 1:1.6) | java6-runtime-headless,
+ libandroid-ddms-java (>= ${binary:Version}),
+ libandroid-layoutlib-api-java (>= ${binary:Version}),
  libandroid-tools-annotations-java (>= ${binary:Version}),
  libandroid-tools-common-java (>= ${binary:Version}),
+ libandroid-tools-sdklib-java (>= ${binary:Version}),
  libasm4-java,
- libcommons-compress-java,
  libbcpkix-java,
  libbcprov-java,
  libecj-java,
  libgoogle-gson-java,
  libguava-java,
- libhttpclient-java,
  libhttpcore-java,
- libhttpmime-java,
  libintellij-annotations-java,
- libkxml2-java,
  liblombok-ast-java,
  ${misc:Depends}
 Suggests: default-jre
@@ -65,11 +64,6 @@ Description: base tools for developing applications for the Android system
  .
   * Lint: Android Lint is a tool that scans Android projects for potential
     bugs.
- .
-  * Android plugin for Gradle: The Android build system consists of an Android
-    plugin for Gradle.  You can build your Android apps from within Android
-    Studio and from the command line on your machine or on machines where
-    Android Studio is not installed (such as continuous integration servers).
  .
   * Various Java libraries used by Android SDK.
  .
@@ -98,6 +92,9 @@ Depends: android-platform-tools-base,
          antlr3,
          antlr4,
          libandroid-databinding-java,
+         libandroid-ddms-java (>= ${binary:Version}),
+         libandroid-tools-common-java (>= ${binary:Version}),
+         libandroid-tools-sdklib-java (>= ${binary:Version}),
          libjacoco-java,
          libjavawriter-java,
          libgradle-core-java,
@@ -135,3 +132,46 @@ Description: Android Plugin for Gradle - Documentations
  where Android Studio is not installed (such as continuous integration servers).
  .
  This package provides some templates for using the Gradle plugin.
+
+Package: libandroid-tools-sdklib-java
+Architecture: all
+Depends: libandroid-layoutlib-api-java,
+         libandroid-tools-dvlib-java,
+         libandroid-tools-repository-java,
+         libcommons-compress-java,
+         libgoogle-gson-java,
+         libhttpclient-java,
+         libhttpmime-java,
+         ${misc:Depends}
+Description: library to parse and download the Android SDK
+ This package provides "sdklib.jar" in the Android SDK.
+
+Package: libandroid-ddms-java
+Architecture: all
+Depends: libandroid-tools-common-java,
+         libkxml2-java,
+         ${misc:Depends}
+Description: Library providing APIs to talk to Android devices
+ This package provides "ddmlib.jar" in the Android SDK.
+
+Package: libandroid-layoutlib-api-java
+Architecture: all
+Depends: libandroid-tools-common-java,
+         ${misc:Depends}
+Description: library to use the rendering library for Android layouts
+ This package provides "layoutlib-api.jar" in the Android SDK.
+
+Package: libandroid-tools-dvlib-java
+Architecture: all
+Depends: libandroid-tools-common-java,
+         ${misc:Depends}
+Description: library to manage the Android device database XML files
+ This package provides "dvlib.jar" in the Android SDK
+
+Package: libandroid-tools-repository-java
+Architecture: all
+Depends: libandroid-tools-common-java,
+         libcommons-compress-java,
+         ${misc:Depends}
+Description: library for downloading and managing package repositories
+ This package provides "repository.jar" in the Android SDK.

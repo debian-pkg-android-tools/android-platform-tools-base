@@ -12,7 +12,12 @@ android-platform-tools-base (2.0.0-1) UNRELEASED; urgency=medium
     - Add myself to Uploaders
   * New Inception-Date.patch: Manually set Inception-Date in some JARs' manifest
     for reproducibility
-  * New packages: libgradle-android-plugin-java(-doc)
+  * New packages:
+    * libgradle-android-plugin-java(-doc)
+    * libandroid-ddms-java
+    * libandroid-layoutlib-api-java
+    * libandroid-tools-dvlib-java
+    * libandroid-tools-repository-java
   * No longer build the folowwing as they are unused:
       * chartlib.jar
       * generate-local-data.jar
@@ -25,9 +30,9 @@ android-platform-tools-base (2.0.0-1) UNRELEASED; urgency=medium
     libandroid-tools-annotations-java which introduces self-dependencies
   * Install JARs into maven-repo
   * Generate Class-Paths for the Java programs and store them in
-    /usr/share/doc/android-platform-tools-base
+    /usr/share/android-platform-tools-base
 
- -- Kai-Chung Yan <seamlikok@gmail.com>  Tue, 19 Jul 2016 18:28:19 +0800
+ -- Kai-Chung Yan <seamlikok@gmail.com>  Mon, 01 Aug 2016 15:48:04 +0800
 
 android-platform-tools-base (1.5.0-4) unstable; urgency=medium
 

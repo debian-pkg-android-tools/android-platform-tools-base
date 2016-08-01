@@ -1,0 +1,21 @@
+task generateClasspath(overwrite: true) {
+  def classpathFilePath = "${buildDir}/${project.name}.classpath"
+  outputs.files classpathFilePath
+  assemble.dependsOn generateClasspath
+  doFirst {
+    mkdir buildDir
+    def classpathFile = file(classpathFilePath)
+    classpathFile.createNewFile()
+    classpathFile.write(
+      configurations.runtime.collect {
+        if (it.path.startsWith('/usr/share/')) {
+          it.path
+        } else {
+          "/usr/share/java/${it.name}"
+        }
+      }.toSorted().join(':')
+    )
+  }
+  clean.doLast { delete classpathFilePath }
+}
+

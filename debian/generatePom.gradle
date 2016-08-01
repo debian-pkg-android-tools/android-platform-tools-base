@@ -1,0 +1,34 @@
+apply plugin: 'maven'
+
+task generatePom(overwrite: true) {
+  def pomFilePath = "${buildDir}/${project.name}.pom"
+  outputs.files pomFilePath
+  assemble.dependsOn generatePom
+  doFirst {
+    pom {
+      project {
+        if (hasProperty('pomName')) name pomName
+        if (hasProperty('pomDesc')) description pomDesc
+        url 'http://tools.android.com'
+        inceptionYear '2007'
+        licenses {
+          license {
+            name 'The Apache Software License, Version 2.0'
+            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+          }
+        }
+        scm {
+          url 'https://android.googlesource.com/platform/tools/base'
+          connection 'git://android.googlesource.com/platform/tools/base.git'
+        }
+        developers {
+          developer {
+            name 'The Android Open Source Project'
+          }
+        }
+      }
+    }.writeTo(pomFilePath)
+  }
+  clean.doLast { delete pomFilePath }
+}
+

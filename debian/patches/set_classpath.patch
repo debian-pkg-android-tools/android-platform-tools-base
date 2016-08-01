@@ -10,7 +10,7 @@ Description: Set Class-Paths
      jarpath="$frameworkdir/$jarfile"
  fi
  
-+classpaths=`cat /usr/share/android-platform-tools-base/screenshot2.classpaths`:$jarpath
++classpaths=`cat /usr/share/android-platform-tools-base/screenshot2.classpath`:$jarpath
 +mainclass=com.android.screenshot.Screenshot
 +
  # need to use "java.ext.dirs" because "-jar" causes classpath to be ignored
@@ -23,7 +23,7 @@ Description: Set Class-Paths
  
  jarpath="$frameworkdir/$jarfile"
  
-+classpaths=`cat /usr/share/android-platform-tools-base/lint.classpaths`:$jarpath
++classpaths=`cat /usr/share/android-platform-tools-base/lint.classpath`:$jarpath
 +
  exec "$javaCmd" \
      -Xmx1024m $os_opts $java_debug \

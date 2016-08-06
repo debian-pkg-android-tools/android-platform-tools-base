@@ -17,7 +17,8 @@ Build-Depends:
  libbcpkix-java,
  libbcprov-java,
  libcommons-compress-java,
- libhttpcore-java,
+ libecj-java,
+ libgoogle-gson-java,
  libhttpmime-java,
  libintellij-annotations-java,
  libjacoco-java,
@@ -40,19 +41,6 @@ Depends:
  adb,
  default-jre-headless (>= 1:1.6) | java6-runtime-headless,
  libandroid-ddms-java (>= ${binary:Version}),
- libandroid-layoutlib-api-java (>= ${binary:Version}),
- libandroid-tools-annotations-java (>= ${binary:Version}),
- libandroid-tools-common-java (>= ${binary:Version}),
- libandroid-tools-sdklib-java (>= ${binary:Version}),
- libasm4-java,
- libbcpkix-java,
- libbcprov-java,
- libecj-java,
- libgoogle-gson-java,
- libguava-java,
- libhttpcore-java,
- libintellij-annotations-java,
- liblombok-ast-java,
  ${misc:Depends}
 Suggests: default-jre
 Description: base tools for developing applications for the Android system
@@ -63,10 +51,7 @@ Description: base tools for developing applications for the Android system
     WYSIWYG editor. It also previews stretched versions of the image, and
     highlights the area in which content is allowed.
  .
-  * Lint: Android Lint is a tool that scans Android projects for potential
-    bugs.
- .
-  * Various Java libraries used by Android SDK.
+  * screenshot2: Takes a screenshot from a remote Andrid device.
  .
  default-jre or other non-headless JRE needs to be installed in order to run
  "draw9patch". However draw9patch fails to run due to bug #798794.
@@ -82,6 +67,8 @@ Description: annotations used throughout the Android tools libraries
 Package: libandroid-tools-common-java
 Architecture: all
 Depends:
+ libandroid-tools-annotations-java (>= ${binary:Version}),
+ libguava-java,
  ${misc:Depends}
 Description: common library used by other Android tools libraries
  This package provides common tasks and classes which are used by other Android
@@ -94,12 +81,20 @@ Depends: android-platform-tools-base,
          antlr4,
          libandroid-databinding-java,
          libandroid-ddms-java (>= ${binary:Version}),
+         libandroid-layoutlib-api-java (>= ${binary:Version}),
          libandroid-tools-common-java (>= ${binary:Version}),
          libandroid-tools-sdklib-java (>= ${binary:Version}),
-         libjacoco-java,
-         libjavawriter-java,
+         libasm4-java,
+         libbcpkix-java,
+         libbcprov-java,
+         libecj-java,
          libgradle-core-java,
          libgradle-plugins-java,
+         libgoogle-gson-java,
+         libguava-java,
+         libjacoco-java,
+         libjavawriter-java,
+         liblombok-ast-java,
          proguard,
          ${misc:Depends}
 Breaks: android-platform-tools-base (<< 2.0.0-1)
@@ -158,6 +153,7 @@ Description: Library providing APIs to talk to Android devices
 Package: libandroid-layoutlib-api-java
 Architecture: all
 Depends: libandroid-tools-common-java,
+         libintellij-annotations-java,
          ${misc:Depends}
 Description: library to use the rendering library for Android layouts
  This package provides "layoutlib-api.jar" in the Android SDK.

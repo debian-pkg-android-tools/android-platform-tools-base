@@ -1,5 +1,3 @@
 draw9patch/etc/draw9patch                     usr/lib/android-sdk/tools
-lint/cli/build/lint.classpath                 usr/share/android-platform-tools-base
-lint/cli/etc/lint                             usr/lib/android-sdk/tools
 misc/screenshot2/build/screenshot2.classpath  usr/share/android-platform-tools-base
 misc/screenshot2/etc/screenshot2              usr/lib/android-sdk/tools

@@ -1,5 +1,9 @@
 android-platform-tools-base (2.0.0-1) UNRELEASED; urgency=medium
 
+  [ Markus Koschany ]
+  * Remove myself from Uploaders.
+
+  [ Kai-Chung Yan ]
   * New upstream release
   * Use get-orig-source to generate upstream tarball
     - Refactor the upstream file structure based on that
@@ -26,7 +30,7 @@ android-platform-tools-base (2.0.0-1) UNRELEASED; urgency=medium
       * perflib.jar
       * profile.jar
       * rule-api.jar
-  * No longer build against libandroid-tools-common-java or 
+  * No longer build against libandroid-tools-common-java or
     libandroid-tools-annotations-java which introduces self-dependencies
   * Install JARs into maven-repo
   * Generate Class-Paths for the Java programs and store them in

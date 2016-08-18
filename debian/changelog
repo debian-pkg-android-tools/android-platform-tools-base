@@ -14,6 +14,7 @@ android-platform-tools-base (2.0.0-1) UNRELEASED; urgency=medium
   * d/control:
     - Unify Maintainer to "Android Tools Maintainers"
     - Add myself to Uploaders
+    - Move Vcs repo to android-tools
   * New Inception-Date.patch: Manually set Inception-Date in some JARs' manifest
     for reproducibility
   * New packages:

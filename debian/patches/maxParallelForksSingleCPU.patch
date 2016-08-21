@@ -1,0 +1,78 @@
+--- a/build-system/builder/build.gradle
++++ b/build-system/builder/build.gradle
+@@ -31,7 +31,9 @@
+ }
+ 
+ test {
+-    maxParallelForks = Runtime.runtime.availableProcessors() / 2
++    if (Runtime.runtime.availableProcessors() >= 2) {
++        maxParallelForks = Runtime.runtime.availableProcessors() / 2
++    }
+ }
+ 
+ group = 'com.android.tools.build'
+--- a/build-system/gradle-core/build.gradle
++++ b/build-system/gradle-core/build.gradle
+@@ -80,7 +80,9 @@
+         events "failed"
+     }
+ 
+-    maxParallelForks = Runtime.runtime.availableProcessors() / 2
++    if (Runtime.runtime.availableProcessors() >= 2) {
++        maxParallelForks = Runtime.runtime.availableProcessors() / 2
++    }
+ }
+ 
+ groovydoc {
+--- a/build-system/gradle-experimental/build.gradle
++++ b/build-system/gradle-experimental/build.gradle
+@@ -39,7 +39,9 @@
+         events "failed"
+     }
+ 
+-    maxParallelForks = Runtime.runtime.availableProcessors() / 2
++    if (Runtime.runtime.availableProcessors() >= 2) {
++        maxParallelForks = Runtime.runtime.availableProcessors() / 2
++    }
+ }
+ 
+ groovydoc {
+--- a/build-system/gradle/build.gradle
++++ b/build-system/gradle/build.gradle
+@@ -24,7 +24,9 @@
+         events "failed"
+     }
+ 
+-    maxParallelForks = Runtime.runtime.availableProcessors() / 2
++    if (Runtime.runtime.availableProcessors() >= 2) {
++        maxParallelForks = Runtime.runtime.availableProcessors() / 2
++    }
+ }
+ 
+ groovydoc {
+--- a/build-system/manifest-merger/build.gradle
++++ b/build-system/manifest-merger/build.gradle
+@@ -26,7 +26,9 @@
+ }
+ 
+ test {
+-    maxParallelForks = Runtime.runtime.availableProcessors() / 2
++    if (Runtime.runtime.availableProcessors() >= 2) {
++        maxParallelForks = Runtime.runtime.availableProcessors() / 2
++    }
+ }
+ 
+ project.ext.pomName = 'Android Tools Manifest Merger library'
+--- a/lint/cli/build.gradle
++++ b/lint/cli/build.gradle
+@@ -17,7 +17,9 @@
+ }
+ 
+ test {
+-    maxParallelForks = Runtime.runtime.availableProcessors() / 2
++    if (Runtime.runtime.availableProcessors() >= 2) {
++        maxParallelForks = Runtime.runtime.availableProcessors() / 2
++    }
+ }
+ 
+ 

@@ -50,7 +50,7 @@ Description: base tools for developing applications for the Android system
     WYSIWYG editor. It also previews stretched versions of the image, and
     highlights the area in which content is allowed.
  .
-  * screenshot2: Takes a screenshot from a remote Andrid device.
+  * screenshot2: Takes a screenshot from a remote Android device.
  .
  default-jre or other non-headless JRE needs to be installed in order to run
  "draw9patch". However draw9patch fails to run due to bug #798794.

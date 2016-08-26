@@ -1,4 +1,4 @@
-android-platform-tools-base (2.0.0-1) UNRELEASED; urgency=medium
+android-platform-tools-base (2.0.0-1) unstable; urgency=medium
 
   [ Markus Koschany ]
   * Remove myself from Uploaders.
@@ -44,7 +44,7 @@ android-platform-tools-base (2.0.0-1) UNRELEASED; urgency=medium
   * Generate Class-Paths for the Java programs and store them in
     /usr/share/android-platform-tools-base
 
- -- Kai-Chung Yan <seamlikok@gmail.com>  Mon, 01 Aug 2016 15:48:04 +0800
+ -- Kai-Chung Yan <seamlikok@gmail.com>  Fri, 26 Aug 2016 22:19:07 +0200
 
 android-platform-tools-base (1.5.0-4) unstable; urgency=medium
 

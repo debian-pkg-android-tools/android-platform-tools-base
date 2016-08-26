@@ -3,6 +3,13 @@ android-platform-tools-base (2.0.0-1) UNRELEASED; urgency=medium
   [ Markus Koschany ]
   * Remove myself from Uploaders.
 
+  [ Chirayu Desai ]
+  * Add maxParallelForksSingleCPU.patch.
+    Upstream uncondtionally set maxParallelForks to available processors
+    which would equal 0.5 if there was only a single processor. Make it
+    conditional so that the default value of 1 is used in cases where available
+    processors are < 2. (Closes: #834753)
+
   [ Kai-Chung Yan ]
   * New upstream release
   * Use get-orig-source to generate upstream tarball

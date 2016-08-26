@@ -48,7 +48,7 @@ License: Cryptix-General-License
 
 Files: jobb/src/main/java/com/android/jobb/Base64.java
 Copyright: 2000, The Legion Of The Bouncy Castle
-License: BSD-3-clause
+License: Expat
 
 Files: build-system/docs/src/fromGradle/*
        build-system/gradle-core/src/fromGradle/*
@@ -125,7 +125,7 @@ License: Cryptix-General-License
  .
  IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-License: BSD-3-clause
+License: Expat
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the "Software"),
  to deal in the Software without restriction, including without limitation

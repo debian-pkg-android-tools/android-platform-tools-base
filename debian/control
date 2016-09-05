@@ -138,7 +138,9 @@ Depends: libandroid-layoutlib-api-java,
          libhttpclient-java,
          libhttpmime-java,
          ${misc:Depends}
-Description: library to parse and download the Android SDK
+Description: Library to parse and download the Android SDK
+ This library is used by the SDK manager.
+ .
  This package provides "sdklib.jar" in the Android SDK.
 
 Package: libandroid-ddms-java
@@ -146,7 +148,15 @@ Architecture: all
 Depends: libandroid-tools-common-java,
          libkxml2-java,
          ${misc:Depends}
-Description: Library providing APIs to talk to Android devices
+Suggests: adb
+Description: Communicate with devices through adb - Core library
+ Dalvik Debug Monitor Server (DDMS) provides port-forwarding services, screen
+ capture on the device, thread and heap information on the device, logcat,
+ process, and radio state information, incoming call and SMS spoofing, location
+ data spoofing, and more.
+ .
+ This library is used by several tools outside of DDMS such as HierarchyViewer.
+ .
  This package provides "ddmlib.jar" in the Android SDK.
 
 Package: libandroid-layoutlib-api-java
@@ -154,14 +164,19 @@ Architecture: all
 Depends: libandroid-tools-common-java,
          libintellij-annotations-java,
          ${misc:Depends}
-Description: library to use the rendering library for Android layouts
+Description: Library to use the rendering library for Android layouts - API
+ This library describes the API used to load and interact with layoutlib. Any
+ tool loading layoutlib should depends on it.
+ .
  This package provides "layoutlib-api.jar" in the Android SDK.
 
 Package: libandroid-tools-dvlib-java
 Architecture: all
 Depends: libandroid-tools-common-java,
          ${misc:Depends}
-Description: library to manage the Android device database XML files
+Description: Library to manage the Android device database XML files
+ This library is used by libandroid-tools-sdklib-java.
+ .
  This package provides "dvlib.jar" in the Android SDK
 
 Package: libandroid-tools-repository-java
@@ -169,5 +184,8 @@ Architecture: all
 Depends: libandroid-tools-common-java,
          libcommons-compress-java,
          ${misc:Depends}
-Description: library for downloading and managing package repositories
+Description: Library for downloading and managing package repositories
+ This library provides the API to parse the XML format manifest of Android SDK's
+ official pacakge repository.
+ .
  This package provides "repository.jar" in the Android SDK.

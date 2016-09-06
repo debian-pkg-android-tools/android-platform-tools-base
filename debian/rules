@@ -11,7 +11,7 @@ override_dh_auto_build:
 
 override_dh_install:
 	dh_install
-	chmod -x debian/libgradle-android-plugin-java-doc/usr/lib/android-sdk/tools/templates/gradle-projects/NewAndroidAutoProject/template.xml
+	chmod -x debian/libgradle-android-plugin-java-doc/usr/share/doc/libgradle-android-plugin-java/templates/gradle-projects/NewAndroidAutoProject/template.xml
 
 get-orig-source: gradle_$(DEB_VERSION_UPSTREAM).tar.gz
 	mk-origtargz --repack --compression xz $<

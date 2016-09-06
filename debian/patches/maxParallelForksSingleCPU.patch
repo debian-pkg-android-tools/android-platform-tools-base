@@ -1,3 +1,8 @@
+Author: Chirayu Desai
+Last-Update: 2016-08-22
+Description: Make sure maxParallelForks is always >= 1
+Bug: https://android-review.googlesource.com/260250
+Forwarded: yes
 --- a/build-system/builder/build.gradle
 +++ b/build-system/builder/build.gradle
 @@ -31,7 +31,9 @@

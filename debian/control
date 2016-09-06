@@ -186,6 +186,6 @@ Depends: libandroid-tools-common-java,
          ${misc:Depends}
 Description: Library for downloading and managing package repositories
  This library provides the API to parse the XML format manifest of Android SDK's
- official pacakge repository.
+ official package repository.
  .
  This package provides "repository.jar" in the Android SDK.

@@ -37,7 +37,6 @@ Homepage: https://android.googlesource.com/platform/tools/base/
 Package: android-platform-tools-base
 Architecture: all
 Depends:
- adb,
  default-jre-headless (>= 1:1.6) | java6-runtime-headless,
  libandroid-ddms-java (>= ${binary:Version}),
  ${misc:Depends}
@@ -145,10 +144,10 @@ Description: Library to parse and download the Android SDK
 
 Package: libandroid-ddms-java
 Architecture: all
-Depends: libandroid-tools-common-java,
+Depends: adb
+         libandroid-tools-common-java,
          libkxml2-java,
          ${misc:Depends}
-Suggests: adb
 Description: Communicate with devices through adb - Core library
  Dalvik Debug Monitor Server (DDMS) provides port-forwarding services, screen
  capture on the device, thread and heap information on the device, logcat,

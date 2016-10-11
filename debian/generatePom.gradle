@@ -26,19 +26,19 @@ task generatePom(overwrite: true) {
             name 'The Android Open Source Project'
           }
         }
-        whenConfigured {
-          setDependencies(getDependencies().toSorted { a, b ->
-            if ((a.scope <=> b.scope) != 0) {
-              a.scope <=> b.scope
-            } else if ((a.groupId <=> b.groupId) != 0) {
-              a.groupId <=> b.groupId
-            } else if ((a.artifactId <=> b.artifactId) != 0) {
-              a.artifactId <=> b.artifactId
-            } else {
-              a.version <=> b.version
-            }
-          })
-        }
+      }
+      whenConfigured {
+        setDependencies(getDependencies().toSorted { a, b ->
+          if ((a.scope <=> b.scope) != 0) {
+            a.scope <=> b.scope
+          } else if ((a.groupId <=> b.groupId) != 0) {
+            a.groupId <=> b.groupId
+          } else if ((a.artifactId <=> b.artifactId) != 0) {
+            a.artifactId <=> b.artifactId
+          } else {
+            a.version <=> b.version
+          }
+        })
       }
     }.writeTo(pomFilePath)
   }

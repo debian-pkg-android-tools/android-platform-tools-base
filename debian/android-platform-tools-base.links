@@ -1,4 +1,2 @@
 usr/lib/android-sdk/tools/draw9patch             usr/bin/draw9patch
 usr/lib/android-sdk/tools/screenshot2            usr/bin/screenshot2
-usr/share/java/com.android.tools.draw9patch.jar  usr/lib/android-sdk/tools/lib/draw9patch.jar
-usr/share/java/com.android.tools.screenshot2.jar usr/lib/android-sdk/tools/lib/screenshot2.jar

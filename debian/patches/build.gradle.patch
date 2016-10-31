@@ -561,13 +561,12 @@ Description: Patch upstream's build system for Debian.
  subprojects { Project project ->
      // only configure leaf projects.
      if (!project.getSubprojects().isEmpty()) return
-@@ -5,6 +7,16 @@
+@@ -5,6 +7,15 @@
      // exclude aar projects.
      if ("fdr".equals(project.name)) return
  
 -    apply from: "$rootDir/buildSrc/base/baseJava.gradle"
 +    apply plugin: 'java'
-+    apply from: "${rootDir}/debian/generatePom.gradle"
 +    apply from: "${rootDir}/debian/generateClasspath.gradle"
 +
 +    sourceCompatibility = 1.6

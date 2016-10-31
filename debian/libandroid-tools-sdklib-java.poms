@@ -1,1 +1,1 @@
-sdklib/build/sdklib.pom --java-lib --artifact=sdklib/build/libs/*.jar --usj-name=com.android.tools.sdklib
+sdklib/build/debian/sdklib.pom --java-lib --artifact=sdklib/build/libs/*.jar --usj-name=com.android.tools.sdklib

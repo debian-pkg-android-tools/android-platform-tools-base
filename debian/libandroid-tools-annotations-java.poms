@@ -1,1 +1,1 @@
-annotations/build/annotations.pom --java-lib --usj-name=com.android.tools.annotations --artifact=annotations/build/libs/*.jar
+annotations/build/debian/annotations.pom --java-lib --usj-name=com.android.tools.annotations --artifact=annotations/build/libs/*.jar

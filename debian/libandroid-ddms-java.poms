@@ -1,1 +1,1 @@
-ddmlib/build/ddmlib.pom --java-lib --artifact=ddmlib/build/libs/*.jar --usj-name=com.android.tools.ddms.ddmlib
+ddmlib/build/debian/ddmlib.pom --java-lib --artifact=ddmlib/build/libs/*.jar --usj-name=com.android.tools.ddms.ddmlib

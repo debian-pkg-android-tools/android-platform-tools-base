@@ -5,7 +5,7 @@ Bug: https://android-review.googlesource.com/260250
 Forwarded: yes
 --- a/build-system/builder/build.gradle
 +++ b/build-system/builder/build.gradle
-@@ -31,7 +31,9 @@
+@@ -32,7 +32,9 @@
  }
  
  test {

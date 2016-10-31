@@ -144,7 +144,7 @@ Description: Library to parse and download the Android SDK
 
 Package: libandroid-ddms-java
 Architecture: all
-Depends: adb
+Depends: adb,
          libandroid-tools-common-java,
          libkxml2-java,
          ${misc:Depends}

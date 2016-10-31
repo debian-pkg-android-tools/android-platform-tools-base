@@ -1,1 +1,4 @@
 zero-byte-file-in-doc-directory
+
+# Duplicated files are example files
+duplicate-files

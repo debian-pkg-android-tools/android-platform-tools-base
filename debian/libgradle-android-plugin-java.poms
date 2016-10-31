@@ -7,6 +7,7 @@ build-system/gradle-api/build/debian/gradle-api.pom             --java-lib --art
 build-system/gradle-core/build/debian/gradle-core.pom           --java-lib --artifact=build-system/gradle-core/build/libs/*.jar      --usj-name=com.android.tools.build.gradle-core
 build-system/gradle/build/debian/gradle.pom                     --java-lib --artifact=build-system/gradle/build/libs/*.jar           --usj-name=com.android.tools.build.gradle
 build-system/manifest-merger/build/debian/manifest-merger.pom   --java-lib --artifact=build-system/manifest-merger/build/libs/*.jar  --usj-name=com.android.tools.build.manifest-merger
+build-system/profile/build/debian/profile.pom                   --java-lib --artifact=build-system/profile/build/libs/*.jar          --usj-name=com.android.tools.build.profile
 build-system/transform-api/build/debian/transform-api.pom       --java-lib --artifact=build-system/transform-api/build/libs/*.jar    --usj-name=com.android.tools.build.transform-api
 jack/jack-api/build/debian/jack-api.pom                         --java-lib --artifact=jack/jack-api/build/libs/*.jar                 --usj-name=com.android.tools.jack.jack-api
 jack/jill-api/build/debian/jill-api.pom                         --java-lib --artifact=jack/jill-api/build/libs/*.jar                 --usj-name=com.android.tools.jill.jill-api

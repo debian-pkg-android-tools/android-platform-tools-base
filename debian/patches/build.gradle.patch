@@ -3,7 +3,12 @@ Author: Markus Koschany <apo@debian.org>
 Last-Update: 2016-07-19
 Forwarded: not-needed
 Description: Patch upstream's build system for Debian.
- This patch also removes unsed test projects
+ This patch does the following:
+ .
+ * Remove tests projects
+ * Remove the usage of unavailable custom plugins
+ * Let Gradle build it using local artifacts in Debian
+ * Build com.android.tools.build.profile.jar as a JAR instead of sourcesOnly JAR
 --- a/annotations/build.gradle
 +++ b/annotations/build.gradle
 @@ -1,5 +1,4 @@
@@ -89,7 +94,15 @@ Description: Patch upstream's build system for Debian.
  apply plugin: 'jacoco'
  
  evaluationDependsOn(':base:builder-model')
-@@ -28,7 +27,7 @@
+@@ -8,6 +7,7 @@
+ dependencies {
+     compile project(':base:builder-model')
+     compile project(':base:builder-test-api')
++    compile project(':base:profile')
+ 
+     compile project(':base:sdklib')
+     compile project(':base:sdk-common')
+@@ -28,7 +28,7 @@
      testCompile 'org.mockito:mockito-all:1.9.5'
      testCompile 'com.google.truth:truth:0.28'
      testCompile project(':base:testutils')
@@ -98,7 +111,7 @@ Description: Patch upstream's build system for Debian.
  }
  
  test {
-@@ -42,9 +41,6 @@
+@@ -42,9 +42,6 @@
  project.ext.pomName = 'Android Builder library'
  project.ext.pomDesc = 'Library to build Android applications.'
  
@@ -108,7 +121,7 @@ Description: Patch upstream's build system for Debian.
  
  jar.manifest.attributes("Builder-Version": version)
  
-@@ -54,6 +50,7 @@
+@@ -54,6 +51,7 @@
      main {
          java {
              srcDir generated
@@ -116,7 +129,7 @@ Description: Patch upstream's build system for Debian.
          }
      }
  }
-@@ -86,23 +83,6 @@
+@@ -86,23 +84,4 @@
      sourcesProvided
  }
  
@@ -129,8 +142,8 @@ Description: Patch upstream's build system for Debian.
 -    }
 -}
 -
- sourceSets.main.compileClasspath += [configurations.provided]
- sourceSets.test.runtimeClasspath += [configurations.provided]
+-sourceSets.main.compileClasspath += [configurations.provided]
+-sourceSets.test.runtimeClasspath += [configurations.provided]
 -tasks.compileJava.dependsOn(configurations.provided)
 -tasks.sourcesJar.dependsOn(configurations.sourcesProvided)
 -
@@ -653,4 +666,14 @@ Description: Patch upstream's build system for Debian.
 -apply from: "$rootDir/buildSrc/base/bintray.gradle"
 -apply from: "$rootDir/buildSrc/base/javadoc.gradle"
 +project.ext.pomDesc = 'common library used by other Android tools libraries.'
+--- a/build-system/profile/build.gradle
++++ b/build-system/profile/build.gradle
+@@ -22,4 +22,6 @@
+ 
+ artifacts {
+     sourcesOnly sourcesJar
+-}
++}
++
++group = 'com.android.tools.build'
 \ No newline at end of file

@@ -1,0 +1,9 @@
+/.mh/
+/android-platform-tools-base/
+/lib*-java/
+/lib*-java-doc/
+/files
+/*.substvars
+/*.log
+/debhelper-build-stamp
+/*.doc-base.javadoc

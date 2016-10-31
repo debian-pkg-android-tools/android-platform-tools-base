@@ -4,7 +4,7 @@ include /usr/share/dpkg/pkg-info.mk
 export JAVA_HOME=/usr/lib/jvm/default-java
 
 %:
-	dh $@ --parallel --with maven_repo_helper --buildsystem=gradle
+	dh $@ --with maven_repo_helper --buildsystem=gradle
 
 override_dh_auto_build:
 	dh_auto_build -- -x test --settings-file debian/settings.gradle assemble

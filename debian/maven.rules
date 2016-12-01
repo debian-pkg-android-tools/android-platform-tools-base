@@ -1,7 +1,7 @@
 s/net.sf.kxml/kxml2/ * * s/.*/debian/ * *
 com.google.code.findbugs jsr305 * s/.*/0.x/ * *
-org.bouncycastle s/bcpkix-jdk15on/bcpkix/ * s/.*/1.51/ * *
-org.bouncycastle s/bcprov-jdk15on/bcprov/ * s/.*/1.51/ * *
+org.bouncycastle s/bcpkix-jdk15on/bcpkix/ * s/.*/debian/ * *
+org.bouncycastle s/bcprov-jdk15on/bcprov/ * s/.*/debian/ * *
 junit junit * s/.*/4.x/ * *
 org.gradle s/messaging/gradle-messaging/ * s/.*/debian/ * *
 org.gradle s/core/gradle-core/ * s/.*/debian/ * *

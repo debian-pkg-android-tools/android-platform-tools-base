@@ -12,6 +12,7 @@ Build-Depends:
  groovy,
  junit4,
  libandroid-databinding-java,
+ libandroid-tools-analytics-library-java,
  libasm-java,
  libbcpkix-java,
  libbcprov-java,

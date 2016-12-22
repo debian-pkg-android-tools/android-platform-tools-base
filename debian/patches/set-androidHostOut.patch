@@ -1,0 +1,10 @@
+--- a/build.gradle
++++ b/build.gradle
+@@ -1,5 +1,7 @@
+ apply from: 'debian/version.gradle'
+ 
++ext.androidHostOut = file("$rootDir/build")
++
+ subprojects { Project project ->
+     // only configure leaf projects.
+     if (!project.getSubprojects().isEmpty()) return

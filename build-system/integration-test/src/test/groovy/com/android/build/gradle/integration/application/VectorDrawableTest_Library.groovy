@@ -19,6 +19,7 @@ import com.android.build.gradle.integration.common.fixture.GradleTestProject
 import com.android.build.gradle.integration.common.fixture.app.EmptyAndroidTestApp
 import com.android.build.gradle.integration.common.fixture.app.HelloWorldApp
 import com.android.build.gradle.integration.common.fixture.app.MultiModuleTestProject
+import com.android.build.gradle.integration.common.utils.AssumeUtil
 import com.android.build.gradle.integration.common.utils.TestFileUtils
 import com.google.common.io.Files
 import groovy.transform.CompileStatic
@@ -66,7 +67,7 @@ class VectorDrawableTest_Library {
 
     @Before
     public void checkBuildTools() {
-        GradleTestProject.assumeBuildToolsAtLeast(21)
+        AssumeUtil.assumeBuildToolsAtLeast(21)
     }
 
     @Before
@@ -141,7 +142,8 @@ class VectorDrawableTest_Library {
     public void "App uses support library, lib does not"() throws Exception {
         project.getSubproject(":app").buildFile << """
                 android.defaultConfig.vectorDrawables {
-                    useSupportLibrary = true
+                    // Try the DSL method without "=".
+                    useSupportLibrary true
                 }
         """
 
@@ -230,7 +232,7 @@ class VectorDrawableTest_Library {
         assertThatApk(apk).doesNotContainResource("drawable/lib_vector.xml")
 
         modifyVector()
-
+        
         project.execute(":app:assembleDebug")
 
         assertThatApk(apk).containsResource("drawable-anydpi-v21/app_vector.xml")

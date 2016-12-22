@@ -20,14 +20,14 @@ package com.android.build.gradle.shrinker.parser;
 @members {
   @Override
   public void emitErrorMessage(String msg) {
-    throw new RuntimeException(msg);
+    throw new ProguardParserException(msg);
   }
 }
 
 @lexer::members {
   @Override
   public void emitErrorMessage(String msg) {
-    throw new RuntimeException(msg);
+    throw new ProguardParserException(msg);
   }
 }
 
@@ -186,7 +186,7 @@ private member [ClassSpecification classSpec]
       (typeSig=type)? name=(NAME|'<init>') (signature=arguments {GrammarActions.method(classSpec, $annotation.annotSpec, typeSig, $name.text, signature, $modifiers.modifiers);}
                   | {GrammarActions.fieldOrAnyMember(classSpec, $annotation.annotSpec, typeSig, $name.text, $modifiers.modifiers);})
       | '<methods>' {GrammarActions.method(classSpec, $annotation.annotSpec,
-          GrammarActions.getSignature("***", 0), "*", "("+ GrammarActions.getSignature("...", 0) + ")",
+          GrammarActions.getSignature("***", 0), "*", "\\("+ GrammarActions.getSignature("...", 0) + "\\)",
           $modifiers.modifiers);}
       | '<fields>' {GrammarActions.field(classSpec, $annotation.annotSpec, null, "*", $modifiers.modifiers);}
     ) ';'
@@ -240,14 +240,14 @@ private inheritance returns [InheritanceSpecification inheritanceSpec]
 
 private arguments returns [String signature]
   :
-  '(' {signature = "(";}
+  '(' {signature = "\\(";}
     (
       (
         parameterSig=type {signature += parameterSig;}
         (',' parameterSig=type {signature += parameterSig;})*
         )?
       )
-    ')' {signature += ")";}
+    ')' {signature += "\\)";}
   ;
 
 private type returns [String signature]
@@ -256,9 +256,7 @@ private type returns [String signature]
 }
   :
   (
-    typeName='%' {String sig = $typeName.text; signature = GrammarActions.getSignature(sig == null ? "" : sig, 0);}
-    |
-    (typeName=NAME ('[]' {dim++;})*  {String sig = $typeName.text; signature = GrammarActions.getSignature(sig == null ? "" : sig, dim);})
+    typeName=('%' | NAME) ('[]' {dim++;})* {String sig = $typeName.text; signature = GrammarActions.getSignature(sig == null ? "" : sig, dim);}
   )
   ;
 

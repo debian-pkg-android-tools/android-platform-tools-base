@@ -28,6 +28,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -37,7 +39,6 @@ import java.util.ListIterator;
  */
 @SuppressWarnings({"WeakerAccess", "unused"}) // Used in studio and in integration tests.
 public class InstantRunBuildInfo {
-
     /**
      * Right now Gradle plugin doesn't sort the build id's, but when it does we can rely on element
      * order in the doc
@@ -64,20 +65,31 @@ public class InstantRunBuildInfo {
 
     private static final String ATTR_ARTIFACT_TYPE = "type";
 
+    private static final String ATTR_TOKEN = "token";
+
+    @NonNull
+    private final String myXml;
+
     @NonNull
     private final Element mRoot;
 
     @Nullable
     private List<InstantRunArtifact> mArtifacts;
 
-    public InstantRunBuildInfo(@NonNull Element root) {
+    public InstantRunBuildInfo(@NonNull String xml, @NonNull Element root) {
+        myXml = xml;
         mRoot = root;
     }
-
 
     @NonNull
     public String getTimeStamp() {
         return mRoot.getAttribute(ATTR_TIMESTAMP);
+    }
+
+    public long getSecretToken() {
+        String tokenString = mRoot.getAttribute(ATTR_TOKEN);
+        assert !Strings.isNullOrEmpty(tokenString) : "Application authorization token was not generated";
+        return Long.parseLong(tokenString);
     }
 
     @NonNull
@@ -104,11 +116,7 @@ public class InstantRunBuildInfo {
 
     /** Returns whether there were NO changes from the previous build. */
     public boolean hasNoChanges() {
-        // In order to say that there are no changes:
-        // 1. The artifacts have to be empty
-        // 2. The verifier status must also be empty, since otherwise it indicates that there are changes that were not captured by
-        // the current incremental build.
-        return getArtifacts().isEmpty() && getVerifierStatus().isEmpty();
+        return getArtifacts().isEmpty();
     }
 
     public int getFeatureLevel() { // The build info calls it as the API level, but we always pass the feature level to Gradle..
@@ -131,6 +139,7 @@ public class InstantRunBuildInfo {
             long oldestTimeStamp = Long.MAX_VALUE;
 
             NodeList children = mRoot.getChildNodes();
+            String currentBuildTimestamp = mRoot.getAttribute(ATTR_TIMESTAMP);
             for (int i = 0, n = children.getLength(); i < n; i++) {
                 Node child = children.item(i);
                 if (child.getNodeType() == Node.ELEMENT_NODE) {
@@ -138,10 +147,10 @@ public class InstantRunBuildInfo {
                     String tagName = element.getTagName();
                     if (!TAG_ARTIFACT.equals(tagName)) {
                         if (!BUILDS_ARE_SORTED && TAG_BUILD.equals(tagName)) {
-                            String timestamp = element.getAttribute(ATTR_TIMESTAMP);
-                            if (!timestamp.isEmpty()) {
+                            currentBuildTimestamp = element.getAttribute(ATTR_TIMESTAMP);
+                            if (!Strings.isNullOrEmpty(currentBuildTimestamp)) {
                                 try {
-                                    long time = Long.parseLong(timestamp);
+                                    long time = Long.parseLong(currentBuildTimestamp);
                                     if (time < oldestTimeStamp) {
                                         oldestTimeStamp = time;
                                         oldestBuild = element;
@@ -156,7 +165,9 @@ public class InstantRunBuildInfo {
                     String location = element.getAttribute(ATTR_ARTIFACT_LOCATION);
                     String typeAttribute = element.getAttribute(ATTR_ARTIFACT_TYPE);
                     InstantRunArtifactType type = InstantRunArtifactType.valueOf(typeAttribute);
-                    artifacts.add(new InstantRunArtifact(type, new File(location)));
+                    artifacts.add(
+                            new InstantRunArtifact(
+                                    type, new File(location), currentBuildTimestamp));
                 }
             }
 
@@ -189,6 +200,7 @@ public class InstantRunBuildInfo {
                     }
 
                     NodeList nestedChildren = oldestBuild.getChildNodes();
+                    String buildTimestamp = oldestBuild.getAttribute(ATTR_TIMESTAMP);
                     for (int j = 0, n = nestedChildren.getLength(); j < n; j++) {
                         Node nestedChild = nestedChildren.item(j);
                         if (nestedChild.getNodeType() == Node.ELEMENT_NODE) {
@@ -203,7 +215,9 @@ public class InstantRunBuildInfo {
                             if (type == InstantRunArtifactType.SPLIT) {
                                 String location = artifactElement
                                         .getAttribute(ATTR_ARTIFACT_LOCATION);
-                                artifacts.add(new InstantRunArtifact(type, new File(location)));
+                                artifacts.add(
+                                        new InstantRunArtifact(
+                                                type, new File(location), buildTimestamp));
                             }
                         }
                     }
@@ -244,7 +258,7 @@ public class InstantRunBuildInfo {
             return null;
         }
 
-        return new InstantRunBuildInfo(doc.getDocumentElement());
+        return new InstantRunBuildInfo(xml, doc.getDocumentElement());
     }
 
     // Keep roughly in sync with InstantRunBuildContext#CURRENT_FORMAT.
@@ -254,7 +268,7 @@ public class InstantRunBuildInfo {
     public boolean isCompatibleFormat() {
         // Right don't accept older versions; due to bugs we want to force everyone to use the latest or no instant run at all.
         // In the future we'll probably accept a range of values here.
-        return getFormat() == 7;
+        return getFormat() == 8;
     }
 
     public int getFormat() {
@@ -268,5 +282,9 @@ public class InstantRunBuildInfo {
         } catch (NumberFormatException nfe) {
             return -1;
         }
+    }
+
+    public void serializeTo(@NonNull Writer writer) throws IOException {
+        writer.write(myXml);
     }
 }

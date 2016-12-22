@@ -16,22 +16,28 @@
 
 package com.android.build.gradle.integration.component
 
+import com.android.build.gradle.integration.common.fixture.GradleBuildResult
 import com.android.build.gradle.integration.common.fixture.GradleTestProject
 import com.android.build.gradle.integration.common.fixture.app.AndroidTestApp
 import com.android.build.gradle.integration.common.fixture.app.EmptyAndroidTestApp
 import com.android.build.gradle.integration.common.fixture.app.HelloWorldJniApp
 import com.android.build.gradle.integration.common.fixture.app.MultiModuleTestProject
 import com.android.build.gradle.integration.common.fixture.app.TestSourceFile
+import com.android.build.gradle.integration.common.utils.GradleOutputVerifier
+import com.android.build.gradle.integration.common.utils.ZipHelper
+import com.android.utils.FileUtils
+import groovy.transform.CompileStatic
 import org.junit.AfterClass
-import org.junit.BeforeClass
-import org.junit.ClassRule
+import org.junit.Rule
 import org.junit.Test
 
 import static com.android.build.gradle.integration.common.truth.TruthHelper.assertThatAar
+import static com.android.build.gradle.integration.common.truth.TruthHelper.assertThatNativeLib
 
 /**
  * Integration test library plugin with JNI sources.
  */
+@CompileStatic
 class NdkJniLib2Test {
     private static MultiModuleTestProject testApp = new MultiModuleTestProject(
             ":app" : new EmptyAndroidTestApp(),
@@ -93,29 +99,56 @@ model {
 """))
     }
 
-    @ClassRule
-    public static GradleTestProject project = GradleTestProject.builder()
+    @Rule
+    public GradleTestProject project = GradleTestProject.builder()
             .fromTestApp(testApp)
-            .forExperimentalPlugin(true)
+            .useExperimentalGradleVersion(true)
             .create();
-
-    @BeforeClass
-    public static void assemble() {
-        project.execute("clean", ":app:assembleDebug")
-    }
 
     @AfterClass
     static void cleanUp() {
-        project = null
         testApp = null
     }
 
     @Test
     void "check .so are included in both app and library"() {
+        project.execute("clean", ":app:assembleDebug")
+
         File releaseAar = project.getSubproject("lib").getAar("release")
         assertThatAar(releaseAar).contains("jni/x86/libhello-jni.so")
 
         File app = project.getSubproject("app").getApk("debug")
         assertThatAar(app).contains("lib/x86/libhello-jni.so")
+
+        File lib = ZipHelper.extractFile(releaseAar, "jni/x86/libhello-jni.so")
+        assertThatNativeLib(lib).isNotStripped()
+        lib = ZipHelper.extractFile(app, "lib/x86/libhello-jni.so")
+        assertThatNativeLib(lib).isStripped()
+    }
+
+    /**
+     * Ensure prepareDependency task is executed before compilation task.
+     */
+    @Test
+    void checkTaskOrder() {
+        File emptyFile = project.getSubproject("app").file("src/main/jni/empty.c")
+        FileUtils.createFile(emptyFile, "");
+        project.getSubproject("app").getBuildFile() <<"""
+model {
+    android {
+        ndk {
+            moduleName "empty"
+            abiFilters.add("armeabi")
+        }
+    }
+}
+"""
+
+        GradleBuildResult result = project.executor()
+                .withArgument("--dry-run") // Just checking task order.  Don't need to actually run.
+                .run(":app:assembleDebug")
+        GradleOutputVerifier verifier = new GradleOutputVerifier(result.getStdout());
+        verifier.assertThatTask(":app:linkEmptyArmeabiDebugSharedLibrary").wasExecuted()
+        verifier.assertThatTask(":app:linkEmptyArmeabiDebugSharedLibrary").ranAfter(":app:prepareDebugDependencies")
     }
 }

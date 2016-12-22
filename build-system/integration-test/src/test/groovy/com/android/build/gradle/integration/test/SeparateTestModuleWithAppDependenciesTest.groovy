@@ -17,15 +17,13 @@
 package com.android.build.gradle.integration.test
 
 import com.android.build.gradle.integration.common.fixture.GradleTestProject
+import com.android.build.gradle.integration.common.utils.TestFileUtils
 import com.android.builder.model.AndroidProject
 import org.junit.AfterClass
 import org.junit.BeforeClass
 import org.junit.ClassRule
 import org.junit.Test
 
-/**
- * Created by jedo on 9/1/15.
- */
 class SeparateTestModuleWithAppDependenciesTest {
     @ClassRule
     static public GradleTestProject project = GradleTestProject.builder()

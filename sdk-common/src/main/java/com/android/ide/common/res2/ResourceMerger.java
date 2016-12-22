@@ -25,6 +25,7 @@ import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.ide.common.resources.configuration.FolderConfiguration;
+import com.android.ide.common.resources.configuration.ResourceQualifier;
 import com.android.resources.ResourceType;
 import com.android.utils.Pair;
 import com.google.common.collect.HashBasedTable;
@@ -79,7 +80,7 @@ public class ResourceMerger extends DataMerger<ResourceItem, ResourceFile, Resou
      * This override the method returning the qualifier or the source type, to directly
      * return a value instead of relying on a source file (since merged items don't have any).
      */
-    private static class MergedResourceItem extends ResourceItem {
+    private static class MergedResourceItem extends SourcelessResourceItem {
 
         @NonNull
         private final String mQualifiers;
@@ -93,13 +94,15 @@ public class ResourceMerger extends DataMerger<ResourceItem, ResourceFile, Resou
          * @param type  the type of the resource
          * @param qualifiers the qualifiers of the resource
          * @param value an optional Node that represents the resource value.
+         * @param libraryName name of library where resource came from if any
          */
         public MergedResourceItem(
                 @NonNull String name,
                 @NonNull ResourceType type,
                 @NonNull String qualifiers,
-                @Nullable Node value) {
-            super(name, type, value);
+                @Nullable Node value,
+                @Nullable String libraryName) {
+            super(name, type, value, libraryName);
             mQualifiers = qualifiers;
         }
 
@@ -137,9 +140,9 @@ public class ResourceMerger extends DataMerger<ResourceItem, ResourceFile, Resou
         String generated = NodeUtils.getAttribute(node, GeneratedResourceSet.ATTR_GENERATED);
         ResourceSet set;
         if (SdkConstants.VALUE_TRUE.equals(generated)) {
-            set = new GeneratedResourceSet("");
+            set = new GeneratedResourceSet("", null);
         } else {
-            set = new ResourceSet("");
+            set = new ResourceSet("", null);
         }
         ResourceSet newResourceSet = (ResourceSet) set.createFromXml(node);
 
@@ -182,6 +185,7 @@ public class ResourceMerger extends DataMerger<ResourceItem, ResourceFile, Resou
         ResourceItem sourceItem = items.get(0);
         String itemName = sourceItem.getName();
         String qualifier = sourceItem.getQualifiers();
+        String libraryName = sourceItem.getLibraryName();
         // get the matching mergedItem
         ResourceItem previouslyWrittenItem = getMergedItem(qualifier, itemName);
 
@@ -243,7 +247,8 @@ public class ResourceMerger extends DataMerger<ResourceItem, ResourceFile, Resou
                         itemName,
                         sourceItem.getType(),
                         qualifier,
-                        declareStyleableNode);
+                        declareStyleableNode,
+                        libraryName);
 
                 // check whether the result of the merge is new or touched compared
                 // to the previous state.
@@ -382,7 +387,7 @@ public class ResourceMerger extends DataMerger<ResourceItem, ResourceFile, Resou
         String name = ValueResourceParser2.getName(node);
 
         if (name != null && type != null) {
-            return new MergedResourceItem(name, type, qualifiers, node);
+            return new MergedResourceItem(name, type, qualifiers, node, null);
         }
 
         return null;
@@ -481,8 +486,7 @@ public class ResourceMerger extends DataMerger<ResourceItem, ResourceFile, Resou
                 FolderConfiguration qualifierWithoutSdk;
 
                 int resourceMinSdk;
-                if (config.getVersionQualifier() == null
-                        || !config.getVersionQualifier().isValid()) {
+                if (!ResourceQualifier.isValid(config.getVersionQualifier())) {
                     resourceMinSdk = 0;
                     qualifierWithoutSdk = config;
                 } else {

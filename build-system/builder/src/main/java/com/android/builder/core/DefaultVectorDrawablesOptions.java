@@ -70,14 +70,16 @@ public class DefaultVectorDrawablesOptions implements VectorDrawablesOptions, Se
         }
     }
 
+    /**
+     * Whether to use runtime support for {@code vector} drawables, instead of build-time support.
+     *
+     * <p>See <a href="http://developer.android.com/tools/help/vector-asset-studio.html">
+     *     Vector Asset Studio</a>.
+     */
     @Override
     @Nullable
     public Boolean getUseSupportLibrary() {
         return mUseSupportLibrary;
-    }
-
-    public void useSupportLibrary(@Nullable Boolean useSupportLibrary) {
-        setUseSupportLibrary(useSupportLibrary);
     }
 
     public void setUseSupportLibrary(@Nullable Boolean useSupportLibrary) {

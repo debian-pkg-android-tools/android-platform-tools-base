@@ -18,10 +18,10 @@ Description: Patch upstream's build system for Debian.
  
  sourceCompatibility = JavaVersion.VERSION_1_6
  targetCompatibility = JavaVersion.VERSION_1_6
-@@ -16,7 +15,3 @@
-       options.addStringOption 'Xdoclint:none', '-quiet'
-   }
- }
+@@ -10,7 +9,3 @@
+ 
+ project.ext.pomName = 'Android Tools Annotations library'
+ project.ext.pomDesc = 'annotations used throughout the Android tools libraries.'
 -
 -apply from: "$rootDir/buildSrc/base/publish.gradle"
 -apply from: "$rootDir/buildSrc/base/bintray.gradle"
@@ -46,9 +46,9 @@ Description: Patch upstream's build system for Debian.
  
  dependencies {
      compile project(':base:annotations')
-@@ -15,13 +14,9 @@
- 
- project.ext.apiVersion = rootProject.ext.apiVersion ?: 0
+@@ -22,13 +21,9 @@
+ sourceCompatibility = JavaVersion.VERSION_1_6
+ targetCompatibility = JavaVersion.VERSION_1_6
  
 -apply from: "$rootDir/buildSrc/base/publish.gradle"
 -apply from: "$rootDir/buildSrc/base/bintray.gradle"
@@ -60,7 +60,7 @@ Description: Patch upstream's build system for Debian.
  }
  
  def generated = new File("${project.buildDir}/generated/java")
-@@ -53,4 +48,4 @@
+@@ -60,4 +55,4 @@
  """
  }
  
@@ -100,7 +100,7 @@ Description: Patch upstream's build system for Debian.
  
      compile project(':base:sdklib')
      compile project(':base:sdk-common')
-@@ -28,7 +28,7 @@
+@@ -32,7 +32,7 @@
      testCompile 'org.mockito:mockito-all:1.9.5'
      testCompile 'com.google.truth:truth:0.28'
      testCompile project(':base:testutils')
@@ -109,7 +109,7 @@ Description: Patch upstream's build system for Debian.
  }
  
  test {
-@@ -42,9 +42,6 @@
+@@ -46,9 +46,6 @@
  project.ext.pomName = 'Android Builder library'
  project.ext.pomDesc = 'Library to build Android applications.'
  
@@ -119,7 +119,7 @@ Description: Patch upstream's build system for Debian.
  
  jar.manifest.attributes("Builder-Version": version)
  
-@@ -54,6 +51,7 @@
+@@ -58,6 +55,7 @@
      main {
          java {
              srcDir generated
@@ -127,7 +127,7 @@ Description: Patch upstream's build system for Debian.
          }
      }
  }
-@@ -86,23 +84,3 @@
+@@ -101,26 +99,3 @@
      sourcesProvided
  }
  
@@ -151,6 +151,10 @@ Description: Patch upstream's build system for Debian.
 -tasks.sourcesJar {
 -    from({zipTree(configurations.sourcesProvided.singleFile)})
 -}
+-javadoc {
+-    classpath += configurations.provided
+-}
+\ No newline at end of file
 --- a/build-system/google-services/build.gradle
 +++ b/build-system/google-services/build.gradle
 @@ -1,5 +1,4 @@
@@ -159,16 +163,7 @@ Description: Patch upstream's build system for Debian.
  apply plugin: 'idea'
  apply plugin: 'jacoco'
  
-@@ -21,8 +20,6 @@
- project.ext.pomName = 'Gradle Plug-in for Google Services'
- project.ext.pomDesc = 'Gradle plug-in for Google Services'
- 
--apply from: "$rootDir/buildSrc/base/publish.gradle"
--apply from: "$rootDir/buildSrc/base/bintray.gradle"
- 
- groovydoc {
-     exclude     "**/internal/**"
-@@ -31,18 +28,9 @@
+@@ -28,18 +27,9 @@
      docTitle "Gradle Plugin for Google Services"
      header ""
      footer "Copyright (C) 2015 The Android Open Source Project"
@@ -196,33 +191,24 @@ Description: Patch upstream's build system for Debian.
  apply plugin: 'antlr'
  
  configurations {
-@@ -34,7 +33,7 @@
+@@ -35,7 +34,7 @@
      // TODO: Switch to remote dependency once the empty deprecated transform-api is published
      compile project(':base:transform-api')
      compile project(':base:gradle-api')
 -    compile project(':dataBinding:compilerCommon')
 +    compile 'com.android.databinding:compilerCommon:debian'
-     compile 'org.ow2.asm:asm:5.0.3'
-     compile 'org.ow2.asm:asm-commons:5.0.3'
+     compile 'org.ow2.asm:asm:5.0.4'
+     compile 'org.ow2.asm:asm-commons:5.0.4'
      compile "net.sf.proguard:proguard-gradle:${project.ext.proguardVersion}"
-@@ -47,6 +46,7 @@
+@@ -50,6 +49,7 @@
+     // Add gradleApi to classpath for compilation, but use provided configuration so that groovy is
      // not exposed as a runtime dependency.
      provided gradleApi()
-     testCompile gradleApi()
 +    compile localGroovy()
  
-     includeInJar project(':base:instant-run:instant-run-server')
- 
-@@ -66,8 +66,6 @@
-     }
- }
- 
--tasks.compileJava.dependsOn ":setupGradleInIde"
--
- group = 'com.android.tools.build'
- archivesBaseName = 'gradle-core'
- version = rootProject.ext.buildVersion
-@@ -75,8 +73,6 @@
+     // Exclude plugins/core-* to avoiding adding Gradle's ecj implementation to the classpath
+     testCompile fileTree(
+@@ -82,8 +82,6 @@
  project.ext.pomName = 'Core Library for Android Gradle Plug-in'
  project.ext.pomDesc = 'Core library to build Android Gradle plugin.'
  
@@ -231,7 +217,7 @@ Description: Patch upstream's build system for Debian.
  
  test {
      environment("CUSTOM_REPO", rootProject.file("../out/repo"))
-@@ -95,7 +91,6 @@
+@@ -102,7 +100,6 @@
      docTitle "Gradle Plugin for Android"
      header ""
      footer "Copyright (C) 2012 The Android Open Source Project"
@@ -239,9 +225,9 @@ Description: Patch upstream's build system for Debian.
  
      groovyClasspath = configurations.provided
  }
-@@ -107,12 +102,6 @@
- 
- 
+@@ -117,12 +114,6 @@
+     classpath += configurations.provided
+ }
  
 -// Only package JavaDoc if using --init-script=buildSrc/base/release.gradle
 -if (project.has("release")) {
@@ -251,7 +237,7 @@ Description: Patch upstream's build system for Debian.
 -}
  
  // Incremental update test support
- String androidJar = System.env.ANDROID_HOME + '/platforms/android-15/android.jar'
+ File androidJar = file('../../../../prebuilts/sdk/23/android.jar');
 --- a/build-system/gradle-experimental/build.gradle
 +++ b/build-system/gradle-experimental/build.gradle
 @@ -1,7 +1,4 @@
@@ -261,7 +247,7 @@ Description: Patch upstream's build system for Debian.
 -apply plugin: 'jacoco'
  
  // Extract gradle libraries to ensure gradle-core is compatible with older version.
- String gradleVersion = "2.10"
+ String gradleVersion = "2.14.1"
 @@ -32,8 +29,6 @@
  project.ext.pomName = 'Gradle Plug-in for Android Using Component Model'
  project.ext.pomDesc = 'Gradle plug-in to build Android applications.'
@@ -271,7 +257,7 @@ Description: Patch upstream's build system for Debian.
  
  jar.manifest.attributes("Plugin-Version": version)
  jar.manifest.attributes("Inception-Date":"${Calendar.getInstance().get(Calendar.YEAR)}:" +
-@@ -57,17 +52,9 @@
+@@ -87,7 +82,6 @@
      docTitle "Gradle Plugin for Android"
      header ""
      footer "Copyright (C) 2012 The Android Open Source Project"
@@ -279,16 +265,18 @@ Description: Patch upstream's build system for Debian.
  }
  
  task javadocJar(type: Jar, dependsOn:groovydoc) {
-     classifier  'javadoc'
-     from        groovydoc.destinationDir
+@@ -99,11 +93,4 @@
+     classpath += fileTree(dir:gradleLib)
  }
--
+ 
 -// Only package JavaDoc if using --init-script=buildSrc/base/release.gradle
 -if (project.has("release")) {
 -  artifacts {
 -    archives javadocJar
 -  }
 -}
+-
+ check.dependsOn javadocJar, javadoc
 --- a/build-system/gradle/build.gradle
 +++ b/build-system/gradle/build.gradle
 @@ -1,8 +1,4 @@
@@ -300,7 +288,7 @@ Description: Patch upstream's build system for Debian.
  
  dependencies {
      compile project(':base:gradle-core')
-@@ -19,9 +15,6 @@
+@@ -20,9 +16,6 @@
  project.ext.pomName = 'Gradle Plug-in for Android'
  project.ext.pomDesc = 'Gradle plug-in to build Android applications.'
  
@@ -310,7 +298,7 @@ Description: Patch upstream's build system for Debian.
  jar.manifest.attributes("Plugin-Version": version)
  jar.manifest.attributes("Inception-Date":"${Calendar.getInstance().get(Calendar.YEAR)}:" +
          "${Calendar.getInstance().get(Calendar.MONTH)}:${Calendar.getInstance().get(Calendar.DATE)}")
-@@ -43,17 +36,9 @@
+@@ -76,17 +69,9 @@
      docTitle "Gradle Plugin for Android"
      header ""
      footer "Copyright (C) 2012 The Android Open Source Project"
@@ -415,7 +403,7 @@ Description: Patch upstream's build system for Debian.
 +jar.manifest.attributes("Main-Class": "com.android.draw9patch.Application")
 --- a/jack/jack-api/build.gradle
 +++ b/jack/jack-api/build.gradle
-@@ -17,9 +17,6 @@
+@@ -18,9 +18,6 @@
  project.ext.pomName = 'Android Jack API'
  project.ext.pomDesc = 'API to dynamically load Jack'
  
@@ -446,7 +434,7 @@ Description: Patch upstream's build system for Debian.
  
  dependencies {
      compile project(':external:fat32lib')
-@@ -10,16 +10,4 @@
+@@ -10,21 +10,9 @@
  version = rootProject.ext.baseVersion
  
  // configure the manifest of the sdkJar task
@@ -464,6 +452,13 @@ Description: Patch upstream's build system for Debian.
 -    }
 -}
 +jar.manifest.attributes("Main-Class": "com.android.jobb.Main")
+ 
+ // turn off strict javadoc
+ tasks.withType(Javadoc) {
+     options.addStringOption('Xdoclint:none', '-quiet')
+-}
+\ No newline at end of file
++}
 --- a/layoutlib-api/build.gradle
 +++ b/layoutlib-api/build.gradle
 @@ -1,6 +1,6 @@
@@ -542,7 +537,7 @@ Description: Patch upstream's build system for Debian.
  
  group = 'com.android.tools.lint'
  archivesBaseName = 'lint-api'
-@@ -23,7 +23,4 @@
+@@ -24,7 +24,4 @@
  project.ext.pomName = 'Android Tools Lint API'
  project.ext.pomDesc = 'API to build lint checks'
  
@@ -602,7 +597,7 @@ Description: Patch upstream's build system for Debian.
  
  group = 'com.android.tools'
  archivesBaseName = 'sdk-common'
-@@ -23,7 +22,4 @@
+@@ -24,7 +23,4 @@
  project.ext.pomName = 'Android Tools sdk-common library'
  project.ext.pomDesc = 'sdk-common library used by other Android tools libraries.'
  
@@ -612,7 +607,8 @@ Description: Patch upstream's build system for Debian.
  
 --- a/sdklib/build.gradle
 +++ b/sdklib/build.gradle
-@@ -1,6 +1,6 @@
+@@ -2,7 +2,7 @@
+ 
  apply plugin: 'java'
  apply plugin: 'jacoco'
 -apply plugin: 'sdk-java-lib'
@@ -620,17 +616,17 @@ Description: Patch upstream's build system for Debian.
  
  evaluationDependsOn(':base:dvlib')
  
-@@ -64,7 +64,4 @@
+@@ -118,7 +118,3 @@
+ 
  project.ext.pomName = 'Android Tools sdklib'
  project.ext.pomDesc = 'A library to parse and download the Android SDK.'
- 
+-
 -apply from: "$rootDir/buildSrc/base/publish.gradle"
 -apply from: "$rootDir/buildSrc/base/bintray.gradle"
 -apply from: "$rootDir/buildSrc/base/javadoc.gradle"
- 
 --- a/testutils/build.gradle
 +++ b/testutils/build.gradle
-@@ -19,6 +19,3 @@
+@@ -22,6 +22,3 @@
  project.ext.pomName = 'Android Tools Test Utilities'
  project.ext.pomDesc = 'API used by lint testing infrastructure'
  
@@ -671,7 +667,7 @@ Description: Patch upstream's build system for Debian.
  
  configurations {
      provided
-@@ -42,8 +40,3 @@
+@@ -39,8 +37,3 @@
  
  project.ext.pomName = 'Android Gradle API'
  project.ext.pomDesc = 'APIs to customize Android Gradle Builds'
@@ -689,15 +685,17 @@ Description: Patch upstream's build system for Debian.
  
  group = 'com.android.tools'
  archivesBaseName = 'repository'
-@@ -28,8 +27,3 @@
- 
+@@ -30,10 +29,6 @@
  project.ext.pomName = 'Android Tools repository'
  project.ext.pomDesc = 'A library for downloading and managing package repositories'
--
+ 
 -apply from: "$rootDir/buildSrc/base/publish.gradle"
 -apply from: "$rootDir/buildSrc/base/bintray.gradle"
 -apply from: "$rootDir/buildSrc/base/javadoc.gradle"
 -
+ tasks.withType(Javadoc) {
+     options.addStringOption('Xdoclint:none', '-quiet')
+ }
 --- a/build-system/transform-api/build.gradle
 +++ b/build-system/transform-api/build.gradle
 @@ -22,8 +22,3 @@
@@ -728,7 +726,7 @@ Description: Patch upstream's build system for Debian.
 -apply from: "$rootDir/buildSrc/base/javadoc.gradle"
 --- a/build-system/profile/build.gradle
 +++ b/build-system/profile/build.gradle
-@@ -22,4 +22,6 @@
+@@ -23,4 +23,6 @@
  
  artifacts {
      sourcesOnly sourcesJar

@@ -12,17 +12,6 @@ Subject: trove3
  .../android/tools/perflib/heap/analysis/TopologicalSort.java |  2 +-
  7 files changed, 14 insertions(+), 14 deletions(-)
 
---- a/chartlib/src/main/java/com/android/tools/chartlib/TimelineComponent.java
-+++ b/chartlib/src/main/java/com/android/tools/chartlib/TimelineComponent.java
-@@ -35,7 +35,7 @@
- 
- import javax.swing.Icon;
- 
--import gnu.trove.TIntObjectHashMap;
-+import gnu.trove.map.hash.TIntObjectHashMap;
- 
- /**
-  * A component to display a TimelineData object. It locks the timeline object to prevent
 --- a/perflib/src/main/java/com/android/tools/perflib/heap/ClassObj.java
 +++ b/perflib/src/main/java/com/android/tools/perflib/heap/ClassObj.java
 @@ -19,7 +19,7 @@
@@ -96,11 +85,13 @@ Subject: trove3
              int size = 0;
 --- a/perflib/src/main/java/com/android/tools/perflib/heap/HprofParser.java
 +++ b/perflib/src/main/java/com/android/tools/perflib/heap/HprofParser.java
-@@ -24,7 +24,7 @@
+@@ -24,8 +24,8 @@
  import java.io.EOFException;
  import java.io.IOException;
  
+-import gnu.trove.TIntObjectHashMap;
 -import gnu.trove.TLongObjectHashMap;
++import gnu.trove.map.hash.TIntObjectHashMap;
 +import gnu.trove.map.hash.TLongObjectHashMap;
  
  class HprofParser {

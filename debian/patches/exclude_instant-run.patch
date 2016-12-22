@@ -5,23 +5,21 @@ Description: Exclude instant-run libraries from gradle-core
  available yet, so let's excluded it for now.
 --- a/build-system/gradle-core/build.gradle
 +++ b/build-system/gradle-core/build.gradle
-@@ -38,8 +38,8 @@
-     compile 'org.ow2.asm:asm-commons:5.0.3'
-     compile "net.sf.proguard:proguard-gradle:${project.ext.proguardVersion}"
-     compile "org.jacoco:org.jacoco.core:0.7.4.201502262128"
+@@ -42,8 +42,6 @@
+     compile "org.jacoco:org.jacoco.report:0.7.5.201505241946" // update JacocoPlugin.
+     compile "net.sf.jopt-simple:jopt-simple:4.9"
+     compile "com.google.protobuf:protobuf-java:2.5.0"
 -    testCompile project(':base:instant-run:instant-run-annotations')
 -    testCompile project(':base:instant-run:instant-run-runtime')
-+    //testCompile project(':base:instant-run:instant-run-annotations')
-+    //testCompile project(':base:instant-run:instant-run-runtime')
  
  
      // Add gradleApi to classpath for compilation, but use provided configuration so that groovy is
-@@ -48,7 +48,7 @@
-     testCompile gradleApi()
-     compile localGroovy()
+@@ -56,8 +54,6 @@
+             dir:file("$rootProject.ext.androidHostOut/gradle-dist-link/lib"),
+             includes: ["*", "plugins/gradle*"])
  
 -    includeInJar project(':base:instant-run:instant-run-server')
-+    //includeInJar project(':base:instant-run:instant-run-server')
- 
+-
      antlr 'org.antlr:antlr:3.5.2'
  
+     testCompile 'junit:junit:4.12'

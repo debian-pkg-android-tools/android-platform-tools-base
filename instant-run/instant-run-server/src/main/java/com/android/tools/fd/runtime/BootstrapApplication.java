@@ -20,11 +20,13 @@ import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 
 import android.app.ActivityManager;
+import android.content.ComponentCallbacks;
 import android.os.Process;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.Application;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.pm.PackageManager;
 import android.util.Log;
 
 import java.io.File;
@@ -47,17 +49,17 @@ import java.util.logging.Level;
 /**
  * A stub application that patches the class loader, then replaces itself with the real application
  * by applying a liberal amount of reflection on Android internals.
- * <p/>
+ * <p>
  * <p>This is, of course, terribly error-prone. Most of this code was tested with API versions
  * 8, 10, 14, 15, 16, 17, 18, 19 and 21 on the Android emulator, a Nexus 5 running Lollipop LRX22C
  * and a Samsung GT-I5800 running Froyo XWJPE. The exception is {@code monkeyPatchAssetManagers},
  * which only works on Kitkat and Lollipop.
- * <p/>
+ * <p>
  * <p>Note that due to a bug in Dalvik, this only works on Kitkat if ART is the Java runtime.
- * <p/>
+ * <p>
  * <p>Unfortunately, if this does not work, we don't have a fallback mechanism: as soon as we
  * build the APK with this class as the Application, we are committed to going through with it.
- * <p/>
+ * <p>
  * <p>This class should use as few other classes as possible before the class loader is patched
  * because any class loaded before it cannot be incrementally deployed.
  */
@@ -113,11 +115,10 @@ public class BootstrapApplication extends Application {
     private Application realApplication;
 
     public BootstrapApplication() {
-        if (Log.isLoggable(LOG_TAG, Log.VERBOSE)) {
-            Log.v(LOG_TAG, String.format(
-                    "BootstrapApplication created. Android package is %s, real application class is %s.",
-                    AppInfo.applicationId, AppInfo.applicationClass));
-        }
+        // always log such that we can debug issues like http://b.android.com/215805
+        Log.i(LOG_TAG, String.format(
+                "Instant Run Runtime started. Android package is %s, real application class is %s.",
+                AppInfo.applicationId, AppInfo.applicationClass));
     }
 
     private void createResources(long apkModified) {
@@ -181,6 +182,8 @@ public class BootstrapApplication extends Application {
                     nativeLibraryPath,
                     codeCacheDir,
                     dexList);
+        } else {
+            Log.w(LOG_TAG, "No instant run dex files added to classpath");
         }
     }
 
@@ -250,6 +253,47 @@ public class BootstrapApplication extends Application {
                 throw new IllegalStateException(e);
             }
         }
+    }
+
+    @Override
+    public Context createPackageContext(String packageName, int flags)
+            throws PackageManager.NameNotFoundException {
+        Context c = realApplication.createPackageContext(packageName, flags);
+        return c == null ? realApplication : c;
+    }
+
+    @Override
+    public void registerComponentCallbacks(ComponentCallbacks callback) {
+        realApplication.registerComponentCallbacks(callback);
+    }
+
+    @Override
+    public void registerActivityLifecycleCallbacks(
+            ActivityLifecycleCallbacks callback) {
+        realApplication.registerActivityLifecycleCallbacks(callback);
+    }
+
+    @Override
+    public void registerOnProvideAssistDataListener(
+            OnProvideAssistDataListener callback) {
+        realApplication.registerOnProvideAssistDataListener(callback);
+    }
+
+    @Override
+    public void unregisterComponentCallbacks(ComponentCallbacks callback) {
+        realApplication.unregisterComponentCallbacks(callback);
+    }
+
+    @Override
+    public void unregisterActivityLifecycleCallbacks(
+            ActivityLifecycleCallbacks callback) {
+        realApplication.unregisterActivityLifecycleCallbacks(callback);
+    }
+
+    @Override
+    public void unregisterOnProvideAssistDataListener(
+            OnProvideAssistDataListener callback) {
+        realApplication.unregisterOnProvideAssistDataListener(callback);
     }
 
     @Override

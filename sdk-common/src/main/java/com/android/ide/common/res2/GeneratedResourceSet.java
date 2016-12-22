@@ -35,27 +35,28 @@ public class GeneratedResourceSet extends ResourceSet {
     public static final String ATTR_GENERATED = "generated";
 
     public GeneratedResourceSet(ResourceSet originalSet) {
-        super(originalSet.getConfigName() + "$Generated", originalSet.getValidateEnabled());
+        super(originalSet.getConfigName() + "$Generated", originalSet.getLibraryName(), originalSet.getValidateEnabled());
         for (File source : originalSet.getSourceFiles()) {
             addSource(source);
         }
     }
 
-    public GeneratedResourceSet(String name) {
-        super(name);
+    public GeneratedResourceSet(String name, String libraryName) {
+        super(name, libraryName);
     }
 
     @Override
     protected DataSet<ResourceItem, ResourceFile> createSet(String name) {
-        return new GeneratedResourceSet(name);
+        return new GeneratedResourceSet(name, getLibraryName());
     }
 
     @Override
     void appendToXml(@NonNull Node setNode,
                      @NonNull Document document,
-                     @NonNull MergeConsumer<ResourceItem> consumer) {
+                     @NonNull MergeConsumer<ResourceItem> consumer,
+                     boolean includeTimestamps) {
         NodeUtils.addAttribute(document, setNode, null, ATTR_GENERATED, SdkConstants.VALUE_TRUE);
-        super.appendToXml(setNode, document, consumer);
+        super.appendToXml(setNode, document, consumer, includeTimestamps);
     }
 
     @Override

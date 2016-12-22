@@ -28,7 +28,6 @@ import com.android.annotations.Nullable;
 import com.android.tools.lint.client.api.LintDriver;
 import com.android.tools.lint.detector.api.Location.SearchDirection;
 import com.android.tools.lint.detector.api.Location.SearchHints;
-import com.android.utils.AsmUtils;
 import com.google.common.annotations.Beta;
 import com.google.common.base.Splitter;
 
@@ -45,7 +44,7 @@ import java.util.List;
 
 /**
  * A {@link Context} used when checking .class files.
- * <p/>
+ * <p>
  * <b>NOTE: This is not a public or final API; if you rely on this be prepared
  * to adjust your code for the next tools release.</b>
  */
@@ -294,7 +293,7 @@ public class ClassContext extends Context {
     @Override
     public void report(
             @NonNull Issue issue,
-            @Nullable Location location,
+            @NonNull Location location,
             @NonNull String message) {
         if (mDriver.isSuppressed(issue, mClassNode)) {
             return;
@@ -358,7 +357,7 @@ public class ClassContext extends Context {
             @NonNull Issue issue,
             @Nullable MethodNode method,
             @Nullable AbstractInsnNode instruction,
-            @Nullable Location location,
+            @NonNull Location location,
             @NonNull String message) {
         if (method != null && mDriver.isSuppressed(issue, mClassNode, method, instruction)) {
             return;
@@ -379,7 +378,7 @@ public class ClassContext extends Context {
     public void report(
             @NonNull Issue issue,
             @Nullable FieldNode field,
-            @Nullable Location location,
+            @NonNull Location location,
             @NonNull String message) {
         if (field != null && mDriver.isSuppressed(issue, field)) {
             return;
@@ -401,7 +400,7 @@ public class ClassContext extends Context {
             @NonNull Issue issue,
             @Nullable MethodNode method,
             @Nullable AbstractInsnNode instruction,
-            @Nullable Location location,
+            @NonNull Location location,
             @NonNull String message,
             @SuppressWarnings("UnusedParameters") @Nullable Object data) {
         report(issue, method, instruction, location, message);
@@ -420,7 +419,7 @@ public class ClassContext extends Context {
     public void report(
             @NonNull Issue issue,
             @Nullable FieldNode field,
-            @Nullable Location location,
+            @NonNull Location location,
             @NonNull String message,
             @SuppressWarnings("UnusedParameters") @Nullable Object data) {
         report(issue, field, location, message);
@@ -699,7 +698,7 @@ public class ClassContext extends Context {
 
         // If class name contains $, it's not an ambiguous inner class name.
         if (fqcn.indexOf('$') != -1) {
-            return AsmUtils.toInternalName(fqcn);
+            return fqcn.replace('.', '/');
         }
         // Let's assume that components that start with Caps are class names.
         StringBuilder sb = new StringBuilder(fqcn.length());

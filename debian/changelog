@@ -1,3 +1,11 @@
+android-platform-tools-base (2.2.2-1) unstable; urgency=medium
+
+  [Hans-Christoph Steiner]
+  * New upstream release
+  * Team upload
+
+ -- Kai-Chung Yan <seamlikok@gmail.com>  Thu, 22 Dec 2016 22:52:13 +0100
+
 android-platform-tools-base (2.0.0-2) unstable; urgency=medium
 
   * Switch to libasm-java instead of libasm4-java (Closes: #839745)

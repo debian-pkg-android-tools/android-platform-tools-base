@@ -19,6 +19,7 @@ Build-Depends:
  libcommons-compress-java,
  libecj-java,
  libgoogle-gson-java,
+ libguava-java,
  libhttpmime-java,
  libintellij-annotations-java,
  libjacoco-java,

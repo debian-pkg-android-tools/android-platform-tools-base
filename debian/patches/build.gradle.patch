@@ -607,7 +607,15 @@ Description: Patch upstream's build system for Debian.
  
 --- a/sdklib/build.gradle
 +++ b/sdklib/build.gradle
-@@ -2,7 +2,7 @@
+@@ -1,8 +1,15 @@
++
++buildscript {
++  dependencies {
++    classpath 'com.google.guava:guava:debian'
++  }
++}
++
+ import com.google.common.collect.ImmutableMap
  
  apply plugin: 'java'
  apply plugin: 'jacoco'
@@ -616,7 +624,7 @@ Description: Patch upstream's build system for Debian.
  
  evaluationDependsOn(':base:dvlib')
  
-@@ -118,7 +118,3 @@
+@@ -118,7 +125,3 @@
  
  project.ext.pomName = 'Android Tools sdklib'
  project.ext.pomDesc = 'A library to parse and download the Android SDK.'

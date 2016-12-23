@@ -2,6 +2,8 @@
 
 include /usr/share/dpkg/pkg-info.mk
 export JAVA_HOME=/usr/lib/jvm/default-java
+# needed by some tests
+export ANDROID_HOME=/usr/lib/android-sdk
 
 %:
 	dh $@ --with maven_repo_helper --buildsystem=gradle

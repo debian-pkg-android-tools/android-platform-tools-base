@@ -23,6 +23,7 @@ Build-Depends:
  libintellij-annotations-java,
  libjacoco-java,
  libjavawriter-java,
+ libjimfs-java,
  libjsr305-java,
  libkxml2-java,
  liblombok-ast-java,
@@ -137,6 +138,7 @@ Depends: libandroid-layoutlib-api-java,
          libgoogle-gson-java,
          libhttpclient-java,
          libhttpmime-java,
+         libjimfs-java,
          ${misc:Depends}
 Description: Library to parse and download the Android SDK
  This library is used by the SDK manager.

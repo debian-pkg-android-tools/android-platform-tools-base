@@ -16,6 +16,10 @@ override_dh_install:
 	chmod -x debian/libgradle-android-plugin-java-doc/usr/share/doc/libgradle-android-plugin-java/templates/gradle-projects/NewAndroidAutoProject/template.xml
 
 get-orig-source: gradle_$(DEB_VERSION_UPSTREAM).tar.gz
+	mkdir $(DEB_SOURCE)_$(DEB_VERSION_UPSTREAM)
+	tar -f $< --gz -x --directory $(DEB_SOURCE)_$(DEB_VERSION_UPSTREAM)
+	cd $(DEB_SOURCE)_$(DEB_VERSION_UPSTREAM); tar --create --xz -f ../../$(DEB_SOURCE)_$(DEB_VERSION_UPSTREAM).orig.tar.xz --exclude-from ../debian/orig.excludes --mtime=2011-12-21 * .gitignore .eclipse .idea
+	$(RM) -r $(DEB_SOURCE)_$(DEB_VERSION_UPSTREAM)
 
 gradle_$(DEB_VERSION_UPSTREAM).tar.gz:
 	wget https://android.googlesource.com/platform/tools/base/+archive/gradle_$(DEB_VERSION_UPSTREAM).tar.gz

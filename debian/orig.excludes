@@ -1,0 +1,10 @@
+*.aar
+*.android-hprof
+*.apk
+*.class
+*.jar
+*.so
+*.trace
+*.zip
+*/lena.png
+*/rfc2460.txt

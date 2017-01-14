@@ -1,6 +1,6 @@
-android-platform-tools-base (2.2.2-1) unstable; urgency=medium
+android-platform-tools-base (2.2.2-1) UNRELEASED; urgency=medium
 
-  [Hans-Christoph Steiner]
+  [ Hans-Christoph Steiner ]
   * New upstream release
   * Team upload
 

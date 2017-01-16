@@ -9,7 +9,7 @@ export ANDROID_HOME=/usr/lib/android-sdk
 	dh $@ --with maven_repo_helper --buildsystem=gradle
 
 override_dh_auto_build:
-	dh_auto_build -- -x test --settings-file debian/settings.gradle assemble
+	dh_auto_build -- -x test --settings-file debian/settings.gradle assemble -x :base:testutils:assemble
 
 override_dh_install:
 	dh_install

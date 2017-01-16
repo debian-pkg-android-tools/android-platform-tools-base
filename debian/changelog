@@ -1,7 +1,7 @@
 android-platform-tools-base (2.2.2-1) UNRELEASED; urgency=medium
 
   [ Hans-Christoph Steiner ]
-  * New upstream release
+  * New upstream release (Closes: #850997)
   * Team upload
 
  -- Kai-Chung Yan <seamlikok@gmail.com>  Thu, 22 Dec 2016 22:52:13 +0100

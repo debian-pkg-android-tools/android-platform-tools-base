@@ -1,4 +1,3 @@
 draw9patch/build/debian/draw9patch.pom        --java-lib --artifact=draw9patch/build/libs/*.jar       --usj-name=com.android.tools.draw9patch
 legacy/archquery/build/debian/archquery.pom   --java-lib --artifact=legacy/archquery/build/libs/*.jar --usj-name=com.android.tools.archquery
 misc/screenshot2/build/debian/screenshot2.pom --java-lib --artifact=misc/screenshot2/build/libs/*.jar --usj-name=com.android.tools.screenshot2
-testutils/build/debian/testutils.pom          --java-lib --artifact=testutils/build/libs/*.jar        --usj-name=com.android.tools.testutils

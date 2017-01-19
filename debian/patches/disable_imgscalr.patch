@@ -1,0 +1,62 @@
+--- a/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/openapi/util/IconLoader.java
++++ b/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/openapi/util/IconLoader.java
+@@ -27,7 +27,6 @@
+ import com.intellij.util.ui.JBImageIcon;
+ import com.intellij.util.ui.JBUI;
+ import com.intellij.util.ui.UIUtil;
+-import org.imgscalr.Scalr;
+ import org.jetbrains.annotations.NonNls;
+ import org.jetbrains.annotations.NotNull;
+ import org.jetbrains.annotations.Nullable;
+@@ -485,26 +484,7 @@
+       }
+ 
+       public Icon getScaledIcon(float scale) {
+-        float effectiveScale = scale * JBUI.scale(1f);
+-        Icon icon = SoftReference.dereference(scaledIconsCache.get(effectiveScale));
+-
+-        if (icon == null) {
+-          boolean needRetinaImage = (effectiveScale >= 1.5f || UIUtil.isRetina());
+-          Image image = getOrigImage(needRetinaImage);
+-
+-          if (image != null) {
+-            Image iconImage = getRealIcon().getImage();
+-            int width = (int)(ImageUtil.getRealWidth(iconImage) * scale);
+-            int height = (int)(ImageUtil.getRealHeight(iconImage) * scale);
+-
+-            Image resizedImage = Scalr.resize(ImageUtil.toBufferedImage(image), Scalr.Method.ULTRA_QUALITY, width, height);
+-            if (UIUtil.isRetina()) resizedImage = RetinaImage.createFrom(resizedImage);
+-
+-            icon = getIcon(resizedImage);
+-            scaledIconsCache.put(effectiveScale, new SoftReference<Icon>(icon));
+-          }
+-        }
+-        return icon;
++        throw new RuntimeException("scalr not in Debian!");
+       }
+ 
+       public void clear() {
+--- a/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/util/ImageLoader.java
++++ b/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/util/ImageLoader.java
+@@ -25,7 +25,6 @@
+ import com.intellij.util.ui.ImageUtil;
+ import com.intellij.util.ui.JBUI;
+ import com.intellij.util.ui.UIUtil;
+-import org.imgscalr.Scalr;
+ import org.jetbrains.annotations.NonNls;
+ import org.jetbrains.annotations.NotNull;
+ import org.jetbrains.annotations.Nullable;
+@@ -268,12 +267,7 @@
+ 
+   @NotNull
+   private static Image scaleImage(Image image, float scale) {
+-    int width = (int)(scale * image.getWidth(null));
+-    int height = (int)(scale * image.getHeight(null));
+-    // Using "QUALITY" instead of "ULTRA_QUALITY" results in images that are less blurry
+-    // because ultra quality performs a few more passes when scaling, which introduces blurriness
+-    // when the scaling factor is relatively small (i.e. <= 3.0f) -- which is the case here.
+-    return Scalr.resize(ImageUtil.toBufferedImage(image), Scalr.Method.QUALITY, width, height);
++    throw new RuntimeException("scalr Not in Debian!");
+   }
+ 
+   @Nullable

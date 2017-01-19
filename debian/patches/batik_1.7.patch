@@ -1,0 +1,34 @@
+--- a/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/util/SVGLoader.java
++++ b/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/util/SVGLoader.java
+@@ -15,7 +15,6 @@
+  */
+ package com.intellij.util;
+ 
+-import org.apache.batik.dom.svg.SAXSVGDocumentFactory;
+ import org.apache.batik.transcoder.TranscoderException;
+ import org.apache.batik.transcoder.TranscoderInput;
+ import org.apache.batik.transcoder.TranscoderOutput;
+@@ -90,22 +89,7 @@
+   }
+ 
+   private SVGLoader(@Nullable URL url, InputStream stream, float scale) throws IOException {
+-    Document document = null;
+-    String uri = null;
+-    try {
+-      uri = url != null ? url.toURI().toString() : null;
+-    }
+-    catch (URISyntaxException ignore) {
+-    }
+-    document = new SAXSVGDocumentFactory(XMLResourceDescriptor.getXMLParserClassName()).
+-      createDocument(uri, stream);
+-    if (document == null) {
+-      throw new IOException("document not created");
+-    }
+-    input = new TranscoderInput(document);
+-
+-    width = SizeAttr.width.value(document) * scale;
+-    height = SizeAttr.height.value(document) * scale;
++    throw new RuntimeException("Incompatible with Batik 1.7!");
+   }
+ 
+   private BufferedImage createImage() throws TranscoderException {

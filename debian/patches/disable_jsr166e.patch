@@ -1,0 +1,273 @@
+--- a/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/util/containers/RecentStringInterner.java
++++ b/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/util/containers/RecentStringInterner.java
+@@ -16,7 +16,6 @@
+ package com.intellij.util.containers;
+ 
+ import com.intellij.openapi.util.LowMemoryWatcher;
+-import jsr166e.extra.SequenceLock;
+ import org.jetbrains.annotations.NotNull;
+ 
+ import java.util.concurrent.locks.Lock;
+@@ -56,7 +55,7 @@
+           super.putToProtectedQueue(value, value);
+         }
+       };
+-      myStripeLocks[i] = new SequenceLock();
++      throw new RuntimeException("JSR116e not in Debian!");
+     }
+ 
+     assert Integer.highestOneBit(stripes) == stripes;
+--- a/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/util/io/PagedFileStorage.java
++++ b/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/util/io/PagedFileStorage.java
+@@ -22,7 +22,6 @@
+ import com.intellij.util.containers.ConcurrentIntObjectMap;
+ import com.intellij.util.containers.ContainerUtil;
+ import com.intellij.util.containers.hash.LinkedHashMap;
+-import jsr166e.extra.SequenceLock;
+ import org.jetbrains.annotations.NotNull;
+ import org.jetbrains.annotations.Nullable;
+ 
+@@ -486,10 +485,10 @@
+     private final ConcurrentIntObjectMap<PagedFileStorage> myIndex2Storage = ContainerUtil.createConcurrentIntObjectMap();
+ 
+     private final LinkedHashMap<Integer, ByteBufferWrapper> mySegments;
+-    private final SequenceLock mySegmentsAccessLock = new SequenceLock(); // protects map operations of mySegments, needed for LRU order, mySize and myMappingChangeCount
++    private final Object mySegmentsAccessLock = null; // protects map operations of mySegments, needed for LRU order, mySize and myMappingChangeCount
+     // todo avoid locking for access
+ 
+-    private final SequenceLock mySegmentsAllocationLock = new SequenceLock();
++    private final Object mySegmentsAllocationLock = null;
+     private final ConcurrentLinkedQueue<ByteBufferWrapper> mySegmentsToRemove = new ConcurrentLinkedQueue<ByteBufferWrapper>();
+     private volatile long mySize;
+     private volatile long mySizeLimit;
+@@ -549,81 +548,15 @@
+     }
+ 
+     private ByteBufferWrapper get(Integer key) {
+-      ByteBufferWrapper wrapper;
+-      try {         // fast path
+-        mySegmentsAccessLock.lock();
+-        wrapper = mySegments.get(key);
+-        if (wrapper != null) return wrapper;
+-      }
+-      finally {
+-        mySegmentsAccessLock.unlock();
+-      }
+-
+-      mySegmentsAllocationLock.lock();
+-      try {
+-        // check if anybody cared about our segment
+-        mySegmentsAccessLock.lock();
+-        try {
+-          wrapper = mySegments.get(key);
+-          if (wrapper != null) return wrapper;
+-        } finally {
+-          mySegmentsAccessLock.unlock();
+-        }
+-
+-        long started = IOStatistics.DEBUG ? System.currentTimeMillis() : 0;
+-        wrapper = createValue(key);
+-
+-        if (IOStatistics.DEBUG) {
+-          long finished = System.currentTimeMillis();
+-          if (finished - started > IOStatistics.MIN_IO_TIME_TO_REPORT) {
+-            IOStatistics.dump(
+-              "Mapping " + wrapper.myLength + " from " + wrapper.myPosition + " file:" + wrapper.myFile + " for " + (finished - started));
+-          }
+-        }
+-
+-        mySegmentsAccessLock.lock();
+-        try {
+-          mySegments.put(key, wrapper);
+-          mySize += wrapper.myLength;
+-        }
+-        finally {
+-          mySegmentsAccessLock.unlock();
+-        }
+-
+-        ensureSize(mySizeLimit);
+-
+-        return wrapper;
+-      }
+-      finally {
+-        mySegmentsAllocationLock.unlock();
+-      }
++      throw new RuntimeException("JSR116e not in Debian!");
+     }
+ 
+     private void disposeRemovedSegments() {
+-      if (mySegmentsToRemove.isEmpty()) return;
+-
+-      assert mySegmentsAllocationLock.isHeldByCurrentThread();
+-      Iterator<ByteBufferWrapper> iterator = mySegmentsToRemove.iterator();
+-      while(iterator.hasNext()) {
+-        iterator.next().dispose();
+-        iterator.remove();
+-      }
++      throw new RuntimeException("JSR116e Not in Debian!");
+     }
+ 
+     private void ensureSize(long sizeLimit) {
+-      assert mySegmentsAllocationLock.isHeldByCurrentThread();
+-
+-      try {
+-        mySegmentsAccessLock.lock();
+-        while (mySize > sizeLimit) {
+-          // we still have to drop something
+-          mySegments.doRemoveEldestEntry();
+-        }
+-      } finally {
+-        mySegmentsAccessLock.unlock();
+-      }
+-
+-      disposeRemovedSegments();
++      throw new RuntimeException("JSR116e Not in Debian!");
+     }
+ 
+     @NotNull
+@@ -691,96 +624,30 @@
+     }
+ 
+     private static void checkThreadAccess(StorageLockContext storageLockContext) {
+-      if (storageLockContext.myCheckThreadAccess && !storageLockContext.myLock.isHeldByCurrentThread()) {
+-        throw new IllegalStateException("Must hold StorageLock lock to access PagedFileStorage");
+-      }
++      throw new RuntimeException("JSR116e not in Debian!");
+     }
+ 
+     @Nullable
+     private Map<Integer, ByteBufferWrapper> getBuffersOrderedForOwner(int index, StorageLockContext storageLockContext) {
+-      mySegmentsAccessLock.lock();
+-      try {
+-        checkThreadAccess(storageLockContext);
+-        Map<Integer, ByteBufferWrapper> mineBuffers = null;
+-        for (Map.Entry<Integer, ByteBufferWrapper> entry : mySegments.entrySet()) {
+-          if ((entry.getKey() & FILE_INDEX_MASK) == index) {
+-            if (mineBuffers == null) {
+-              mineBuffers = new TreeMap<Integer, ByteBufferWrapper>(new Comparator<Integer>() {
+-                @Override
+-                public int compare(Integer o1, Integer o2) {
+-                  return o1 - o2;
+-                }
+-              });
+-            }
+-            mineBuffers.put(entry.getKey(), entry.getValue());
+-          }
+-        }
+-        return mineBuffers;
+-      }
+-      finally {
+-        mySegmentsAccessLock.unlock();
+-      }
++      throw new RuntimeException("JSR116e Not in Debian!");
+     }
+ 
+     private void unmapBuffersForOwner(int index, StorageLockContext storageLockContext) {
+-      final Map<Integer, ByteBufferWrapper> buffers = getBuffersOrderedForOwner(index, storageLockContext);
+-
+-      if (buffers != null) {
+-        mySegmentsAccessLock.lock();
+-        try {
+-          for (Integer key : buffers.keySet()) {
+-            mySegments.remove(key);
+-          }
+-        }
+-        finally {
+-          mySegmentsAccessLock.unlock();
+-        }
+-
+-        mySegmentsAllocationLock.lock();
+-        try {
+-          disposeRemovedSegments();
+-        } finally {
+-          mySegmentsAllocationLock.unlock();
+-        }
+-      }
++      throw new RuntimeException("JSR116e Not in Debian!");
+     }
+ 
+     private void flushBuffersForOwner(int index, StorageLockContext storageLockContext) {
+-      Map<Integer, ByteBufferWrapper> buffers = getBuffersOrderedForOwner(index, storageLockContext);
+-
+-      if (buffers != null) {
+-        mySegmentsAllocationLock.lock();
+-        try {
+-          for(ByteBufferWrapper buffer:buffers.values()) {
+-            buffer.flush();
+-          }
+-        }
+-        finally {
+-          mySegmentsAllocationLock.unlock();
+-        }
+-      }
++      throw new RuntimeException("JSR116e Not in Debian!");
+     }
+ 
+     public void invalidateBuffer(int page) {
+-      mySegmentsAccessLock.lock();
+-      try {
+-        mySegments.remove(page);
+-      } finally {
+-        mySegmentsAccessLock.unlock();
+-      }
+-      mySegmentsAllocationLock.lock();
+-      try {
+-        disposeRemovedSegments();
+-      }
+-      finally {
+-        mySegmentsAllocationLock.unlock();
+-      }
++      throw new RuntimeException("JSR116e Not in Debian!");
+     }
+   }
+ 
+   public static class StorageLockContext {
+     private final boolean myCheckThreadAccess;
+-    private final SequenceLock myLock;
++    private final Object myLock;
+     private final StorageLock myStorageLock;
+ 
+     @Deprecated
+@@ -789,9 +656,7 @@
+     }
+ 
+     private StorageLockContext(StorageLock lock, boolean checkAccess) {
+-      myLock = new SequenceLock();
+-      myStorageLock = lock;
+-      myCheckThreadAccess = checkAccess;
++      throw new RuntimeException("JSR116e not in Debian!");
+     }
+ 
+     public StorageLockContext(boolean checkAccess) {
+@@ -799,10 +664,10 @@
+     }
+ 
+     public void lock() {
+-      myLock.lock();
++      throw new RuntimeException("JSR116e not in Debian!");
+     }
+     public void unlock() {
+-      myLock.unlock();
++      throw new RuntimeException("JSR116e not in Debian!");
+     }
+   }
+ }
+--- a/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/util/io/CachingEnumerator.java
++++ b/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/util/io/CachingEnumerator.java
+@@ -16,7 +16,6 @@
+ package com.intellij.util.io;
+ 
+ import com.intellij.util.containers.SLRUMap;
+-import jsr166e.extra.SequenceLock;
+ import org.jetbrains.annotations.Nullable;
+ 
+ import java.io.IOException;
+@@ -44,7 +43,7 @@
+     for(int i = 0; i < STRIPE_COUNT; ++i) {
+       myHashcodeToIdCache[i] = new SLRUMap<Integer, Integer>(protectedSize / STRIPE_COUNT, probationalSize / STRIPE_COUNT);
+       myIdToStringCache[i] = new SLRUMap<Integer, Data>(protectedSize / STRIPE_COUNT, probationalSize / STRIPE_COUNT);
+-      myStripeLocks[i] = new SequenceLock();
++      throw new RuntimeException("JSR116e not in Debian!");
+     }
+ 
+   }

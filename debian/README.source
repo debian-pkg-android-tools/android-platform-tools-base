@@ -1,0 +1,19 @@
+debian/additionalSrc/intellij-community: Extracted from [1].
+
+By the time we were preparing for the 2.2.2 update of this package, Debian
+Stretch has entered soft freeze which means no new source package will be
+accepted into Stretch. Therefore, we included these third-party source here.
+
+These third-party source also introduce new BDs:
+
+  * libbatik-java
+  * libautomaton-java
+  * libcglib-java
+  * libjdom1-java
+  * libjna-java
+  * libjna-platform-java
+  * liblog4j1.2-java
+  * liboro-java
+  * libpicocontainer-java
+
+[1]: https://github.com/JetBrains/intellij-community/tree/idea/171.2420

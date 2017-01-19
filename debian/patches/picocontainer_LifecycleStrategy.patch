@@ -1,0 +1,11 @@
+--- a/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/util/pico/ConstructorInjectionComponentAdapter.java
++++ b/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/util/pico/ConstructorInjectionComponentAdapter.java
+@@ -35,7 +35,7 @@
+ public class ConstructorInjectionComponentAdapter extends org.picocontainer.defaults.ConstructorInjectionComponentAdapter {
+   private Object myInstance;
+ 
+-  public ConstructorInjectionComponentAdapter(@NotNull Object componentKey, @NotNull Class componentImplementation, Parameter[] parameters, boolean allowNonPublicClasses, ComponentMonitor monitor, LifecycleStrategy lifecycleStrategy) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
++  public ConstructorInjectionComponentAdapter(@NotNull Object componentKey, @NotNull Class componentImplementation, Parameter[] parameters, boolean allowNonPublicClasses, ComponentMonitor monitor, org.picocontainer.defaults.LifecycleStrategy lifecycleStrategy) throws AssignabilityRegistrationException, NotConcreteRegistrationException {
+     super(componentKey, componentImplementation, parameters, allowNonPublicClasses, monitor, lifecycleStrategy);
+   }
+ 

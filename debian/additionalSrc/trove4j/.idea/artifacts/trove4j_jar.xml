@@ -1,0 +1,30 @@
+<component name="ArtifactManager">
+  <artifact name="trove4j:jar">
+    <output-path>$PROJECT_DIR$/artifacts/</output-path>
+    <root id="root">
+      <element id="archive" name="trove4j.jar">
+        <element id="module-output" name="generated" />
+        <element id="module-output" name="core" />
+        <element id="file-copy" path="$PROJECT_DIR$/trove4j_changes.txt" />
+      </element>
+      <element id="archive" name="trove4j_src.jar">
+        <element id="directory" name=".idea">
+          <element id="dir-copy" path="$PROJECT_DIR$/.idea" />
+        </element>
+        <element id="directory" name="core">
+          <element id="dir-copy" path="$PROJECT_DIR$/core" />
+        </element>
+        <element id="directory" name="generated">
+          <element id="dir-copy" path="$PROJECT_DIR$/generated" />
+        </element>
+        <element id="directory" name="test">
+          <element id="dir-copy" path="$PROJECT_DIR$/test" />
+        </element>
+        <element id="directory" name="util">
+          <element id="dir-copy" path="$PROJECT_DIR$/util" />
+        </element>
+        <element id="file-copy" path="$PROJECT_DIR$/trove4j_changes.txt" />
+      </element>
+    </root>
+  </artifact>
+</component>

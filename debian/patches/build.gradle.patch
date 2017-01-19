@@ -649,7 +649,7 @@ Description: Patch upstream's build system for Debian.
  subprojects { Project project ->
      // only configure leaf projects.
      if (!project.getSubprojects().isEmpty()) return
-@@ -5,6 +7,15 @@
+@@ -5,6 +7,13 @@
      // exclude aar projects.
      if ("fdr".equals(project.name)) return
  
@@ -657,8 +657,6 @@ Description: Patch upstream's build system for Debian.
 +    apply plugin: 'java'
 +    apply from: "${rootDir}/debian/generateClasspath.gradle"
 +
-+    sourceCompatibility = 1.6
-+    targetCompatibility = 1.6
 +    compileJava.options.encoding = 'UTF-8'
 +
 +    afterEvaluate {
@@ -734,7 +732,15 @@ Description: Patch upstream's build system for Debian.
 -apply from: "$rootDir/buildSrc/base/javadoc.gradle"
 --- a/build-system/profile/build.gradle
 +++ b/build-system/profile/build.gradle
-@@ -23,4 +23,6 @@
+@@ -6,6 +6,7 @@
+     compile project(':base:common')
+     compile 'com.google.guava:guava:17.0'
+     compile 'com.google.code.gson:gson:2.2.4'
++    compile 'com.android.tools.analytics-library:protos:debian'
+     compile 'com.android.tools.analytics-library:tracker:debian'
+ 
+     testCompile 'junit:junit:4.12'
+@@ -23,4 +24,6 @@
  
  artifacts {
      sourcesOnly sourcesJar

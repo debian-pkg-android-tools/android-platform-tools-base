@@ -1,0 +1,325 @@
+--- a/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/openapi/util/JDOMExternalizableStringList.java
++++ b/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/openapi/util/JDOMExternalizableStringList.java
+@@ -52,17 +52,17 @@
+     clear();
+ 
+     Class callerClass = null;
+-    for (Element listElement : element.getChildren(ATTR_LIST)) {
++    for (Object listElement : element.getChildren(ATTR_LIST)) {
+       if (callerClass == null) {
+         callerClass = ReflectionUtil.findCallerClass(2);
+         assert callerClass != null;
+       }
+       final ClassLoader classLoader = callerClass.getClassLoader();
+-      for (Element listItemElement : listElement.getChildren(ATTR_ITEM)) {
+-        if (!ATTR_ITEM.equals(listItemElement.getName())) {
+-          throw new IllegalDataException("Unable to read list item. Unknown element found: " + listItemElement.getName());
++      for (Object listItemElement : ((Element) listElement).getChildren(ATTR_ITEM)) {
++        if (!ATTR_ITEM.equals(((Element) listItemElement).getName())) {
++          throw new IllegalDataException("Unable to read list item. Unknown element found: " + ((Element) listItemElement).getName());
+         }
+-        String itemClassString = listItemElement.getAttributeValue(ATTR_CLASS);
++        String itemClassString = ((Element) listItemElement).getAttributeValue(ATTR_CLASS);
+         Class itemClass;
+         try {
+           itemClass = Class.forName(itemClassString, true, classLoader);
+@@ -71,7 +71,7 @@
+           throw new IllegalDataException("Unable to read list item: unable to load class: " + itemClassString + " \n" + ex.getMessage());
+         }
+ 
+-        String listItem = listItemElement.getAttributeValue(ATTR_VALUE);
++        String listItem = ((Element) listItemElement).getAttributeValue(ATTR_VALUE);
+ 
+         LOG.assertTrue(String.class.equals(itemClass));
+ 
+--- a/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/openapi/util/registry/Registry.java
++++ b/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/openapi/util/registry/Registry.java
+@@ -119,9 +119,9 @@
+ 
+   public void loadState(@NotNull Element state) {
+     myUserProperties.clear();
+-    for (Element eachEntry : state.getChildren("entry")) {
+-      String key = eachEntry.getAttributeValue("key");
+-      String value = eachEntry.getAttributeValue("value");
++    for (Object eachEntry : state.getChildren("entry")) {
++      String key = ((Element) eachEntry).getAttributeValue("key");
++      String value = ((Element) eachEntry).getAttributeValue("value");
+       if (key != null && value != null) {
+         RegistryValue registryValue = get(key);
+         if (registryValue.isChangedFromDefault(value)) {
+--- a/debian/additionalSrc/intellij-community/platform/extensions/src/com/intellij/openapi/extensions/impl/ExtensionsAreaImpl.java
++++ b/debian/additionalSrc/intellij-community/platform/extensions/src/com/intellij/openapi/extensions/impl/ExtensionsAreaImpl.java
+@@ -159,8 +159,8 @@
+     // has content
+     if (!extensionElement.getContent().isEmpty()) return true;
+     // has custom attributes
+-    for (Attribute attribute : extensionElement.getAttributes()) {
+-      final String name = attribute.getName();
++    for (Object attribute : extensionElement.getAttributes()) {
++      final String name = ((Attribute) attribute).getName();
+       if (!"implementation".equals(name) && !"id".equals(name) && !"order".equals(name)) {
+         return true;
+       }
+--- a/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/openapi/util/JDOMExternalizer.java
++++ b/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/openapi/util/JDOMExternalizer.java
+@@ -56,9 +56,9 @@
+ 
+   @Nullable
+   public static String readString(@NonNls Element root, @NonNls String name) {
+-    for (Element element : root.getChildren("setting")) {
+-      if (Comparing.strEqual(element.getAttributeValue("name"), name)) {
+-        return element.getAttributeValue("value");
++    for (Object element : root.getChildren("setting")) {
++      if (Comparing.strEqual(((Element) element).getAttributeValue("name"), name)) {
++        return ((Element) element).getAttributeValue("value");
+       }
+     }
+     return null;
+@@ -98,10 +98,10 @@
+       return;
+     }
+ 
+-    for (@NonNls Element element : mapRoot.getChildren(entryName)) {
+-      String name = element.getAttributeValue("name");
++    for (@NonNls Object element : mapRoot.getChildren(entryName)) {
++      String name = ((Element) element).getAttributeValue("name");
+       if (name != null) {
+-        map.put(name, element.getAttributeValue("value"));
++        map.put(name, ((Element) element).getAttributeValue("value"));
+       }
+     }
+   }
+--- a/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/openapi/util/JDOMUtil.java
++++ b/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/openapi/util/JDOMUtil.java
+@@ -112,12 +112,12 @@
+   private static int addToHash(int i, @NotNull Element element, boolean skipEmptyText) {
+     i = addToHash(i, element.getName());
+ 
+-    for (Attribute attribute : element.getAttributes()) {
+-      i = addToHash(i, attribute.getName());
+-      i = addToHash(i, attribute.getValue());
++    for (Object attribute : element.getAttributes()) {
++      i = addToHash(i, ((Attribute) attribute).getName());
++      i = addToHash(i, ((Attribute) attribute).getValue());
+     }
+ 
+-    for (Content child : element.getContent()) {
++    for (Object child : element.getContent()) {
+       if (child instanceof Element) {
+         i = addToHash(i, (Element)child, skipEmptyText);
+       }
+@@ -175,17 +175,17 @@
+   public static void internElement(@NotNull Element element, @NotNull StringInterner interner) {
+     element.setName(interner.intern(element.getName()));
+ 
+-    for (Attribute attr : element.getAttributes()) {
+-      attr.setName(interner.intern(attr.getName()));
+-      attr.setValue(interner.intern(attr.getValue()));
++    for (Object attr : element.getAttributes()) {
++      ((Attribute) attr).setName(interner.intern(((Attribute) attr).getName()));
++      ((Attribute) attr).setValue(interner.intern(((Attribute) attr).getValue()));
+     }
+ 
+-    for (Content o : element.getContent()) {
++    for (Object o : element.getContent()) {
+       if (o instanceof Element) {
+         internElement((Element)o, interner);
+       }
+       else if (o instanceof Text) {
+-        ((Text)o).setText(interner.intern(o.getValue()));
++        ((Text)o).setText(interner.intern(((Text)o).getValue()));
+       }
+     }
+   }
+@@ -579,9 +579,9 @@
+   @NotNull
+   public static List<Element> getChildrenFromAllNamespaces(@NotNull final Element element, @NotNull @NonNls final String name) {
+     List<Element> result = new SmartList<Element>();
+-    for (Element child : element.getChildren()) {
+-      if (name.equals(child.getName())) {
+-        result.add(child);
++    for (Object child : element.getChildren()) {
++      if (name.equals(((Element) child).getName())) {
++        result.add((Element) child);
+       }
+     }
+     return result;
+@@ -743,17 +743,17 @@
+     if (!attributes.isEmpty()) {
+       ArrayList<Attribute> list = new ArrayList<Attribute>(attributes.size());
+       for (Attribute attribute : attributes) {
+-        list.add(attribute.clone());
++        list.add((Attribute) attribute.clone());
+       }
+       result.setAttributes(list);
+     }
+ 
+-    for (Namespace namespace : element.getAdditionalNamespaces()) {
+-      result.addNamespaceDeclaration(namespace);
++    for (Object namespace : element.getAdditionalNamespaces()) {
++      result.addNamespaceDeclaration((Namespace) namespace);
+     }
+ 
+     boolean hasContent = false;
+-    for (Content content : element.getContent()) {
++    for (Object content : element.getContent()) {
+       if (content instanceof Element) {
+         if (elementFilter.matches(content)) {
+           hasContent = true;
+@@ -762,7 +762,7 @@
+           continue;
+         }
+       }
+-      result.addContent(content.clone());
++      result.addContent((Content) ((Content) content).clone());
+     }
+     return hasContent ? result : null;
+   }
+--- a/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/util/xmlb/CompactCollectionBinding.java
++++ b/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/util/xmlb/CompactCollectionBinding.java
+@@ -57,8 +57,8 @@
+     List<String> list = (List<String>)context;
+     list.clear();
+     if (element.getName().equals(name)) {
+-      for (Element item : element.getChildren("item")) {
+-        ContainerUtil.addIfNotNull(list, item.getAttributeValue("value"));
++      for (Object item : element.getChildren("item")) {
++        ContainerUtil.addIfNotNull(list, ((Element) item).getAttributeValue("value"));
+       }
+     }
+     else {
+@@ -68,9 +68,9 @@
+         value = value.getChild("list");
+       }
+       if (value != null) {
+-        for (Element item : value.getChildren("item")) {
++        for (Object item : value.getChildren("item")) {
+           //noinspection SpellCheckingInspection
+-          ContainerUtil.addIfNotNull(list, item.getAttributeValue("itemvalue"));
++          ContainerUtil.addIfNotNull(list, ((Element) item).getAttributeValue("itemvalue"));
+         }
+       }
+     }
+--- a/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/util/xmlb/JDOMElementBinding.java
++++ b/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/util/xmlb/JDOMElementBinding.java
+@@ -48,7 +48,7 @@
+     }
+ 
+     if (value instanceof Element) {
+-      Element targetElement = ((Element)value).clone();
++      Element targetElement = (Element) ((Element)value).clone();
+       assert targetElement != null;
+       targetElement.setName(myTagName);
+       return targetElement;
+@@ -56,7 +56,7 @@
+     if (value instanceof Element[]) {
+       ArrayList<Element> result = new ArrayList<Element>();
+       for (Element element : ((Element[])value)) {
+-        result.add(element.clone().setName(myTagName));
++        result.add(((Element) element.clone()).setName(myTagName));
+       }
+       return result;
+     }
+--- a/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/util/xmlb/JDOMXIncluder.java
++++ b/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/util/xmlb/JDOMXIncluder.java
+@@ -93,7 +93,7 @@
+       throw new NullPointerException("Document must not be null");
+     }
+ 
+-    Document result = original.clone();
++    Document result = (Document) original.clone();
+ 
+     Element root = result.getRootElement();
+     List<Content> resolved = doResolve(root, base);
+@@ -347,11 +347,11 @@
+ 
+   private Element resolveNonXIncludeElement(Element original, Stack<String> bases) throws XIncludeException {
+     Element result = new Element(original.getName(), original.getNamespace());
+-    for (Attribute a : original.getAttributes()) {
+-      result.setAttribute(a.clone());
++    for (Object a : original.getAttributes()) {
++      result.setAttribute((Attribute) ((Content) a).clone());
+     }
+ 
+-    for (Content o : original.getContent())  {
++    for (Object o : original.getContent())  {
+       if (o instanceof Element) {
+         Element element = (Element)o;
+         if (isIncludeElement(element)) {
+@@ -362,7 +362,7 @@
+         }
+       }
+       else {
+-        result.addContent(o.clone());
++        result.addContent((Content) ((Content) o).clone());
+       }
+     }
+ 
+--- a/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/util/xmlb/BeanBinding.java
++++ b/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/util/xmlb/BeanBinding.java
+@@ -176,14 +176,14 @@
+ 
+   public void deserializeInto(@NotNull Object result, @NotNull Element element, @Nullable Set<String> accessorNameTracker) {
+     nextAttribute:
+-    for (org.jdom.Attribute attribute : element.getAttributes()) {
+-      if (StringUtil.isEmpty(attribute.getNamespaceURI())) {
++    for (Object attribute : element.getAttributes()) {
++      if (StringUtil.isEmpty(((org.jdom.Attribute) attribute).getNamespaceURI())) {
+         for (Binding binding : myBindings) {
+-          if (binding instanceof AttributeBinding && ((AttributeBinding)binding).myName.equals(attribute.getName())) {
++          if (binding instanceof AttributeBinding && ((AttributeBinding)binding).myName.equals(((org.jdom.Attribute) attribute).getName())) {
+             if (accessorNameTracker != null) {
+               accessorNameTracker.add(binding.getAccessor().getName());
+             }
+-            ((AttributeBinding)binding).set(result, attribute.getValue());
++            ((AttributeBinding)binding).set(result, ((org.jdom.Attribute) attribute).getValue());
+             continue nextAttribute;
+           }
+         }
+@@ -192,7 +192,7 @@
+ 
+     MultiMap<Binding, Element> data = null;
+     nextNode:
+-    for (Content content : element.getContent()) {
++    for (Object content : element.getContent()) {
+       if (content instanceof Comment) {
+         continue;
+       }
+@@ -200,7 +200,7 @@
+       for (Binding binding : myBindings) {
+         if (content instanceof org.jdom.Text) {
+           if (binding instanceof TextBinding) {
+-            ((TextBinding)binding).set(result, content.getValue());
++            ((TextBinding)binding).set(result, ((Element) content).getValue());
+           }
+           continue;
+         }
+--- a/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/util/xmlb/MapBinding.java
++++ b/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/util/xmlb/MapBinding.java
+@@ -189,9 +189,9 @@
+     }
+     else if (myMapAnnotation != null && !myMapAnnotation.surroundKeyWithTag()) {
+       assert binding != null;
+-      for (Element element : entry.getChildren()) {
+-        if (binding.isBoundTo(element)) {
+-          return binding.deserialize(context, element);
++      for (Object element : entry.getChildren()) {
++        if (binding.isBoundTo((Element) element)) {
++          return binding.deserialize(context, (Element) element);
+         }
+       }
+     }
+--- a/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/util/xmlb/AbstractCollectionBinding.java
++++ b/debian/additionalSrc/intellij-community/platform/util/src/com/intellij/util/xmlb/AbstractCollectionBinding.java
+@@ -234,9 +234,9 @@
+   @NotNull
+   private Collection deserializeSingle(Object context, @NotNull Element node) {
+     Collection result = createCollection(node.getName());
+-    for (Element child : node.getChildren()) {
++    for (Object child : node.getChildren()) {
+       //noinspection unchecked
+-      result.add(deserializeItem(child, context));
++      result.add(deserializeItem((Element) child, context));
+     }
+     return result;
+   }

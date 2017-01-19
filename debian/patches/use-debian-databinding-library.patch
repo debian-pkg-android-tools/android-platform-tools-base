@@ -7,9 +7,9 @@
 -    compile project(':analytics-library:protos')
 -    compile project(':analytics-library:shared')
 -    compile project(':analytics-library:tracker')
-+    compile 'com.android.tools.analytics-library:protos'
-+    compile 'com.android.tools.analytics-library:shared'
-+    compile 'com.android.tools.analytics-library:tracker'
++    compile 'com.android.tools.analytics-library:protos:debian'
++    compile 'com.android.tools.analytics-library:shared:debian'
++    compile 'com.android.tools.analytics-library:tracker:debian'
  
      compile 'com.squareup:javawriter:2.5.0'
      compile 'org.bouncycastle:bcpkix-jdk15on:1.48'
@@ -20,7 +20,7 @@
      compile 'com.google.guava:guava:17.0'
      compile 'com.google.code.gson:gson:2.2.4'
 -    compile project(':analytics-library:tracker')
-+    compile 'com.android.tools.analytics-library:tracker'
++    compile 'com.android.tools.analytics-library:tracker:debian'
  
      testCompile 'junit:junit:4.12'
      testCompile 'org.mockito:mockito-all:1.9.5'

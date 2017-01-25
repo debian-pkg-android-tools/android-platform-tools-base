@@ -1,0 +1,7 @@
+disable_snappy.patch
+disable_imgscalr.patch
+disable_apple.awt.CImage.patch
+batik_1.7.patch
+disable_jsr166e.patch
+picocontainer_LifecycleStrategy.patch
+generify_jdom.patch

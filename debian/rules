@@ -9,11 +9,17 @@ export ANDROID_HOME=/usr/lib/android-sdk
 	dh $@ --with maven_repo_helper --buildsystem=gradle
 
 override_dh_auto_build:
+	$(foreach patch,$(shell cat debian/additionalSrc/patches/series),patch --batch --fuzz=0 --forward -p1 --unified --version-control=never < debian/additionalSrc/patches/$(patch);)
 	dh_auto_build -- -x test --settings-file debian/settings.gradle assemble -x :base:testutils:assemble
 
 override_dh_install:
 	dh_install
 	chmod -x debian/libgradle-android-plugin-java-doc/usr/share/doc/libgradle-android-plugin-java/templates/gradle-projects/NewAndroidAutoProject/template.xml
+
+override_dh_auto_clean:
+	dh_auto_clean
+	# Quilt does not work on patches on files under debian/
+	-$(foreach patch,$(shell tac debian/additionalSrc/patches/series),patch --reverse --batch --fuzz=0 --forward -p1 --unified --version-control=never < debian/additionalSrc/patches/$(patch);)
 
 get-orig-source: gradle_$(DEB_VERSION_UPSTREAM).tar.gz
 	mkdir $(DEB_SOURCE)_$(DEB_VERSION_UPSTREAM)

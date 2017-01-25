@@ -11,7 +11,7 @@ Build-Depends:
  gradle-debian-helper,
  groovy,
  junit4,
- libandroid-databinding-java,
+ libandroid-databinding-java (>= 2.2.2-2~),
  libandroid-tools-analytics-library-java (>= 2.2.2-2~),
  libasm-java,
  libautomaton-java,

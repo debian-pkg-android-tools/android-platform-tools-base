@@ -28,7 +28,7 @@ Build-Depends:
  libjacoco-java (>= 0.7.8-1~),
  libjavawriter-java,
  libjdom1-java,
- libjimfs-java,
+ libjimfs-java (>= 1.1-3~),
  libjna-java,
  libjna-platform-java,
  libjoptsimple-java,

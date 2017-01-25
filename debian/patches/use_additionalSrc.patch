@@ -1,6 +1,6 @@
 --- a/lint/libs/lint-api/build.gradle
 +++ b/lint/libs/lint-api/build.gradle
-@@ -14,14 +14,34 @@
+@@ -14,14 +14,33 @@
      compile 'com.android.tools.external.com-intellij:uast:145.597.3'
      compile 'org.ow2.asm:asm:5.0.4'
      compile 'org.ow2.asm:asm-tree:5.0.4'
@@ -14,7 +14,6 @@
 +    compile 'org.apache.xmlgraphics:batik-transcoder:debian'
 +    compile 'org.apache.xmlgraphics:batik-util:debian'
 +    compile 'org.jdom:jdom:debian'
-+    compile 'org.picocontainer:picocontainer:debian'
 +    compile 'oro:oro:debian'
  }
  

@@ -37,7 +37,6 @@ Build-Depends:
  liblog4j1.2-java,
  liblombok-ast-java,
  liboro-java,
- libpicocontainer-java,
  libsnappy-java,
  maven-debian-helper,
  maven-repo-helper,
@@ -116,7 +115,6 @@ Depends: android-platform-tools-base,
          liblog4j1.2-java,
          liblombok-ast-java,
          liboro-java,
-         libpicocontainer-java,
          proguard,
          ${misc:Depends}
 Breaks: android-platform-tools-base (<< 2.0.0-1)

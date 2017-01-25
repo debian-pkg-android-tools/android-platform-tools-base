@@ -1,0 +1,250 @@
+Description: Disable package com.android.tools.lint.psi
+ The com.android.tools.lint.psi package contains almost 100 classes that do
+ not override all necessary members of their super classes. I have no idea why
+ the AOSP team can still manage to compile the code, so I have to disable them
+ for the moment.
+Author: Kai-Chung Yan (殷啟聰)
+Last-Update: 2017-01-25
+--- a/lint/cli/build.gradle
++++ b/lint/cli/build.gradle
+@@ -14,6 +14,7 @@
+ sourceSets {
+     main.resources.srcDir 'src/main/java'
+     test.resources.srcDir 'src/test/java'
++    main.java.exclude 'com/android/tools/lint/psi/**/*'
+ }
+ 
+ test {
+--- a/lint/cli/src/main/java/com/android/tools/lint/EcjParser.java
++++ b/lint/cli/src/main/java/com/android/tools/lint/EcjParser.java
+@@ -33,9 +33,6 @@
+ import com.android.tools.lint.detector.api.Location;
+ import com.android.tools.lint.detector.api.Project;
+ import com.android.tools.lint.detector.api.Scope;
+-import com.android.tools.lint.psi.EcjPsiBuilder;
+-import com.android.tools.lint.psi.EcjPsiJavaEvaluator;
+-import com.android.tools.lint.psi.EcjPsiManager;
+ import com.google.common.base.Joiner;
+ import com.google.common.base.Splitter;
+ import com.google.common.collect.Lists;
+@@ -168,7 +165,7 @@
+     @Deprecated private Map<String, TypeDeclaration> mTypeUnits;
+     private Parser mParser;
+     protected EcjResult mEcjResult;
+-    private EcjPsiJavaEvaluator mResolver;
++    private Object mResolver;
+ 
+     public EcjParser(@NonNull LintCliClient client, @Nullable Project project) {
+         mClient = client;
+@@ -178,8 +175,8 @@
+ 
+     @NonNull
+     @Override
+-    public EcjPsiJavaEvaluator getEvaluator() {
+-        return mResolver;
++    public com.android.tools.lint.client.api.JavaEvaluator getEvaluator() {
++        throw new RuntimeException("ECJ module temporarily disabled!");
+     }
+ 
+     /**
+@@ -267,7 +264,7 @@
+         List<String> classPath = computeClassPath(contexts);
+         try {
+             mEcjResult = parse(createCompilerOptions(), sources, classPath, mClient);
+-            mResolver = new EcjPsiJavaEvaluator(mEcjResult.mPsiManager);
++            mResolver = null;
+ 
+             if (DEBUG_DUMP_PARSE_ERRORS) {
+                 for (CompilationUnitDeclaration unit : mEcjResult.getCompilationUnits()) {
+@@ -287,6 +284,7 @@
+                     }
+                 }
+             }
++            throw new RuntimeException("ECJ module temporarily disabled!");
+         } catch (Throwable t) {
+             mClient.log(t, "ECJ compiler crashed");
+         }
+@@ -305,7 +303,7 @@
+         @Nullable private Map<ICompilationUnit, PsiJavaFile> mPsiMap;
+         @Nullable private Map<CompilationUnitDeclaration, EcjSourceFile> mUnitToSource;
+         @Nullable Map<Binding, CompilationUnitDeclaration> mBindingToUnit;
+-        private EcjPsiManager mPsiManager;
++        private Object mPsiManager;
+ 
+         public EcjResult(@Nullable INameEnvironment nameEnvironment,
+                 @Nullable LookupEnvironment lookupEnvironment,
+@@ -320,7 +318,7 @@
+             return mLookupEnvironment;
+         }
+ 
+-        public void setPsiManager(@NonNull EcjPsiManager psiManager) {
++        public void setPsiManager(@NonNull Object psiManager) {
+             mPsiManager = psiManager;
+         }
+ 
+@@ -345,10 +343,10 @@
+ 
+             CompilationUnitDeclaration unit = getCompilationUnit(sourceUnit);
+             if (unit != null) {
+-                PsiJavaFile file = EcjPsiBuilder.create(mPsiManager, unit, sourceUnit);
++                PsiJavaFile file = null;
+                 assert mPsiMap != null;
+                 mPsiMap.put(sourceUnit, file);
+-                return file;
++                throw new RuntimeException("ECJ module temporarily disabled!");
+             }
+ 
+             return null;
+@@ -530,9 +528,9 @@
+ 
+         LookupEnvironment lookupEnvironment = compiler != null ? compiler.lookupEnvironment : null;
+         EcjResult ecjResult = new EcjResult(environment, lookupEnvironment, outputMap);
+-        EcjPsiManager psiManager = new EcjPsiManager(client, ecjResult, options.sourceLevel);
++        Object psiManager = null;
+         ecjResult.setPsiManager(psiManager);
+-        return ecjResult;
++        throw new RuntimeException("ECJ module temporarily disabled!");
+     }
+ 
+     @NonNull
+--- a/lint/cli/src/main/java/com/android/tools/lint/ExternalAnnotationRepository.java
++++ b/lint/cli/src/main/java/com/android/tools/lint/ExternalAnnotationRepository.java
+@@ -24,7 +24,6 @@
+ import static com.android.SdkConstants.VALUE_TRUE;
+ import static com.android.tools.lint.checks.SupportAnnotationDetector.CHECK_RESULT_ANNOTATION;
+ import static com.android.tools.lint.checks.SupportAnnotationDetector.PERMISSION_ANNOTATION;
+-import static com.android.tools.lint.psi.EcjPsiManager.getTypeName;
+ 
+ import com.android.annotations.NonNull;
+ import com.android.annotations.Nullable;
+@@ -43,11 +42,6 @@
+ import com.android.tools.lint.client.api.LintClient;
+ import com.android.tools.lint.detector.api.LintUtils;
+ import com.android.tools.lint.detector.api.Project;
+-import com.android.tools.lint.psi.ExternalPsiAnnotation;
+-import com.android.tools.lint.psi.ExternalPsiAnnotationLiteralMemberValue;
+-import com.android.tools.lint.psi.ExternalPsiArrayInitializerMemberValue;
+-import com.android.tools.lint.psi.ExternalPsiNameValuePair;
+-import com.android.tools.lint.psi.ExternalPsiReferenceExpressionMemberValue;
+ import com.android.utils.XmlUtils;
+ import com.google.common.base.Charsets;
+ import com.google.common.base.Splitter;
+@@ -920,13 +914,12 @@
+             if (cls == null || cls.compoundName == null) {
+                 return null;
+             }
+-            return mClassMap.get(getTypeName(cls.compoundName));
++            throw new RuntimeException("ECJ module temporarily disabled!");
+         }
+ 
+         @Nullable
+         private ClassInfo findPackage(@NonNull PackageBinding pkg) {
+-            return pkg.compoundName != null
+-                    ? mClassMap.get(getTypeName(pkg.compoundName) + ".package-info") : null;
++            throw new RuntimeException("ECJ module temporarily disabled!");
+         }
+ 
+         @Nullable
+@@ -1300,7 +1293,7 @@
+ 
+             @Override
+             public boolean matches(@NonNull String name) {
+-                return mSignature.equals(name);
++                throw new RuntimeException("ECJ module temporarily disabled!");
+             }
+ 
+             @NonNull
+@@ -1323,7 +1316,7 @@
+             }
+         }
+ 
+-        private Map<String, ExternalPsiAnnotation> mMarkerAnnotations = Maps.newHashMapWithExpectedSize(30);
++        private Map<String, Object> mMarkerAnnotations = Maps.newHashMapWithExpectedSize(30);
+ 
+         private PsiAnnotation createAnnotation(Element annotationElement) {
+             String tagName = annotationElement.getTagName();
+@@ -1331,12 +1324,12 @@
+             String name = annotationElement.getAttribute(ATTR_NAME);
+             assert name != null && !name.isEmpty();
+ 
+-            ExternalPsiAnnotation annotation = mMarkerAnnotations.get(name);
++            Object annotation = mMarkerAnnotations.get(name);
+             if (annotation != null) {
+-                return annotation;
++                return null;
+             }
+ 
+-            annotation = new ExternalPsiAnnotation(name);
++            annotation = null;
+ 
+             List<Element> valueElements = getChildren(annotationElement);
+             if (valueElements.isEmpty()
+@@ -1347,7 +1340,7 @@
+                     && !name.startsWith(PERMISSION_ANNOTATION)
+                     && !name.equals(CHECK_RESULT_ANNOTATION)) {
+                 mMarkerAnnotations.put(name, annotation);
+-                return annotation;
++                throw new RuntimeException("ECJ module temporarily disabled!");
+             }
+ 
+             List<PsiNameValuePair> pairs = Lists.newArrayListWithCapacity(valueElements.size());
+@@ -1358,16 +1351,13 @@
+                     if (!valueName.isEmpty() && !valueString.isEmpty()) {
+                         // Guess type
+                         if (valueString.equals(VALUE_TRUE)) {
+-                            pairs.add(new ExternalPsiNameValuePair(valueName, valueString,
+-                                    new ExternalPsiAnnotationLiteralMemberValue(true)));
++                            pairs.add(null);
+                         } else if (valueString.equals(VALUE_FALSE)) {
+-                            pairs.add(new ExternalPsiNameValuePair(valueName, valueString,
+-                                    new ExternalPsiAnnotationLiteralMemberValue(false)));
++                            pairs.add(null);
+                         } else if (valueString.startsWith("\"") && valueString.endsWith("\"") &&
+                                 valueString.length() >= 2) {
+                             String s = valueString.substring(1, valueString.length() - 1);
+-                            pairs.add(new ExternalPsiNameValuePair(valueName, valueString,
+-                                    new ExternalPsiAnnotationLiteralMemberValue(s)));
++                            pairs.add(null);
+                         } else if (valueString.startsWith("{") && valueString.endsWith("}")) {
+                             // Array of values
+                             String listString = valueString.substring(1, valueString.length() - 1);
+@@ -1381,15 +1371,14 @@
+                             for (String reference : splitter.split(listString)) {
+                                 if (reference.startsWith("\"")) {
+                                     String s = reference.substring(1, reference.length() - 1);
+-                                    result.add(new ExternalPsiAnnotationLiteralMemberValue(s));
++                                    result.add(null);
+                                 } else {
+-                                    result.add(new ExternalPsiReferenceExpressionMemberValue(reference));
++                                    result.add(null);
+                                 }
+                             }
+                             PsiAnnotationMemberValue[] initializers = result.toArray(
+                                     PsiAnnotationMemberValue.EMPTY_ARRAY);
+-                            pairs.add(new ExternalPsiNameValuePair(valueName, valueString,
+-                                    new ExternalPsiArrayInitializerMemberValue(initializers)));
++                            pairs.add(null);
+ 
+                             // We don't know the actual type of these fields; we'll assume they're
+                             // a special form of
+@@ -1404,17 +1393,14 @@
+                             } catch (NumberFormatException nufe) {
+                                 value = valueString;
+                             }
+-                            pairs.add(new ExternalPsiNameValuePair(valueName, valueString,
+-                                    new ExternalPsiAnnotationLiteralMemberValue(value)));
++                            pairs.add(null);
+                         } else {
+-                            pairs.add(new ExternalPsiNameValuePair(valueName, valueString,
+-                                    new ExternalPsiAnnotationLiteralMemberValue(valueString)));
++                            pairs.add(null);
+                         }
+                     }
+                 }
+             }
+-            annotation.setAttributes(pairs.toArray(PsiNameValuePair.EMPTY_ARRAY));
+-            return annotation;
++            throw new RuntimeException("ECJ module temporarily disabled!");
+         }
+     }
+ 

@@ -9,3 +9,4 @@ Inception-Date.patch
 maxParallelForksSingleCPU.patch
 set-androidHostOut.patch
 use_additionalSrc.patch
+disable_lint-cli_psi.patch

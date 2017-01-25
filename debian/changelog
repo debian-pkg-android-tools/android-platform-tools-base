@@ -3,8 +3,22 @@ android-platform-tools-base (2.2.2-1) UNRELEASED; urgency=medium
   [ Hans-Christoph Steiner ]
   * New upstream release (Closes: #850997)
   * Team upload
+  
+  [ Kai-Chung Yan ]
+  * New BDs:
+    * libbatik-java
+    * libautomaton-java
+    * libcglib-java
+    * libjdom1-java
+    * libjna-java
+    * libjna-platform-java
+    * libjoptsimple-java
+    * liboro-java
+  * Remove BD: libtrove3-java but use its fork from intellij-community
+  * No longer build testutils
+  * New patch disable_lint-cli_psi.patch
 
- -- Kai-Chung Yan <seamlikok@gmail.com>  Thu, 22 Dec 2016 22:52:13 +0100
+ -- Kai-Chung Yan <seamlikok@gmail.com>  Wed, 25 Jan 2017 14:11:21 +0800
 
 android-platform-tools-base (2.0.0-2) unstable; urgency=medium
 

@@ -153,9 +153,9 @@ Description: Android Plugin for Gradle - Documentations
 
 Package: libandroid-tools-sdklib-java
 Architecture: all
-Depends: libandroid-layoutlib-api-java,
-         libandroid-tools-dvlib-java,
-         libandroid-tools-repository-java,
+Depends: libandroid-layoutlib-api-java (>= ${binary:Version}),
+         libandroid-tools-dvlib-java (>= ${binary:Version}),
+         libandroid-tools-repository-java (>= ${binary:Version}),
          libcommons-compress-java,
          libgoogle-gson-java,
          libhttpclient-java,
@@ -205,7 +205,7 @@ Description: Library to manage the Android device database XML files
 
 Package: libandroid-tools-repository-java
 Architecture: all
-Depends: libandroid-tools-common-java,
+Depends: libandroid-tools-common-java (>= ${binary:Version}),
          libcommons-compress-java,
          ${misc:Depends}
 Description: Library for downloading and managing package repositories

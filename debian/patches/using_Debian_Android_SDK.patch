@@ -1,0 +1,126 @@
+Author: Kai-Chung Yan (殷啟聰)
+Last-Update: 2017-02-22
+Description: Using Debian's Android SDK
+ Debian's Android SDK is a restricted distribution whose has only one version of
+ Build-Tools and limited selection of Android target frameworks (android.jar).
+ This patch makes the Gradle plugin work with Debian's SDK without modifying
+ the build scripts.
+--- a/build-system/gradle/src/main/java/com/android/build/gradle/BasePlugin.java
++++ b/build-system/gradle/src/main/java/com/android/build/gradle/BasePlugin.java
+@@ -654,6 +654,17 @@
+                     "The 'java' plugin has been applied, but it is not compatible with the Android plugins.");
+         }
+ 
++        try {
++            if (sdkHandler.getSdkFolder()
++                          .getCanonicalPath()
++                          .equals(DebianAndroidSdkUtil.DEB_ANDROID_HOME)) {
++                project.getLogger().info("Configuring the build system for using Debian's Android SDK");
++                DebianAndroidSdkUtil.configSdkOptions(extension);
++            }
++        } catch (IOException ex) {
++            throw new GradleException("Could not access the SDK path.", ex);
++        }
++
+         ensureTargetSetup();
+ 
+         // don't do anything if the project was not initialized.
+--- /dev/null
++++ b/build-system/gradle/src/main/java/com/android/build/gradle/DebianAndroidSdkUtil.java
+@@ -0,0 +1,95 @@
++/*
++ * Copyright (C) 2017 Kai-Chung Yan (殷啟聰)
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++package com.android.build.gradle;
++
++import com.android.build.gradle.BaseExtension;
++import com.android.repository.testframework.FakeProgressIndicator;
++import com.android.sdklib.BuildToolInfo;
++import com.android.sdklib.IAndroidTarget;
++import com.android.sdklib.repository.AndroidSdkHandler;
++import java.nio.file.Paths;
++import java.util.Collection;
++import org.gradle.api.GradleException;
++import org.gradle.api.Plugin;
++import org.gradle.api.Project;
++import org.gradle.api.plugins.ExtensionContainer;
++
++public class DebianAndroidSdkUtil {
++  private static AndroidSdkHandler sdk;
++  private static String latestBuildToolsVersion;
++  private static int[] availableApiLevelsSorted;
++  private static int maxApiLevel;
++  private static boolean sdkAnalyzed = false;
++
++  public static final String DEB_ANDROID_HOME = "/usr/lib/android-sdk";
++
++  private static void configApiLevel(BaseExtension config) {
++    int originalApiLevel = Integer.parseInt(
++        config.getCompileSdkVersion().replace("android-", "")
++    );
++    if (originalApiLevel > maxApiLevel) {
++      throw new GradleException("No suitable Android target platform installed.");
++    }
++    for (int it : availableApiLevelsSorted) {
++      if (it == originalApiLevel) {
++        return;
++      }
++    }
++    config.setCompileSdkVersion(maxApiLevel);
++  }
++
++  private static void analyzeSdk() {
++    sdk = AndroidSdkHandler.getInstance(Paths.get(DEB_ANDROID_HOME).toFile());
++
++    /* Get latest Build-Tools */
++    BuildToolInfo latestBuildTool = sdk.getLatestBuildTool(
++        new FakeProgressIndicator(), true
++    );
++    if (latestBuildTool == null) {
++      throw new GradleException("No Build-tools available.");
++    }
++    latestBuildToolsVersion = latestBuildTool.getRevision().toString();
++
++    /* Get all API Levels */
++    Collection<IAndroidTarget> targets =
++        sdk.getAndroidTargetManager(new FakeProgressIndicator())
++            .getTargets(new FakeProgressIndicator());
++    availableApiLevelsSorted =
++        targets.stream()
++               .mapToInt(target -> target.getVersion().getApiLevel())
++               .sorted()
++               .toArray();
++    maxApiLevel = (availableApiLevelsSorted.length == 0)
++        ? 0
++        : availableApiLevelsSorted[availableApiLevelsSorted.length - 1];
++
++    sdkAnalyzed = true;
++  }
++
++  public static void configSdkOptions(BaseExtension config) {
++    if (config == null) {
++      return;
++    }
++    if (!sdkAnalyzed) {
++      analyzeSdk();
++    }
++    config.setBuildToolsVersion(latestBuildToolsVersion);
++    configApiLevel(config);
++    /* ATM Lint always fails because ECJ module is disabled. */
++    config.getLintOptions().setAbortOnError(false);
++  }
++}
+\ No newline at end of file

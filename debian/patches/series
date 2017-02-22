@@ -10,3 +10,4 @@ maxParallelForksSingleCPU.patch
 set-androidHostOut.patch
 use_additionalSrc.patch
 disable_lint-cli_psi.patch
+using_Debian_Android_SDK.patch

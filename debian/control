@@ -7,7 +7,7 @@ Uploaders:
 Build-Depends:
  antlr3,
  debhelper (>= 10),
- default-jdk-headless | default-jdk (>= 1:1.6),
+ default-jdk-headless (>= 2:1.8),
  gradle-debian-helper,
  groovy,
  junit4,
@@ -49,7 +49,7 @@ Homepage: https://android.googlesource.com/platform/tools/base/
 Package: android-platform-tools-base
 Architecture: all
 Depends:
- default-jre-headless (>= 1:1.6) | java6-runtime-headless,
+ default-jre-headless (>= 2:1.8) | java8-runtime-headless,
  libandroid-ddms-java (>= ${binary:Version}),
  ${misc:Depends}
 Suggests: default-jre

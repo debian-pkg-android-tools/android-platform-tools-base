@@ -7,19 +7,20 @@ Description: Using Debian's Android SDK
  the build scripts.
 --- a/build-system/gradle/src/main/java/com/android/build/gradle/BasePlugin.java
 +++ b/build-system/gradle/src/main/java/com/android/build/gradle/BasePlugin.java
-@@ -654,6 +654,17 @@
+@@ -654,6 +654,18 @@
                      "The 'java' plugin has been applied, but it is not compatible with the Android plugins.");
          }
  
 +        try {
-+            if (sdkHandler.getSdkFolder()
++            if (sdkHandler.getSdkFolder() != null &&
++                sdkHandler.getSdkFolder()
 +                          .getCanonicalPath()
 +                          .equals(DebianAndroidSdkUtil.DEB_ANDROID_HOME)) {
-+                project.getLogger().info("Configuring the build system for using Debian's Android SDK");
-+                DebianAndroidSdkUtil.configSdkOptions(extension);
++                project.getLogger().info("Configuring the build script for using Debian's Android SDK");
++                DebianAndroidSdkUtil.configSdkOptions(extension, project.getLogger());
 +            }
 +        } catch (IOException ex) {
-+            throw new GradleException("Could not access the SDK path.", ex);
++            throw new GradleException("Error whil configuring the build script for working with Debian's Android SDK.", ex);
 +        }
 +
          ensureTargetSetup();
@@ -27,7 +28,7 @@ Description: Using Debian's Android SDK
          // don't do anything if the project was not initialized.
 --- /dev/null
 +++ b/build-system/gradle/src/main/java/com/android/build/gradle/DebianAndroidSdkUtil.java
-@@ -0,0 +1,95 @@
+@@ -0,0 +1,97 @@
 +/*
 + * Copyright (C) 2017 Kai-Chung Yan (殷啟聰)
 + *
@@ -53,6 +54,7 @@ Description: Using Debian's Android SDK
 +import com.android.sdklib.repository.AndroidSdkHandler;
 +import java.nio.file.Paths;
 +import java.util.Collection;
++import org.gradle.api.logging.Logger;
 +import org.gradle.api.GradleException;
 +import org.gradle.api.Plugin;
 +import org.gradle.api.Project;
@@ -67,7 +69,7 @@ Description: Using Debian's Android SDK
 +
 +  public static final String DEB_ANDROID_HOME = "/usr/lib/android-sdk";
 +
-+  private static void configApiLevel(BaseExtension config) {
++  private static void configApiLevel(BaseExtension config, Logger logger) {
 +    int originalApiLevel = Integer.parseInt(
 +        config.getCompileSdkVersion().replace("android-", "")
 +    );
@@ -79,6 +81,7 @@ Description: Using Debian's Android SDK
 +        return;
 +      }
 +    }
++    logger.warn("Target platform of API Level " + originalApiLevel + " not found, using " + maxApiLevel + " instead.");
 +    config.setCompileSdkVersion(maxApiLevel);
 +  }
 +
@@ -110,7 +113,7 @@ Description: Using Debian's Android SDK
 +    sdkAnalyzed = true;
 +  }
 +
-+  public static void configSdkOptions(BaseExtension config) {
++  public static void configSdkOptions(BaseExtension config, Logger logger) {
 +    if (config == null) {
 +      return;
 +    }
@@ -118,7 +121,7 @@ Description: Using Debian's Android SDK
 +      analyzeSdk();
 +    }
 +    config.setBuildToolsVersion(latestBuildToolsVersion);
-+    configApiLevel(config);
++    configApiLevel(config, logger);
 +    /* ATM Lint always fails because ECJ module is disabled. */
 +    config.getLintOptions().setAbortOnError(false);
 +  }

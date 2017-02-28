@@ -1,3 +1,14 @@
+android-platform-tools-base (2.2.2-2) unstable; urgency=medium
+
+  * New using_Debian_Android_SDK.patch: When using Debian's Android SDK, the
+    plugin will select the best `android.jar` and Build-Tools available.
+  * d/control:
+    * Suggests android-debian-helper that helps using the Gradle plugin provided
+      by this package.
+    * Depends on JDK8 since the code uses Java 8 Streams and lambda.
+
+ -- Kai-Chung Yan <seamlikok@gmail.com>  Tue, 28 Feb 2017 19:37:48 +0800
+
 android-platform-tools-base (2.2.2-1) unstable; urgency=medium
 
   [ Hans-Christoph Steiner ]

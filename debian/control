@@ -119,7 +119,7 @@ Depends: android-platform-tools-base,
          ${misc:Depends}
 Breaks: android-platform-tools-base (<< 2.0.0-1)
 Replaces: android-platform-tools-base (<< 2.0.0-1)
-Suggests: gradle
+Suggests: android-debian-helper, gradle
 Description: Android Plugin for Gradle
  The Android build system uses the Android Plugin for Gradle to support building
  Android applications with the Gradle build toolkit. The plugin runs independent
@@ -131,9 +131,8 @@ Description: Android Plugin for Gradle
  This package does not include gradle-experimental.jar because its dependencies
  are hard to resolve in Debian.
  .
- To build an Android application using the plugin in Debian, add a Maven
- repository with a URL "file:///usr/share/maven-repo", and change the plugin
- classpath to "com.android.tools.build:gradle:debian".
+ To build an Android application using the plugin in Debian, install
+ `android-debian-helper` and use the init.gradle provided by that package.
 
 Package: libgradle-android-plugin-java-doc
 Architecture: all

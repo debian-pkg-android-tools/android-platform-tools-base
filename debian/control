@@ -37,10 +37,10 @@ Build-Depends:
  liblog4j1.2-java,
  liblombok-ast-java,
  liboro-java,
+ libproguard-java,
  libsnappy-java,
  maven-debian-helper,
  maven-repo-helper,
- proguard
 Standards-Version: 3.9.8
 Vcs-Browser: https://anonscm.debian.org/cgit/android-tools/android-platform-tools-base.git
 Vcs-Git: https://anonscm.debian.org/git/android-tools/android-platform-tools-base.git
@@ -115,7 +115,7 @@ Depends: android-platform-tools-base,
          liblog4j1.2-java,
          liblombok-ast-java,
          liboro-java,
-         proguard,
+         proguard-cli,
          ${misc:Depends}
 Breaks: android-platform-tools-base (<< 2.0.0-1)
 Replaces: android-platform-tools-base (<< 2.0.0-1)
